@@ -2,6 +2,8 @@
 
 import Section from "@/components/Section";
 import { SectionNames } from "@/constants";
+import useBreakpoint from "@/hooks/useBreakpoint";
+import clsx from "clsx";
 
 export default function Home() {
   const sections = Object.values(SectionNames).map(
@@ -21,7 +23,16 @@ Home.Container = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { isMobile } = useBreakpoint();
+
   return (
-    <div className="flex h-[100dvh]">{children}</div>
+    <div
+      className={clsx(
+        "flex h-[100dvh]",
+        isMobile && "flex-col"
+      )}
+    >
+      {children}
+    </div>
   );
 };

@@ -8,13 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      backgroundColor: {
+        white: "#FFFFFF",
+        pastelOrange: "#F8F3EA",
+        pastelYellow: "#FFFFF5",
+        pastelGrey: "#FAFAFA",
+        pastelBlue: "#F6F8FF",
       },
     },
   },
   plugins: [],
+  safelist: [
+    "bg-white",
+    "bg-pastelOrange",
+    "bg-pastelYellow",
+    "bg-pastelGrey",
+    "bg-pastelBlue",
+  ],
 };
 export default config;

@@ -1,5 +1,6 @@
 "use client";
 
+import CategorySelect from "@/components/admin/CategorySelect";
 import clsx from "clsx";
 import React from "react";
 import ReactQuill from "react-quill";
@@ -13,6 +14,8 @@ const AdminPage = () => {
         "flex justify-center items-center"
       )}
     >
+      <CategorySelect />
+
       <ReactQuill
         className={clsx(
           "w-[50vw] min-h-[50vh] bg-white flex flex-col"

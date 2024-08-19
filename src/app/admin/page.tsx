@@ -2,11 +2,19 @@
 
 import CategorySelect from "@/components/admin/CategorySelect";
 import clsx from "clsx";
-import React from "react";
-import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
+import React, { useMemo } from "react";
 import "react-quill/dist/quill.snow.css";
 
 const AdminPage = () => {
+  const ReactQuill = useMemo(
+    () =>
+      dynamic(() => import("react-quill"), {
+        ssr: false,
+      }),
+    []
+  );
+
   return (
     <div
       className={clsx(

@@ -15,3 +15,11 @@ body {
   /* unable to bounce scroll */
   overflow: hidden;
 }
+
+.ql-container {
+  flex: 1;
+}
+
+.ql-editor {
+  height: 100%;
+}

@@ -12,6 +12,7 @@ const memexFetcher = Mf.createMemexFetcher(
 import CategorySelect from "@/components/admin/CategorySelect";
 import "react-quill/dist/quill.snow.css";
 import Dropdown from "@/components/common/Dropdown";
+import AdminHeader from "@/components/admin/Header";
 
 const AdminPage = () => {
   const ReactQuill = useMemo(
@@ -25,7 +26,7 @@ const AdminPage = () => {
   return (
     <div
       className={clsx(
-        "w-[60vw] h-screen mx-auto",
+        "w-[60vw] h-full mx-auto",
         "flex flex-col justify-center items-center"
       )}
     >
@@ -35,10 +36,32 @@ const AdminPage = () => {
 
           <Dropdown options={["공개", "비공개"]} />
 
-          <div className="bg-white border-[1px] border-black outline-none p-3">
+          <div className="bg-white border-[1px] border-black outline-none h-[30px] flex justify-center items-center px-3">
             제출하기
           </div>
         </div>
+      </AdminPage.Row>
+
+      <AdminPage.Row label="메인 이미지">
+        <AdminPage.MainImage />
+      </AdminPage.Row>
+
+      <AdminPage.Row label="메인 설명">
+        <input
+          type="text"
+          className="w-full resize-none outline-none"
+        />
+      </AdminPage.Row>
+
+      <AdminPage.Row label="메인 타이틀">
+        <input
+          type="text"
+          className="w-full resize-none outline-none"
+        />
+      </AdminPage.Row>
+
+      <AdminPage.Row label="작업 크레딧">
+        <textarea className="w-full resize-none outline-none" />
       </AdminPage.Row>
 
       <ReactQuill
@@ -60,7 +83,9 @@ AdminPage.Row = ({
   return (
     <div
       className={clsx(
-        "w-full bg-red-300 flex relative"
+        "w-full bg-slate-100 flex relative",
+        "border-[1px] border-slate-300 mt-[-1px] first:mt-0 mb-[8px]",
+        "p-3 py-2"
       )}
     >
       <label className="bg-slate-50 w-fit absolute left-[-16px] -translate-x-full">
@@ -90,7 +115,7 @@ AdminPage.MainImage = () => {
           );
         }}
       />
-      <button
+      {/* <button
         disabled={!selectedImage}
         onClick={async () =>
           await memexFetcher.postMedia(
@@ -100,7 +125,7 @@ AdminPage.MainImage = () => {
         }
       >
         이미지 저장하기
-      </button>
+      </button> */}
     </div>
   );
 };

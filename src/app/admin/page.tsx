@@ -11,6 +11,7 @@ const memexFetcher = Mf.createMemexFetcher(
 
 import CategorySelect from "@/components/admin/CategorySelect";
 import "react-quill/dist/quill.snow.css";
+import Dropdown from "@/components/common/Dropdown";
 
 const AdminPage = () => {
   const ReactQuill = useMemo(
@@ -24,19 +25,27 @@ const AdminPage = () => {
   return (
     <div
       className={clsx(
-        "bg-violet-200 w-screen h-screen",
-        "flex justify-center items-center"
+        "w-[60vw] h-screen mx-auto",
+        "flex flex-col justify-center items-center"
       )}
     >
-      <CategorySelect />
+      <AdminPage.Row label="">
+        <div className="flex justify-between items-center">
+          <CategorySelect />
+
+          <Dropdown options={["공개", "비공개"]} />
+
+          <div className="bg-white border-[1px] border-black outline-none p-3">
+            제출하기
+          </div>
+        </div>
+      </AdminPage.Row>
 
       <ReactQuill
         className={clsx(
-          "w-[50vw] min-h-[50vh] bg-white flex flex-col"
+          "w-full min-h-[50vh] bg-white flex flex-col"
         )}
       />
-
-      <AdminPage.MainImage />
     </div>
   );
 };
@@ -49,9 +58,16 @@ AdminPage.Row = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className={clsx("flex flex-col")}>
-      <label>{label}</label>
-      {children}
+    <div
+      className={clsx(
+        "w-full bg-red-300 flex relative"
+      )}
+    >
+      <label className="bg-slate-50 w-fit absolute left-[-16px] -translate-x-full">
+        {label}
+      </label>
+
+      <div className="w-full">{children}</div>
     </div>
   );
 };

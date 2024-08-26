@@ -2,3 +2,9 @@
 
 기획 / 디자인 : 김대순  
 개발 : 이동규
+
+---
+
+개발 레퍼런스
+
+https://www.npmjs.com/package/quill-image-uploader

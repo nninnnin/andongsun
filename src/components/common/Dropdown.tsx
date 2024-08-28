@@ -1,13 +1,22 @@
 import clsx from "clsx";
-import React, { useLayoutEffect, useRef } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 
 const Dropdown = ({
   options,
+  onChange,
 }: {
-  options: string[];
+  options: {
+    label: string;
+    value: unknown;
+  }[];
+  onChange?: (value: unknown) => void;
 }) => {
   const [selected, setSelected] = React.useState(
-    options[0]
+    options[0].label
   );
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -18,6 +27,12 @@ const Dropdown = ({
   const listRef = useRef<HTMLUListElement | null>(
     null
   );
+
+  useEffect(() => {
+    if (!onChange) return;
+
+    onChange(options[0].value);
+  }, []);
 
   useLayoutEffect(() => {
     if (!listRef.current) return;
@@ -31,12 +46,10 @@ const Dropdown = ({
     }px`;
   }, [listRef]);
 
-  console.log(selected);
-
   return (
     <div
       className={clsx(
-        "container relative h-[30px] z-[999]",
+        "container relative h-[30px] w-fit z-[999]",
         isOpen ? "h-[30px]" : "overflow-hidden"
       )}
       tabIndex={0}
@@ -61,11 +74,15 @@ const Dropdown = ({
 
                 e.stopPropagation();
 
-                setSelected(option);
+                setSelected(option.label);
                 setIsOpen(false);
+
+                if (onChange) {
+                  onChange(option.value);
+                }
               }}
             >
-              {option}
+              {option.label}
             </Dropdown.Item>
           );
         })}

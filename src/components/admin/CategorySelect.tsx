@@ -7,15 +7,29 @@ import {
 } from "@/constants";
 
 import "./categorySelect.css";
+import { useSetRecoilState } from "recoil";
+import { articleState } from "@/states";
 
 const CategorySelect = () => {
+  const setArticle = useSetRecoilState(articleState);
+
   return (
     <Dropdown
       options={Object.values(SectionNames).map(
         (sectionName) => {
-          return SectionTitles[sectionName];
+          return {
+            label: SectionTitles[sectionName],
+            value: SectionTitles[sectionName],
+          };
         }
       )}
+      onChange={(selectedOption) => {
+        setArticle((prev) => ({
+          ...prev,
+          ["articleType"]:
+            selectedOption as SectionNames,
+        }));
+      }}
     />
   );
 };

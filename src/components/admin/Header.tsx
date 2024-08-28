@@ -1,14 +1,12 @@
-import { SectionNames } from "@/constants";
 import React from "react";
 
 const AdminHeader = () => {
   return (
-    <div className="flex justify-between px-7 py-5 bg-white">
-      {Object.values(SectionNames).map(
-        (sectionName) => (
-          <div key={sectionName}>{sectionName}</div>
-        )
-      )}
+    <div className="flex px-7 py-5 bg-white">
+      Dongsun An
+      <b className="ml-[16px] font-bold text-black">
+        Admin
+      </b>
     </div>
   );
 };

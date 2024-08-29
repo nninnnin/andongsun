@@ -10,6 +10,7 @@ import Dropdown from "@/components/common/Dropdown";
 import useMemex from "@/hooks/useMemex";
 import { useRecoilState } from "recoil";
 import { articleState } from "@/states";
+import { createArticleBody } from "@/utils";
 
 const AdminPage = () => {
   const ReactQuill = useMemo(
@@ -20,7 +21,8 @@ const AdminPage = () => {
     []
   );
 
-  const { postArticle } = useMemex();
+  const { postArticle, getArticleCategories } =
+    useMemex();
 
   const [article, setArticle] =
     useRecoilState(articleState);
@@ -36,9 +38,18 @@ const AdminPage = () => {
     };
 
   const handleSubmit = async () => {
-    console.log(article);
+    const categories = await getArticleCategories();
 
-    // await postArticle()
+    console.log(categories);
+
+    const createdArticleId = await postArticle(
+      createArticleBody(article)
+    );
+
+    console.log(
+      "Article is created!",
+      createdArticleId
+    );
   };
 
   return (

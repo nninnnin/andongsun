@@ -12,7 +12,7 @@ export const articleDefault = {
   contents: null,
 };
 
-export const articleState = atom<{
+export interface ArticleStateInterface {
   published: boolean;
   articleType: SectionNames | null;
   thumbnail: File | null;
@@ -21,7 +21,10 @@ export const articleState = atom<{
   year: null | string;
   credits: null | string;
   contents: null | string;
-}>({
-  key: "articleState",
-  default: articleDefault,
-});
+}
+
+export const articleState =
+  atom<ArticleStateInterface>({
+    key: "articleState",
+    default: articleDefault,
+  });

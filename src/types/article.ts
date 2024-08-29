@@ -8,5 +8,6 @@ export interface ArticleBody {
     contents: string;
     caption: string;
     producedAt: string;
+    credits: string;
   };
 }

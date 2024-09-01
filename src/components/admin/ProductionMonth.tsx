@@ -6,7 +6,7 @@ const ProductionMonth = () => {
     useArticle<string>("year");
 
   return (
-    <div className="flex h-[40px] items-center space-x-[12px] bg-white">
+    <div className="flex items-center space-x-[12px] bg-white selector">
       <input
         className="bg-transparent"
         type="month"

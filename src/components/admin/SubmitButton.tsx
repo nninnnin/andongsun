@@ -1,7 +1,8 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
+
 import { createArticleBody } from "@/utils";
 import useMemex from "@/hooks/useMemex";
-import { useRecoilValue } from "recoil";
 import { articleState } from "@/states";
 
 const SubmitButton = () => {
@@ -20,10 +21,11 @@ const SubmitButton = () => {
 
   return (
     <div
-      className="bg-white border-[1px] border-black outline-none h-[30px] flex justify-center items-center px-3 whitespace-nowrap"
+      className="btn selector"
       onClick={handleSubmit}
     >
-      제출하기
+      완료
+      <object data="/arrow--right.svg" />
     </div>
   );
 };

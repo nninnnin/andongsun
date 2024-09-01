@@ -41,16 +41,14 @@ const Dropdown = ({
 
     if (!container) return;
 
-    container.style.width = `${
-      listRef.current.scrollWidth + 2
-    }px`;
+    container.style.width = `${listRef.current.scrollWidth}px`;
   }, [listRef]);
 
   return (
     <div
       className={clsx(
-        "container relative h-[30px] w-fit z-[999]",
-        isOpen ? "h-[30px]" : "overflow-hidden"
+        "container relative h-[44px] w-fit z-[999] mr-[-1px]",
+        isOpen ? "h-[44px]" : "overflow-hidden"
       )}
       tabIndex={0}
       onBlur={() => setIsOpen(false)}
@@ -60,10 +58,17 @@ const Dropdown = ({
           "w-fit",
           isOpen && "absolute top-0 z-[9999]"
         )}
-        onClick={handleListClick}
         ref={listRef}
       >
-        <Dropdown.Item>{selected}</Dropdown.Item>
+        <Dropdown.Item onClick={handleListClick}>
+          {selected}
+
+          <object
+            className="ml-[30px] pointer-events-none"
+            width="14px"
+            data="/arrow--down.svg"
+          />
+        </Dropdown.Item>
 
         {options.map((option, index) => {
           return (
@@ -82,7 +87,7 @@ const Dropdown = ({
                 }
               }}
             >
-              {option.label}
+              <div>{option.label}</div>
             </Dropdown.Item>
           );
         })}
@@ -99,9 +104,12 @@ Dropdown.Item = (
   return (
     <li
       className={clsx(
-        "h-[30px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[999]",
-        "border-[1px] border-black",
-        "mt-[-1px] first:mt-0"
+        "h-[44px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[999]",
+        "border-[1px] border-themeBlue",
+        "mt-[-1px] first:mt-0",
+        "px-[13.25px] py-[10px]",
+        "flex justify-between items-center",
+        "select-none"
       )}
       {...props}
     >

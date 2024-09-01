@@ -7,11 +7,12 @@ const Credits = () => {
 
   return (
     <textarea
-      className="w-full resize-none outline-none"
+      className="credits input w-full resize-none outline-none"
       onChange={(e) => {
         handleChange(e.target.value);
       }}
       value={value ?? ""}
+      placeholder="크레딧을 입력해 주세요."
     />
   );
 };

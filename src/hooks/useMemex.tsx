@@ -44,9 +44,10 @@ const useMemex = () => {
           categories: any;
         }>
       ) => list[0].categories,
-      mapListItems((item: any) =>
-        deconstructLanguageMap(item, "KO")
-      )
+      mapListItems((item: any) => ({
+        id: item.id,
+        category: deconstructLanguageMap(item, "KO"),
+      }))
     );
   };
 

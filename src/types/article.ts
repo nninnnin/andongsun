@@ -4,7 +4,7 @@ export interface ArticleBody {
     title: {
       KO: string;
     };
-    articleType: string[];
+    articleType: number[];
     contents: string;
     caption: string;
     producedAt: string;

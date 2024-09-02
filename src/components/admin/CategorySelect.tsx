@@ -19,7 +19,7 @@ const CategorySelect = () => {
         (sectionName) => {
           return {
             label: SectionTitles[sectionName],
-            value: SectionTitles[sectionName],
+            value: sectionName,
           };
         }
       )}

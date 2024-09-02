@@ -1,5 +1,5 @@
 export enum SectionNames {
-  About = "Dongsun An",
+  About = "About",
   Writing = "Writing",
   Publishing = "Publishing",
   Curating = "Curating",

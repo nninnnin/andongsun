@@ -25,3 +25,7 @@ body {
 .ql-editor {
   height: 100%;
 }
+
+object {
+  pointer-events: none;
+}

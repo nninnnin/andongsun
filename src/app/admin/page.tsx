@@ -14,7 +14,7 @@ const AdminPage = () => {
 
   return (
     <div className="pl-10">
-      <Link href="/new">
+      <Link href="/admin/new">
         <button className="text-white bg-themeBlue p-3 mb-6 mt-3 px-5">
           New Project
         </button>

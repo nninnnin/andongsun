@@ -20,7 +20,7 @@ import DeleteButton from "@/components/admin/DeleteButton";
 import PublishStatus from "@/components/admin/PublishStatus";
 import Tags from "@/components/admin/Tags";
 
-const AdminPage = () => {
+const NewArticlePage = () => {
   const setThumbnailInputWidth = useSetRecoilState(
     thumbnailInputWidthState
   );
@@ -32,7 +32,7 @@ const AdminPage = () => {
         "flex flex-col justify-center items-center"
       )}
     >
-      <AdminPage.Row className="w-fit">
+      <NewArticlePage.Row className="w-fit">
         <div className="flex justify-between items-center w-full">
           <div
             className="flex"
@@ -55,30 +55,30 @@ const AdminPage = () => {
             <SubmitButton />
           </div>
         </div>
-      </AdminPage.Row>
+      </NewArticlePage.Row>
 
-      <AdminPage.Row>
+      <NewArticlePage.Row>
         <Thumbnail />
-      </AdminPage.Row>
+      </NewArticlePage.Row>
 
-      <AdminPage.Row>
+      <NewArticlePage.Row>
         <Title />
-      </AdminPage.Row>
+      </NewArticlePage.Row>
 
-      <AdminPage.Row>
+      <NewArticlePage.Row>
         <Caption />
-      </AdminPage.Row>
+      </NewArticlePage.Row>
 
-      <AdminPage.Row>
+      <NewArticlePage.Row>
         <Credits />
-      </AdminPage.Row>
+      </NewArticlePage.Row>
 
       <Editor />
     </div>
   );
 };
 
-AdminPage.Row = ({
+NewArticlePage.Row = ({
   className = "",
   children,
 }: {
@@ -99,4 +99,4 @@ AdminPage.Row = ({
   );
 };
 
-export default AdminPage;
+export default NewArticlePage;

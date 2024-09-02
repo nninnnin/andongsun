@@ -1,12 +1,17 @@
 import React from "react";
 import clsx from "clsx";
-import ReactQuill from "react-quill";
 
 import useArticle from "@/hooks/useArticle";
+import dynamic from "next/dynamic";
 
 const Editor = () => {
   const { handleChange, value } =
     useArticle<string>("contents");
+
+  const ReactQuill = dynamic(
+    () => import("react-quill"),
+    { ssr: false }
+  );
 
   return (
     <div className="w-full min-h-[50vh] bg-white mt-[24px]">

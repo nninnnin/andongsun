@@ -5,6 +5,7 @@ import { createArticleBody } from "@/utils";
 import useMemex from "@/hooks/useMemex";
 import { articleState } from "@/states";
 import { getCategoryId } from "@/utils/index";
+import { useRouter } from "next/navigation";
 
 const SubmitButton = () => {
   const { postArticle, getArticleCategories } =
@@ -12,9 +13,31 @@ const SubmitButton = () => {
 
   const article = useRecoilValue(articleState);
 
+  const router = useRouter();
+
   const handleSubmit = async () => {
     if (article.articleType === null) {
       alert("카테고리를 지정해주세요.");
+      return;
+    }
+
+    if (!article.title) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+
+    if (!article.caption) {
+      alert("캡션을 입력해주세요.");
+      return;
+    }
+
+    if (!article.credits) {
+      alert("크레딧을 입력해주세요.");
+      return;
+    }
+
+    if (!article.contents) {
+      alert("내용을 입력해주세요.");
       return;
     }
 
@@ -40,6 +63,8 @@ const SubmitButton = () => {
     );
 
     console.log(createdArticleId);
+
+    router.push("/admin");
   };
 
   return (

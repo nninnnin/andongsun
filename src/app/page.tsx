@@ -2,6 +2,7 @@
 
 import Section from "@/components/Section";
 import { SectionNames } from "@/constants";
+import useArticles from "@/hooks/useArticles";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import clsx from "clsx";
 
@@ -14,6 +15,10 @@ export default function Home() {
       />
     )
   );
+
+  const articles = useArticles();
+
+  console.log(articles);
 
   return <Home.Container>{sections}</Home.Container>;
 }

@@ -1,100 +1,44 @@
+// @ts-nocheck
 "use client";
 
-import clsx from "clsx";
+import useArticles from "@/hooks/useArticles";
+import Link from "next/link";
 import React from "react";
-import { useSetRecoilState } from "recoil";
-
-import "react-quill/dist/quill.snow.css";
-
-import CategorySelect from "@/components/admin/CategorySelect";
-import SubmitButton from "@/components/admin/SubmitButton";
-import Credits from "@/components/admin/Credits";
-import Editor from "@/components/admin/Editor";
-import Thumbnail, {
-  thumbnailInputWidthState,
-} from "@/components/admin/Thumbnail";
-import Caption from "@/components/admin/Caption";
-import Title from "@/components/admin/Title";
-import ProductionMonth from "@/components/admin/\bProductionMonth";
-import DeleteButton from "@/components/admin/DeleteButton";
-import PublishStatus from "@/components/admin/PublishStatus";
-import Tags from "@/components/admin/Tags";
 
 const AdminPage = () => {
-  const setThumbnailInputWidth = useSetRecoilState(
-    thumbnailInputWidthState
-  );
+  const articles = useArticles();
+
+  if (!articles) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div
-      className={clsx(
-        "w-[60vw] min-w-[750px] h-full mx-auto",
-        "flex flex-col justify-center items-center"
-      )}
-    >
-      <AdminPage.Row className="w-fit">
-        <div className="flex justify-between items-center w-full">
-          <div
-            className="flex"
-            ref={(ref) => {
-              if (ref) {
-                setThumbnailInputWidth(
-                  ref.offsetWidth + 0.5
-                );
-              }
+    <div className="pl-10">
+      <Link href="/admin/new">
+        <button className="text-white bg-themeBlue p-3 mb-6 mt-3 px-5">
+          New Project
+        </button>
+      </Link>
+
+      {articles.list.map((article, index) => (
+        <div
+          className="text-white text-[1.5em] flex space-x-10"
+          key={`article-${index}`}
+        >
+          <h2 className="flex-1">
+            {article.data.title.KO}
+          </h2>
+          <p className="flex-1">
+            {article.data.caption}
+          </p>
+          <p
+            className="flex-1"
+            dangerouslySetInnerHTML={{
+              __html: article.data.contents,
             }}
-          >
-            <CategorySelect />
-            <Tags />
-            <ProductionMonth />
-          </div>
-
-          <div className="flex">
-            <DeleteButton />
-            <PublishStatus />
-            <SubmitButton />
-          </div>
+          ></p>
         </div>
-      </AdminPage.Row>
-
-      <AdminPage.Row>
-        <Thumbnail />
-      </AdminPage.Row>
-
-      <AdminPage.Row>
-        <Title />
-      </AdminPage.Row>
-
-      <AdminPage.Row>
-        <Caption />
-      </AdminPage.Row>
-
-      <AdminPage.Row>
-        <Credits />
-      </AdminPage.Row>
-
-      <Editor />
-    </div>
-  );
-};
-
-AdminPage.Row = ({
-  className = "",
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <div
-      className={clsx(
-        "w-full flex justify-center items-center relative",
-        "mt-[-1px] first:mt-0",
-        "text-themeBlue",
-        className
-      )}
-    >
-      <div className="w-full">{children}</div>
+      ))}
     </div>
   );
 };

@@ -15,6 +15,7 @@ const config: Config = {
         pastelYellow: "#FFFFF5",
         pastelGrey: "#FAFAFA",
         pastelBlue: "#F6F8FF",
+        themeBlue: "#0067FF",
       },
       color: {
         themeBlue: "#0067FF",

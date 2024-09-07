@@ -22,9 +22,11 @@ const AdminPage = () => {
 
       {articles.list.map((article, index) => (
         <div
-          className="text-white text-[1.5em] flex space-x-10"
+          className="text-white text-[1.5em] flex space-x-10 border-b-[1px] mb-3"
           key={`article-${index}`}
         >
+          <span>{index + 1}</span>
+
           <h2 className="flex-1">
             {article.data.title.KO}
           </h2>

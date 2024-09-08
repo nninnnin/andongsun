@@ -25,3 +25,8 @@ export const selectedArticleState = atom<
   key: "selectedArticleState",
   default: null,
 });
+
+export const mediaState = atom<File[]>({
+  key: "mediaState",
+  default: [],
+});

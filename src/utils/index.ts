@@ -127,3 +127,15 @@ export const transformArticles = (
       })
   );
 };
+
+export const converFileToBase64 = (file: File) => {
+  const reader = new FileReader();
+
+  return new Promise<string>((resolve) => {
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+
+    reader.readAsDataURL(file);
+  });
+};

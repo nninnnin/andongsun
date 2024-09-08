@@ -19,12 +19,29 @@ body {
   overflow: hidden;
 }
 
+.ql-toolbar {
+  position: sticky;
+  top: 0;
+}
+
 .ql-container {
-  flex: 1;
+  position: absolute;
+  bottom: 0;
+
+  height: calc(50vh - 43px) !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ql-editor {
-  height: 100%;
+  flex: 1;
+
+  font-size: 12px;
+  font-weight: medium;
+
+  line-height: 166%;
 }
 
 object {

@@ -28,3 +28,10 @@ export const articleState =
     key: "articleState",
     default: articleDefault,
   });
+
+export const selectedArticleState = atom<
+  string | null
+>({
+  key: "selectedArticleState",
+  default: null,
+});

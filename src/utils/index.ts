@@ -1,7 +1,20 @@
 import { format } from "date-fns";
+import Mf from "@rebel9/memex-fetcher";
+const {
+  pipe,
+  pluckList,
+  mapListItems,
+  pluckData,
+  mapObjectProps,
+  deconstructLanguageMap,
+} = Mf;
 
 import { ArticleStateInterface } from "@/states";
-import { ArticleBody } from "@/types/article";
+import {
+  ArticleBody,
+  ArticleInterface,
+  BareArticle,
+} from "@/types/article";
 import { SectionNames } from "@/constants";
 
 type Argument = Omit<
@@ -49,5 +62,67 @@ export const getCategoryId = (
     categories.find(
       (category) => category.category === categoryName
     )?.id ?? null
+  );
+};
+
+export const transformArticles = (
+  bareArticle: BareArticle,
+  sectionName?: SectionNames
+): ArticleInterface[] => {
+  return pipe(
+    bareArticle,
+    pluckList,
+    mapListItems((item: any) => {
+      return { ...pluckData(item), id: item.uid };
+    }),
+    mapListItems((item: any) => {
+      const newItem = pipe(
+        item,
+        (item: any) =>
+          mapObjectProps(
+            item,
+            ["title"],
+            (title: { KO: string }) => title.KO
+          ),
+        (item: any) =>
+          mapObjectProps(
+            item,
+            ["articleType"],
+            (articleType: Array<{ KO: string }>) =>
+              deconstructLanguageMap(
+                articleType[0],
+                "KO"
+              )
+          ),
+        (item: any) =>
+          mapObjectProps(
+            item,
+            ["tags"],
+            mapListItems((tag: any) => {
+              const newTag = {
+                ...tag,
+                tagName: deconstructLanguageMap(
+                  tag,
+                  "KO"
+                ),
+              };
+
+              delete newTag.languageMap;
+              delete newTag.type;
+              delete newTag._id;
+
+              return newTag;
+            })
+          )
+      );
+
+      return newItem;
+    }),
+    (items: any) =>
+      items.filter((item: any) => {
+        if (!sectionName) return true;
+
+        return item.articleType === sectionName;
+      })
   );
 };

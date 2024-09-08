@@ -1,10 +1,11 @@
+import { format } from "date-fns";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+
 import {
   articleDefault,
   articleState,
 } from "@/states";
-import { useRecoilState } from "recoil";
-import { useEffect } from "react";
-import { format } from "date-fns";
 
 const useArticle = <T,>(
   propName: keyof typeof articleDefault

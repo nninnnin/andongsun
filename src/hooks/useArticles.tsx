@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-
+import { SectionNames } from "@/constants";
+import { BareArticle } from "@/types/article";
+import { transformArticles } from "@/utils";
 import Mf from "@rebel9/memex-fetcher";
 
 const memexFetcher = Mf.createMemexFetcher(
@@ -22,16 +23,23 @@ const fetchArticles = async () => {
   return await res.json();
 };
 
-const useArticles = () => {
-  const [articles, setArticles] = useState(null);
+import useSWR from "swr";
 
-  useEffect(() => {
-    fetchArticles().then((articles) =>
-      setArticles(articles)
-    );
-  }, []);
+const useArticles = (sectionName?: SectionNames) => {
+  const swr = useSWR<BareArticle>(
+    "articles",
+    fetchArticles
+  );
 
-  return articles;
+  const formattedData = swr.data
+    ? transformArticles(swr.data, sectionName)
+    : undefined;
+
+  return {
+    ...swr,
+    data: formattedData,
+    isLoading: swr.isLoading || !formattedData,
+  };
 };
 
 export default useArticles;

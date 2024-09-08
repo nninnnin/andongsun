@@ -1,0 +1,15 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 400ms ease-in forwards;
+  animation-delay: 400ms;
+}

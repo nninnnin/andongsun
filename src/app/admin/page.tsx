@@ -6,11 +6,17 @@ import Link from "next/link";
 import React from "react";
 
 const AdminPage = () => {
-  const articles = useArticles();
+  const {
+    data: articles,
+    isLoading,
+    error,
+  } = useArticles();
 
   if (!articles) {
     return <div>Loading...</div>;
   }
+
+  console.log(articles);
 
   return (
     <div className="pl-10">
@@ -20,23 +26,19 @@ const AdminPage = () => {
         </button>
       </Link>
 
-      {articles.list.map((article, index) => (
+      {articles.map((article, index) => (
         <div
           className="text-white text-[1.5em] flex space-x-10 border-b-[1px] mb-3"
-          key={`article-${index}`}
+          key={`article-${article.id}`}
         >
           <span>{index + 1}</span>
 
-          <h2 className="flex-1">
-            {article.data.title.KO}
-          </h2>
-          <p className="flex-1">
-            {article.data.caption}
-          </p>
+          <h2 className="flex-1">{article.title}</h2>
+          <p className="flex-1">{article.caption}</p>
           <p
             className="flex-1"
             dangerouslySetInnerHTML={{
-              __html: article.data.contents,
+              __html: article.contents,
             }}
           ></p>
         </div>

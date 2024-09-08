@@ -5,15 +5,26 @@ import { createArticleBody } from "@/utils";
 import useMemex from "@/hooks/useMemex";
 import { articleState } from "@/states";
 import { getCategoryId } from "@/utils/index";
-import { useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+} from "next/navigation";
 
 const SubmitButton = () => {
-  const { postArticle, getArticleCategories } =
-    useMemex();
+  const {
+    postArticle,
+    updateArticle,
+    getArticleCategories,
+  } = useMemex();
 
   const article = useRecoilValue(articleState);
 
   const router = useRouter();
+  const pathname = usePathname();
+  const { articleId } = useParams();
+
+  const isEditing = pathname.includes("edit");
 
   const handleSubmit = async () => {
     if (article.articleType === null) {
@@ -56,13 +67,14 @@ const SubmitButton = () => {
       articleType: categoryId,
     });
 
-    console.log(articleBody);
-
-    const createdArticleId = await postArticle(
-      articleBody
-    );
-
-    console.log(createdArticleId);
+    if (isEditing) {
+      await updateArticle(
+        articleId as string,
+        articleBody
+      );
+    } else {
+      await postArticle(articleBody);
+    }
 
     router.push("/admin");
   };

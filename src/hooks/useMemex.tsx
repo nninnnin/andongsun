@@ -51,8 +51,25 @@ const useMemex = () => {
     );
   };
 
+  const updateArticle = async (
+    articleId: string,
+    newArticle: ArticleBody
+  ) => {
+    const result = await memexFetcher.updateItem(
+      PROJECT_ID,
+      ARTICLE_MODEL_KEY,
+      JSON.stringify({
+        uid: articleId,
+        ...newArticle,
+      })
+    );
+
+    console.log("Update result", result);
+  };
+
   return {
     postArticle,
+    updateArticle,
     getArticleCategories,
   };
 };

@@ -9,10 +9,10 @@ const {
   deconstructLanguageMap,
 } = Mf;
 
-import { ArticleStateInterface } from "@/states";
 import {
   ArticleBody,
   ArticleInterface,
+  ArticleStateInterface,
   BareArticle,
 } from "@/types/article";
 import { SectionNames } from "@/constants";
@@ -47,6 +47,7 @@ export const createArticleBody = (
       caption: caption!,
       credits: credits!,
       producedAt: format(new Date(), "yyyy.MM"),
+      tags: [],
     },
   };
 };
@@ -93,27 +94,27 @@ export const transformArticles = (
                 articleType[0],
                 "KO"
               )
-          ),
-        (item: any) =>
-          mapObjectProps(
-            item,
-            ["tags"],
-            mapListItems((tag: any) => {
-              const newTag = {
-                ...tag,
-                tagName: deconstructLanguageMap(
-                  tag,
-                  "KO"
-                ),
-              };
-
-              delete newTag.languageMap;
-              delete newTag.type;
-              delete newTag._id;
-
-              return newTag;
-            })
           )
+        // (item: any) =>
+        //   mapObjectProps(
+        //     item,
+        //     ["tags"],
+        //     mapListItems((tag: any) => {
+        //       const newTag = {
+        //         ...tag,
+        //         tagName: deconstructLanguageMap(
+        //           tag,
+        //           "KO"
+        //         ),
+        //       };
+
+        //       delete newTag.languageMap;
+        //       delete newTag.type;
+        //       delete newTag._id;
+
+        //       return newTag;
+        //     })
+        //   )
       );
 
       return newItem;

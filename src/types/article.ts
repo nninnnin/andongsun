@@ -4,6 +4,7 @@ import {
   MediaInterface,
   RelationInterface,
 } from "@/types/memex";
+import { SectionNames } from "@/constants";
 
 export interface ArticleBody {
   publish: boolean;
@@ -16,6 +17,7 @@ export interface ArticleBody {
     caption: string;
     producedAt: string;
     credits: string;
+    tags: string[];
   };
 }
 
@@ -41,8 +43,20 @@ export interface ArticleInterface {
   contents: string;
   credits: string;
   producedAt: string;
+  articleType: SectionNames;
   tags: Array<{
     uid: string;
     tagName: string;
   }>;
+}
+
+export interface ArticleStateInterface {
+  title: string;
+  caption: string;
+  credits: string;
+  contents: string;
+  year: string;
+  published: boolean;
+  articleType: SectionNames | null;
+  thumbnail: File | null;
 }

@@ -2,10 +2,14 @@
 "use client";
 
 import useArticles from "@/hooks/useArticles";
+import clsx from "clsx";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const AdminPage = () => {
+  const router = useRouter();
+
   const {
     data: articles,
     isLoading,
@@ -16,10 +20,8 @@ const AdminPage = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(articles);
-
   return (
-    <div className="pl-10">
+    <div className="px-10">
       <Link href="/admin/new">
         <button className="text-white bg-themeBlue p-3 mb-6 mt-3 px-5">
           New Project
@@ -28,19 +30,25 @@ const AdminPage = () => {
 
       {articles.map((article, index) => (
         <div
-          className="text-white text-[1.5em] flex space-x-10 border-b-[1px] mb-3"
+          className={clsx(
+            "text-white text-[20px] flex space-x-10 border-b-[1px]",
+            "mb-[24px] pb-[20px]",
+            "cursor-pointer"
+          )}
+          onClick={() => {
+            router.push(`/admin/edit/${article.id}`);
+          }}
           key={`article-${article.id}`}
         >
-          <span>{index + 1}</span>
-
           <h2 className="flex-1">{article.title}</h2>
-          <p className="flex-1">{article.caption}</p>
-          <p
-            className="flex-1"
-            dangerouslySetInnerHTML={{
-              __html: article.contents,
-            }}
-          ></p>
+          <p className="flex-1">{article.credits}</p>
+          <p className="flex-1">
+            {article.articleType}
+          </p>
+          {/* <p className="flex-1">
+            {article.tags[0].tagName}
+          </p> */}
+          <p>{article.producedAt}.</p>
         </div>
       ))}
     </div>

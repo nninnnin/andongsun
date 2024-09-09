@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   atom,
   useRecoilState,
@@ -18,6 +18,8 @@ export const thumbnailInputWidthState = atom<
 });
 
 const Thumbnail = () => {
+  const [label, setLabel] = useState("");
+
   const thumbnailInputWidth = useRecoilValue(
     thumbnailInputWidthState
   );
@@ -42,10 +44,7 @@ const Thumbnail = () => {
 
       handleChange(file);
 
-      setArticle((prev) => ({
-        ...prev,
-        thumbnailName: file.name,
-      }));
+      setLabel(file.name);
     });
 
     input.click();
@@ -62,7 +61,7 @@ const Thumbnail = () => {
     >
       <label className="w-full h-full flex justify-between cursor-pointer">
         <span className="text-ellipsis whitespace-nowrap overflow-hidden flex-1 mr-[16px]">
-          {article.thumbnailName}
+          {label || article.thumbnailName}
         </span>
 
         <object

@@ -34,8 +34,8 @@ export const createArticleBody = (
     contents,
     caption,
     credits,
+    thumbnail,
     thumbnailPath,
-    thumbnailName,
   } = articleState;
 
   return {
@@ -51,7 +51,7 @@ export const createArticleBody = (
       producedAt: format(new Date(), "yyyy.MM"),
       tags: [],
       thumbnailPath: thumbnailPath ?? "",
-      thumbnailName: thumbnailName ?? "",
+      thumbnailName: thumbnail?.name ?? "",
     },
   };
 };

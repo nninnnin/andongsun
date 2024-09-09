@@ -28,7 +28,11 @@ const ArticleList = ({
   }
 
   return (
-    <ul className={clsx("flex flex-wrap gap-[24px]")}>
+    <ul
+      className={clsx(
+        "w-full flex flex-wrap gap-[24px]"
+      )}
+    >
       {articles?.map((article: ArticleInterface) => {
         return (
           <li

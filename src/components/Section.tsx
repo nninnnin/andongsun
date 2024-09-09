@@ -121,7 +121,7 @@ Section.Contents = ({
       className={clsx(
         "pointer-events-none",
         animateFadeIn,
-        "min-w-[calc(50vw-48px)] flex-1 mt-[59px]"
+        "flex-1 mt-[59px]"
       )}
     >
       {selectedArticle ? (

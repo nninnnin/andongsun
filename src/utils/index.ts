@@ -34,6 +34,8 @@ export const createArticleBody = (
     contents,
     caption,
     credits,
+    thumbnailPath,
+    thumbnailName,
   } = articleState;
 
   return {
@@ -48,6 +50,8 @@ export const createArticleBody = (
       credits: credits!,
       producedAt: format(new Date(), "yyyy.MM"),
       tags: [],
+      thumbnailPath: thumbnailPath ?? "",
+      thumbnailName: thumbnailName ?? "",
     },
   };
 };
@@ -137,5 +141,15 @@ export const converFileToBase64 = (file: File) => {
     };
 
     reader.readAsDataURL(file);
+  });
+};
+
+export const checkImageVaildity = (path: string) => {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = path;
+
+    image.onload = () => resolve(true);
+    image.onerror = () => reject(false);
   });
 };

@@ -8,9 +8,9 @@ const ProductionMonth = () => {
   console.log(value);
 
   return (
-    <div className="flex items-center space-x-[12px] bg-white selector">
+    <div className="flex items-center space-x-[12px] bg-white selector cursor-pointer">
       <input
-        className="bg-transparent"
+        className="bg-transparent cursor-pointer"
         type="month"
         onChange={(e) => {
           handleChange(e.target.value);

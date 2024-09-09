@@ -1,16 +1,17 @@
-import { SectionNames } from "@/constants";
 import { ArticleStateInterface } from "@/types/article";
 import { atom } from "recoil";
 
 export const articleDefault = {
   published: false,
   articleType: null,
-  thumbnail: null,
   caption: "",
   title: "",
   year: "",
   credits: "",
   contents: "",
+  thumbnail: null,
+  thumbnailPath: null,
+  thumbnailName: null,
 };
 
 export const articleState =

@@ -32,6 +32,8 @@ const EditPage = () => {
       contents: article.contents,
       year: article.producedAt.split(".").join("-"),
       articleType: article.articleType,
+      thumbnailPath: article.thumbnailPath,
+      thumbnailName: article.thumbnailName,
     }));
   }, [articles]);
 

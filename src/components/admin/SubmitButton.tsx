@@ -1,7 +1,10 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 
-import { createArticleBody } from "@/utils";
+import {
+  checkImageVaildity,
+  createArticleBody,
+} from "@/utils";
 import useMemex from "@/hooks/useMemex";
 import { articleState } from "@/states";
 import { getCategoryId } from "@/utils/index";
@@ -16,6 +19,7 @@ const SubmitButton = () => {
     postArticle,
     updateArticle,
     getArticleCategories,
+    registerImage,
   } = useMemex();
 
   const article = useRecoilValue(articleState);
@@ -62,9 +66,19 @@ const SubmitButton = () => {
       categories
     );
 
+    let imagePath = "";
+
+    // thumbnail 등록
+    if (article.thumbnail) {
+      imagePath = await registerImage(
+        article.thumbnail
+      );
+    }
+
     const articleBody = createArticleBody({
       ...article,
       articleType: categoryId,
+      thumbnailPath: imagePath,
     });
 
     if (isEditing) {
@@ -81,7 +95,7 @@ const SubmitButton = () => {
 
   return (
     <div
-      className="btn selector"
+      className="btn selector cursor-pointer"
       onClick={handleSubmit}
     >
       완료

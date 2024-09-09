@@ -48,7 +48,8 @@ const Dropdown = ({
     <div
       className={clsx(
         "container relative h-[44px] w-fit z-[999] mr-[-1px]",
-        isOpen ? "h-[44px]" : "overflow-hidden"
+        isOpen ? "h-[44px]" : "overflow-hidden",
+        "cursor-pointer"
       )}
       tabIndex={0}
       onBlur={() => setIsOpen(false)}

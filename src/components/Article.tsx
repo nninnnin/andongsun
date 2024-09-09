@@ -42,16 +42,30 @@ const Article = () => {
     credits,
     producedAt,
     tags,
+    thumbnailPath,
   } = article;
 
   return (
     <div
-      className="bg-blue-300 h-full flex flex-col"
+      className="h-full flex flex-col px-[68px]"
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
-      <p>{title}</p>
+      <header className="space-y-[16px] pb-[40px] text-center">
+        <img
+          className="h-[340px] object-cover mx-auto mb-[36px]"
+          src={thumbnailPath}
+        />
+
+        <p className="text-[20px] leading-[150%]">
+          {title}
+        </p>
+
+        <p className="font-semibold">{producedAt}</p>
+
+        <p>{credits}</p>
+      </header>
 
       <p
         dangerouslySetInnerHTML={{
@@ -60,7 +74,7 @@ const Article = () => {
       ></p>
 
       <div
-        className="mt-auto bg-red-300 cursor-pointer"
+        className="mt-auto cursor-pointer"
         onClick={() => resetSelectedArticle()}
       >
         Back to List

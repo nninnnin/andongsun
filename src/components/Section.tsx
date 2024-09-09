@@ -79,14 +79,14 @@ Section.Container = ({
       className={clsx(
         "flex-1",
         `bg-${sectionColor}`,
-        "transition-[min-width min-height] duration-700",
+        "transition-[min-width min-height width height] duration-700",
         isSelectedSection
           ? isMobile
             ? "min-h-[50dvh]"
-            : "min-w-[50vw]"
+            : "min-w-[650px]"
           : isMobile
           ? "min-h-[calc(50dvh/4)]"
-          : "min-w-[calc(50vw/4)]",
+          : "min-w-[calc(calc(100vw-650px)/4)]",
         "p-[24px]",
         "flex flex-col"
       )}
@@ -121,7 +121,7 @@ Section.Contents = ({
       className={clsx(
         "pointer-events-none",
         animateFadeIn,
-        "min-w-[calc(50vw-48px)] flex-1 mt-3"
+        "min-w-[calc(50vw-48px)] flex-1 mt-[59px]"
       )}
     >
       {selectedArticle ? (

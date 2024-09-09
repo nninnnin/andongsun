@@ -41,13 +41,17 @@ const AdminPage = () => {
           key={`article-${article.id}`}
         >
           <h2 className="flex-1">{article.title}</h2>
+
           <p className="flex-1">{article.credits}</p>
+
           <p className="flex-1">
             {article.articleType}
           </p>
+
           {/* <p className="flex-1">
             {article.tags[0].tagName}
           </p> */}
+
           <p>{article.producedAt}.</p>
         </div>
       ))}

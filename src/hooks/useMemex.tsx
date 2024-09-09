@@ -67,10 +67,22 @@ const useMemex = () => {
     console.log("Update result", result);
   };
 
+  const registerImage = async (image: File) => {
+    const result = await memexFetcher.postMedia(
+      PROJECT_ID,
+      image
+    );
+
+    console.log("postMedia result", result);
+
+    return result.file.path;
+  };
+
   return {
     postArticle,
     updateArticle,
     getArticleCategories,
+    registerImage,
   };
 };
 

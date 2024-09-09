@@ -34,10 +34,10 @@ const ArticleList = ({
           <li
             key={article.id}
             className={clsx(
-              "bg-slate-200 min-w-[160px]",
+              "w-[200px]",
               "text-[20px]",
               "cursor-pointer",
-              "flex flex-col bg-blue-300",
+              "flex flex-col",
               "space-y-[6px]"
             )}
             onClick={(e) => {
@@ -45,21 +45,29 @@ const ArticleList = ({
               setSelectedArticle(article.id);
             }}
           >
-            <div
-              className={clsx(
-                "min-h-[160px] max-h-[240px]",
-                "flex items-center justify-center",
-                "bg-green-200",
-                "w-full"
-              )}
-            >
-              {article.caption}
-            </div>
+            {article.thumbnailPath ? (
+              <img
+                className="min-h-[160px] max-h-[240px] object-cover"
+                src={article.thumbnailPath}
+              />
+            ) : (
+              <div
+                className={clsx(
+                  "max-h-[240px]",
+                  "flex items-center justify-center",
+                  "w-full",
+                  "border-t-[1px] border-black",
+                  "text-[20px] leading-[150%] pt-[8px]"
+                )}
+              >
+                {article.caption}
+              </div>
+            )}
 
             <div
               className={clsx(
                 "w-full h-[20px]",
-                "bg-red-300 text-[12px] font-bold",
+                "text-[12px] font-bold",
                 "flex justify-center items-center"
               )}
             >

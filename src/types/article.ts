@@ -18,6 +18,8 @@ export interface ArticleBody {
     producedAt: string;
     credits: string;
     tags: string[];
+    thumbnailPath: string;
+    thumbnailName: string;
   };
 }
 
@@ -29,6 +31,8 @@ export interface BareArticle {
     articleType: CategoryInterface[];
     tags: RelationInterface[];
     thumbnail: MediaInterface[];
+    thumbnailPath: string;
+    thumbnailName: string;
     caption: string;
     contents: string;
     credits: string;
@@ -48,6 +52,8 @@ export interface ArticleInterface {
     uid: string;
     tagName: string;
   }>;
+  thumbnailPath: string;
+  thumbnailName: string;
 }
 
 export interface ArticleStateInterface {
@@ -59,4 +65,6 @@ export interface ArticleStateInterface {
   published: boolean;
   articleType: SectionNames | null;
   thumbnail: File | null;
+  thumbnailName: string | null;
+  thumbnailPath: string | null;
 }

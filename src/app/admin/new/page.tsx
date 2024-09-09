@@ -1,9 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React from "react";
-import Editor from "@/components/admin/Editor";
 
 const NewArticlePage = () => {
+  const Editor = dynamic(
+    () => import("@/components/admin/Editor"),
+    {
+      ssr: false,
+    }
+  );
+
   return <Editor />;
 };
 

@@ -53,6 +53,12 @@ const Article = () => {
     >
       <p>{title}</p>
 
+      <p
+        dangerouslySetInnerHTML={{
+          __html: contents,
+        }}
+      ></p>
+
       <div
         className="mt-auto bg-red-300 cursor-pointer"
         onClick={() => resetSelectedArticle()}

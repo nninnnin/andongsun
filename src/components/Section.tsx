@@ -83,10 +83,10 @@ Section.Container = ({
         isSelectedSection
           ? isMobile
             ? "min-h-[50dvh]"
-            : "min-w-[650px]"
+            : "min-w-[max(50vw,650px)]"
           : isMobile
           ? "min-h-[calc(50dvh/4)]"
-          : "min-w-[calc(calc(100vw-650px)/4)]",
+          : "min-w-[calc(calc(100vw-max(50vw,650px))/4)]",
         "p-[24px]",
         "flex flex-col"
       )}
@@ -121,7 +121,7 @@ Section.Contents = ({
       className={clsx(
         "pointer-events-none",
         animateFadeIn,
-        "flex-1 mt-[59px]"
+        "flex-1 mt-[59px] overflow-y-scroll"
       )}
     >
       {selectedArticle ? (

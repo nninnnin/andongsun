@@ -47,7 +47,7 @@ const Article = () => {
 
   return (
     <div
-      className="h-full flex flex-col px-[68px]"
+      className="flex flex-col px-[68px] relative"
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -74,10 +74,10 @@ const Article = () => {
       ></p>
 
       <div
-        className="mt-auto cursor-pointer"
+        className="mt-auto cursor-pointer sticky bottom-0 w-fit translate-x-[-130%]"
         onClick={() => resetSelectedArticle()}
       >
-        Back to List
+        &lt; List
       </div>
     </div>
   );

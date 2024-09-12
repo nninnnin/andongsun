@@ -5,8 +5,6 @@ const ProductionMonth = () => {
   const { value, handleChange } =
     useArticle<string>("year");
 
-  console.log(value);
-
   return (
     <div className="flex items-center space-x-[12px] bg-white selector cursor-pointer">
       <input

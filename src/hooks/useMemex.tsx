@@ -64,7 +64,7 @@ const useMemex = () => {
       })
     );
 
-    console.log("Update result", result);
+    return result;
   };
 
   const registerImage = async (image: File) => {
@@ -73,9 +73,51 @@ const useMemex = () => {
       image
     );
 
-    console.log("postMedia result", result);
-
     return result.file.path;
+  };
+
+  const readImage = async (imageName: string) => {
+    const res = await memexFetcher.getList(
+      PROJECT_ID,
+      "images",
+      {
+        size: 9999,
+        page: 0,
+        searchConds: [
+          {
+            componentType: "TITLE",
+            devKey: "name",
+            language: "KO",
+            condition: `{\"type\": \"EXACT", "language": "KO", \"keyword\": \"${imageName}\"}`,
+          },
+        ],
+      }
+    );
+
+    const result = await res.json();
+
+    return result.list[0];
+  };
+
+  const postImage = async (
+    imageName: string,
+    imagePath: string
+  ) => {
+    const result = await memexFetcher.postItem(
+      PROJECT_ID,
+      "images",
+      JSON.stringify({
+        publish: true,
+        data: {
+          name: {
+            KO: imageName,
+          },
+          path: imagePath,
+        },
+      })
+    );
+
+    return result;
   };
 
   return {
@@ -83,6 +125,8 @@ const useMemex = () => {
     updateArticle,
     getArticleCategories,
     registerImage,
+    readImage,
+    postImage,
   };
 };
 

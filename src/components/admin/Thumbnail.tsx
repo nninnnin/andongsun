@@ -30,8 +30,6 @@ const Thumbnail = () => {
   const [article, setArticle] =
     useRecoilState(articleState);
 
-  console.log(article);
-
   const handleClick = () => {
     const input = document.createElement("input");
     input.type = "file";

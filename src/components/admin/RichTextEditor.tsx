@@ -16,14 +16,15 @@ Quill.register("modules/ImageResize", ImageResize);
 import "react-quill/dist/quill.snow.css";
 
 import useArticle from "@/hooks/useArticle";
-import { mediaState } from "@/states";
+import { articleState, mediaState } from "@/states";
 import { converFileToBase64 } from "@/utils/index";
 
 const RichTextEditor = () => {
   const { handleChange, value } =
     useArticle<string>("contents");
 
-  const setMediaState = useSetRecoilState(mediaState);
+  const setMediaContents =
+    useSetRecoilState(mediaState);
 
   const ReactQuill = dynamic(
     async () => {
@@ -52,8 +53,6 @@ const RichTextEditor = () => {
     quillStore.current = quillRef;
 
     if (!quillRef.value) {
-      console.log(quillRef);
-
       quillRef
         .getEditor()
         .clipboard.dangerouslyPasteHTML(value);
@@ -70,7 +69,13 @@ const RichTextEditor = () => {
       // @ts-ignore
       const file = e.target.files[0];
 
-      setMediaState((prev) => [...prev, file]);
+      setMediaContents((prev) => [
+        ...prev,
+        {
+          name: file.name,
+          file: file,
+        },
+      ]);
 
       const imageString = await converFileToBase64(
         file
@@ -87,6 +92,16 @@ const RichTextEditor = () => {
         "image",
         imageString
       );
+
+      setTimeout(() => {
+        const [leaf] = quill.getLeaf(range.index);
+
+        if (leaf && leaf.domNode) {
+          leaf.domNode.alt = file.name;
+        }
+
+        handleChange(quill.root.innerHTML);
+      }, 0);
     });
 
     input.click();
@@ -102,9 +117,7 @@ const RichTextEditor = () => {
               "w-full h-[50vh] overflow-y-scroll bg-white flex flex-col"
             )}
             // @ts-ignore
-            onChange={(value) => {
-              handleChange(value);
-            }}
+            onChange={handleChange}
             theme="snow"
             value={value}
             forwardedRef={(ref) => setQuillRef(ref)}

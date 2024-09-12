@@ -27,7 +27,12 @@ export const selectedArticleState = atom<
   default: null,
 });
 
-export const mediaState = atom<File[]>({
+export const mediaState = atom<
+  Array<{
+    name: string;
+    file: File;
+  }>
+>({
   key: "mediaState",
   default: [],
 });

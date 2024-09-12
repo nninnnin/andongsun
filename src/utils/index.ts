@@ -16,6 +16,7 @@ import {
   BareArticle,
 } from "@/types/article";
 import { SectionNames } from "@/constants";
+import { last } from "lodash";
 
 type Argument = Omit<
   ArticleStateInterface,
@@ -152,4 +153,36 @@ export const checkImageVaildity = (path: string) => {
     image.onload = () => resolve(true);
     image.onerror = () => reject(false);
   });
+};
+
+export const getImageNameFromImageTagString = (
+  tagString: string
+) => {
+  console.log(tagString);
+
+  // get image name dataset from tag string
+  const imageNameMatched = tagString.match(
+    /data-name\s*=\s*['"]([^'"]*?)['"]/
+  );
+
+  if (!imageNameMatched) return null;
+
+  const imageName = imageNameMatched[1];
+
+  return imageName;
+};
+
+export const convertStringToDOM = (str: string) => {
+  let parser = new DOMParser();
+  let doc = parser.parseFromString(str, "text/html");
+  let imgElement = doc.querySelector("img");
+
+  return imgElement;
+};
+
+export const convertDOMToString = (dom: Element) => {
+  let div = document.createElement("div");
+  div.appendChild(dom);
+
+  return div.innerHTML;
 };

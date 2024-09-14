@@ -5,7 +5,7 @@ import {
   SectionTitles,
 } from "@/constants";
 import clsx from "clsx";
-import { last, set } from "lodash";
+import { last } from "lodash";
 import React, {
   MouseEvent,
   useEffect,
@@ -22,7 +22,11 @@ const openMenuState = atom({
   default: false,
 });
 
-const MenuMobile = () => {
+const MenuMobile = ({
+  className,
+}: {
+  className: string;
+}) => {
   const [openMenu, setOpenMenu] =
     useRecoilState(openMenuState);
 
@@ -60,8 +64,9 @@ const MenuMobile = () => {
   return (
     <div
       className={clsx(
-        "relative",
-        "bg-slate-200 mt-auto"
+        "bg-slate-200 mt-auto",
+        "w-full",
+        className
       )}
       onClick={handleMenuClick}
       style={{

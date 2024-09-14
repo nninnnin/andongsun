@@ -67,6 +67,8 @@ Section.Contents = ({
     selectedArticleState
   );
 
+  const { isMobile } = useBreakpoint();
+
   const animateFadeIn = clsx("opacity-0", "fade-in");
 
   return (
@@ -74,7 +76,8 @@ Section.Contents = ({
       className={clsx(
         "pointer-events-none",
         animateFadeIn,
-        "flex-1 mt-[59px] overflow-y-scroll"
+        "flex-1 mt-[59px] overflow-y-scroll",
+        isMobile && "mb-[40px]"
       )}
     >
       {selectedArticle ? (

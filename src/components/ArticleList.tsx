@@ -6,6 +6,7 @@ import { ArticleInterface } from "@/types/article";
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
 import { selectedArticleState } from "@/states";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 const ArticleList = ({
   sectionName,
@@ -21,6 +22,8 @@ const ArticleList = ({
   const setSelectedArticle = useSetRecoilState(
     selectedArticleState
   );
+
+  const { isMobile } = useBreakpoint();
 
   if (!articles) {
     return <></>;
@@ -38,7 +41,7 @@ const ArticleList = ({
           <li
             key={article.id}
             className={clsx(
-              "w-[200px]",
+              isMobile ? "w-full" : "w-[200px]",
               "text-[20px]",
               "cursor-pointer",
               "flex flex-col",
@@ -72,11 +75,18 @@ const ArticleList = ({
               className={clsx(
                 "w-full h-[20px]",
                 "text-[12px] font-bold",
-                "flex justify-center items-center"
+                "flex justify-center items-center",
+                isMobile && "!mt-[24px]"
               )}
             >
               {article.title}
             </div>
+
+            {isMobile && (
+              <div className="text-[9px] font-medium leading-[166%] mt-[6px] text-center">
+                {article.producedAt.split(".")[0]}
+              </div>
+            )}
           </li>
         );
       })}

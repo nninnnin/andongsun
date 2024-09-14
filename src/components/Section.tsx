@@ -12,7 +12,6 @@ import Article from "@/components/Article";
 import {
   SectionColors,
   SectionNames,
-  SectionTitles,
 } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
 
@@ -22,73 +21,24 @@ export const selectedSectionNameState =
     default: null,
   });
 
-const Section = ({
-  sectionName,
-}: {
-  sectionName: SectionNames;
-}) => {
-  const sectionTitle = SectionTitles[sectionName];
-
-  const selectedSectionName = useRecoilValue(
-    selectedSectionNameState
-  );
-  const isSelectedSection =
-    selectedSectionName === sectionName;
-
-  return (
-    <Section.Container sectionName={sectionName}>
-      <Section.Header>{sectionTitle}</Section.Header>
-
-      {isSelectedSection && (
-        <Section.Contents sectionName={sectionName} />
-      )}
-    </Section.Container>
-  );
+const Section = ({}: {}) => {
+  return <></>;
 };
 
 Section.Container = ({
-  sectionName,
   children,
   className,
+  handleClick,
 }: {
-  sectionName: SectionNames;
   children: React.ReactNode;
   className?: string;
+  handleClick?: (e: MouseEvent) => void;
 }) => {
-  const { isMobile } = useBreakpoint();
-
-  const sectionColor = SectionColors[sectionName];
-
-  const [selectedSectionName, setSelectedSectionName] =
-    useRecoilState(selectedSectionNameState);
-
-  const resetSelectedArticle = useResetRecoilState(
-    selectedArticleState
-  );
-
-  const handleClick = (e: MouseEvent) => {
-    if (selectedSectionName === sectionName) return;
-
-    setSelectedSectionName(sectionName);
-    resetSelectedArticle();
-  };
-
-  const isSelectedSection =
-    selectedSectionName === sectionName;
-
   return (
     <section
       className={clsx(
         "flex-1",
-        `bg-${sectionColor}`,
         "transition-[min-width min-height width height] duration-700",
-        isSelectedSection
-          ? isMobile
-            ? "min-h-[50dvh]"
-            : "min-w-[max(50vw,650px)]"
-          : isMobile
-          ? "min-h-[calc(50dvh/4)]"
-          : "min-w-[calc(calc(100vw-max(50vw,650px))/4)]",
         "p-[24px]",
         "flex flex-col",
         className

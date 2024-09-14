@@ -20,11 +20,7 @@ const HomeMobile = () => {
         "flex flex-col"
       )}
     >
-      <Section
-        sectionName={
-          selectedSection ?? SectionNames.About
-        }
-      />
+      <div></div>
 
       <MenuMobile />
     </div>

@@ -47,7 +47,7 @@ const Article = () => {
 
   return (
     <div
-      className="flex flex-col px-[68px] relative"
+      className="h-full flex flex-col px-[68px] relative"
       onClick={(e) => {
         e.stopPropagation();
       }}

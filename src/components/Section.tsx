@@ -49,9 +49,11 @@ const Section = ({
 Section.Container = ({
   sectionName,
   children,
+  className,
 }: {
   sectionName: SectionNames;
   children: React.ReactNode;
+  className?: string;
 }) => {
   const { isMobile } = useBreakpoint();
 
@@ -88,7 +90,8 @@ Section.Container = ({
           ? "min-h-[calc(50dvh/4)]"
           : "min-w-[calc(calc(100vw-max(50vw,650px))/4)]",
         "p-[24px]",
-        "flex flex-col"
+        "flex flex-col",
+        className
       )}
       onClick={handleClick}
     >

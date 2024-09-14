@@ -2,26 +2,17 @@
 
 import clsx from "clsx";
 
-import Section from "@/components/Section";
-import { SectionNames } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
-import { useMemo } from "react";
+import HomeDesktop from "@/components/home/HomeDesktop";
+import HomeMobile from "@/components/home/HomeMobile";
 
 export default function Home() {
-  const sections = useMemo(
-    () =>
-      Object.values(SectionNames).map(
-        (sectionName) => (
-          <Section
-            key={sectionName}
-            sectionName={sectionName}
-          />
-        )
-      ),
-    []
-  );
+  const { isMobile } = useBreakpoint();
 
-  return <Home.Container>{sections}</Home.Container>;
+  if (isMobile === null) return <></>;
+  if (isMobile === true) return <HomeMobile />;
+
+  return <HomeDesktop />;
 }
 
 Home.Container = ({
@@ -29,15 +20,8 @@ Home.Container = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { isMobile } = useBreakpoint();
-
   return (
-    <div
-      className={clsx(
-        "flex h-[100dvh]",
-        isMobile && "flex-col"
-      )}
-    >
+    <div className={clsx("flex h-[100dvh]")}>
       {children}
     </div>
   );

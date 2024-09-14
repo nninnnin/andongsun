@@ -7,6 +7,20 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "delay-[100]",
+    "delay-[200]",
+    "delay-[300]",
+    "delay-[400]",
+    "delay-[500]",
+    "delay-[600]",
+    "delay-[700]",
+    "bg-white",
+    "bg-pastelOrange",
+    "bg-pastelYellow",
+    "bg-pastelGrey",
+    "bg-pastelBlue",
+  ],
   theme: {
     extend: {
       backgroundColor: {
@@ -60,13 +74,6 @@ const config: Config = {
 
       addUtilities(newUtilities);
     }),
-  ],
-  safelist: [
-    "bg-white",
-    "bg-pastelOrange",
-    "bg-pastelYellow",
-    "bg-pastelGrey",
-    "bg-pastelBlue",
   ],
 };
 export default config;

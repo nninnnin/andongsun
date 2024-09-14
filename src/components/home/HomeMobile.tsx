@@ -7,6 +7,7 @@ import Section, {
 } from "@/components/Section";
 import MenuMobile from "@/components/home/MenuMobile";
 import {
+  SectionColors,
   SectionNames,
   SectionTitles,
 } from "@/constants";
@@ -22,7 +23,12 @@ const HomeMobile = () => {
     >
       <div className="w-full h-[calc(100dvh-60px)] absolute top-0">
         {selectedSection && (
-          <Section.Container className="h-full">
+          <Section.Container
+            className={clsx(
+              "h-full",
+              `bg-${SectionColors[selectedSection]}`
+            )}
+          >
             <Section.Header>
               <b>{SectionTitles[selectedSection]}</b>
             </Section.Header>

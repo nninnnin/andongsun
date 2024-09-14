@@ -33,7 +33,7 @@ const ArticleList = ({
   return (
     <ul
       className={clsx(
-        "w-full flex flex-wrap gap-[24px]"
+        "w-full flex flex-wrap gap-[24px] pb-[24px]"
       )}
     >
       {articles?.map((article: ArticleInterface) => {
@@ -61,7 +61,6 @@ const ArticleList = ({
               <div
                 className={clsx(
                   "max-h-[240px]",
-                  "flex items-center justify-center",
                   "w-full",
                   "border-t-[1px] border-black",
                   "text-[20px] leading-[150%] pt-[8px]"

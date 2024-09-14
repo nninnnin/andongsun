@@ -10,6 +10,7 @@ import { ArticleInterface } from "@/types/article";
 import { selectedSectionNameState } from "@/components/Section";
 import clsx from "clsx";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import { SectionColors } from "@/constants";
 
 const Article = () => {
   const { isMobile } = useBreakpoint();
@@ -62,10 +63,12 @@ const Article = () => {
         }}
       >
         <header className="space-y-[16px] pb-[40px] text-center">
-          <img
-            className="h-[340px] object-cover mx-auto mb-[36px]"
-            src={thumbnailPath}
-          />
+          {thumbnailPath && (
+            <img
+              className="h-[340px] object-cover mx-auto mb-[36px]"
+              src={thumbnailPath}
+            />
+          )}
 
           <p className="text-[20px] leading-[150%]">
             {title}
@@ -74,17 +77,18 @@ const Article = () => {
           <p className="font-semibold">{producedAt}</p>
 
           <p>{credits}</p>
-        </header>
 
-        <p
-          dangerouslySetInnerHTML={{
-            __html: contents,
-          }}
-        ></p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: contents,
+            }}
+          ></p>
+        </header>
 
         <div
           className={clsx(
             "mt-auto cursor-pointer sticky bottom-0 w-fit translate-x-[-130%]",
+            "flex justify-start items-center",
             isMobile && "hidden"
           )}
           onClick={() => resetSelectedArticle()}
@@ -100,9 +104,10 @@ const Article = () => {
       {isMobile && (
         <div
           className={clsx(
-            "h-[30px]",
+            "w-[calc(100%-48px)] h-[40px]",
             "flex justify-start items-center",
-            "absolute bottom-[20px]"
+            "absolute bottom-[0px]",
+            `bg-${SectionColors[selectedSection!]}`
           )}
           onClick={() => resetSelectedArticle()}
         >

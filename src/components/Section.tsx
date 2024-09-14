@@ -34,12 +34,15 @@ Section.Container = ({
   className?: string;
   handleClick?: (e: MouseEvent) => void;
 }) => {
+  const { isMobile } = useBreakpoint();
+
   return (
     <section
       className={clsx(
         "flex-1",
         "transition-[min-width min-height width height] duration-700",
         "p-[24px]",
+        isMobile && "pb-0",
         "flex flex-col",
         className
       )}
@@ -76,8 +79,7 @@ Section.Contents = ({
       className={clsx(
         "pointer-events-none",
         animateFadeIn,
-        "flex-1 mt-[59px] overflow-y-scroll",
-        isMobile && "mb-[40px]"
+        "flex-1 mt-[59px] overflow-y-scroll"
       )}
     >
       {selectedArticle ? (

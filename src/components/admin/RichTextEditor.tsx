@@ -108,13 +108,13 @@ const RichTextEditor = () => {
   };
 
   return (
-    <div className="w-full h-[50vh] bg-white mt-[24px]">
+    <div className="w-full mt-[24px]">
       {useMemo(
         () => (
           <ReactQuill
             // @ts-ignore
             className={clsx(
-              "w-full h-[50vh] overflow-y-scroll bg-white flex flex-col"
+              "w-full bg-white flex flex-col h-[calc(100dvh-400px)] overflow-hidden"
             )}
             // @ts-ignore
             onChange={handleChange}

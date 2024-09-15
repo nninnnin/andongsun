@@ -51,7 +51,7 @@ const Editor = () => {
         <RichTextEditor />
       </div>
 
-      <div className="fixed top-[90px] right-[52px] flex flex-col bg-green-500 text-themeBlue">
+      <div className="fixed top-[90px] right-[52px] flex flex-col text-themeBlue">
         <DeleteButton />
         <PublishStatus />
         <SubmitButton />

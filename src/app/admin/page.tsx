@@ -20,7 +20,7 @@ const AdminPage = () => {
   }
 
   return (
-    <div className="px-10">
+    <div className="mx-[190px] mt-[90px] min-w-[600px]">
       <Link href="/admin/new">
         <button className="text-white bg-themeBlue p-3 mb-6 mt-3 px-5 flex">
           <span>New Project</span>
@@ -47,26 +47,33 @@ AdminPage.ArticleList = ({
           className={clsx(
             "text-white text-[20px] flex space-x-10 border-b-[1px]",
             "mb-[24px] pb-[20px]",
-            "cursor-pointer"
+            "cursor-pointer",
+            "w-full overflow-hidden"
           )}
           onClick={() => {
             router.push(`/admin/edit/${article.id}`);
           }}
           key={`article-${article.id}`}
         >
-          <h2 className="flex-1">{article.title}</h2>
+          <h2 className="flex-1 min-w-[240px]">
+            {article.title}
+          </h2>
 
-          <p className="flex-1">{article.credits}</p>
+          <p className="flex-1 min-w-[200px] whitespace-nowrap truncate">
+            {article.credits}
+          </p>
 
-          <p className="flex-1">
+          <p className="flex-1 min-w-[100px]">
             {article.articleType}
           </p>
 
-          <p className="flex-1">
+          <p className="flex-1 min-w-[100px]">
             {article.tags[0]?.tagName}
           </p>
 
-          <p>{article.producedAt}.</p>
+          <p className="min-w-[100px]">
+            {article.producedAt}.
+          </p>
         </div>
       ))}
     </>

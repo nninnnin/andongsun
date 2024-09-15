@@ -43,13 +43,15 @@ const Dropdown = ({
 
     if (!container) return;
 
-    container.style.width = `${listRef.current.offsetWidth}px`;
+    container.style.width = `${
+      Math.ceil(listRef.current.scrollWidth) + 1
+    }px`;
   }, [listRef]);
 
   return (
     <div
       className={clsx(
-        "container relative h-[44px] w-fit z-[999] mr-[-2px] mt-[-1px]",
+        "container relative h-[44px] w-full z-[9999] mt-[-1px]",
         !isOpen && "overflow-hidden",
         "cursor-pointer",
         "font-bold",
@@ -109,13 +111,14 @@ Dropdown.Item = (
   return (
     <li
       className={clsx(
-        "w-[calc(100%-1px)] h-[44px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[999]",
+        "w-[calc(100%)] h-[44px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[9999]",
         "border-[1px] border-themeBlue",
         "mt-[-1px] first:mt-0",
         "border-b-0 first:border-b-[1px] last:border-b-[1px]",
-        "px-[13.25px] py-[10px]",
+        "px-[13px] py-[10px]",
         "flex justify-between items-center",
-        "select-none"
+        "select-none",
+        "outline-none"
       )}
       {...props}
     >

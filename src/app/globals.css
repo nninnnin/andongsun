@@ -30,8 +30,6 @@ body {
   position: absolute;
   bottom: 0;
 
-  height: calc(50vh - 43px) !important;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,6 +37,9 @@ body {
 
 .ql-editor {
   flex: 1;
+
+  height: calc(100dvh - 444px) !important;
+  overflow: scroll;
 
   font-size: 16px;
   font-weight: medium;

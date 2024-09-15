@@ -8,7 +8,7 @@ const Title = () => {
   return (
     <input
       type="text"
-      className="title input w-full resize-none outline-none"
+      className="title input w-full resize-none outline-none h-[44px]"
       onChange={(e) => handleChange(e.target.value)}
       value={value}
       placeholder="[필수 입력] 리스트, 포스트에 공통으로 표시되는 제목입니다."

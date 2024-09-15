@@ -8,6 +8,7 @@ const PublishStatus = () => {
 
   return (
     <Dropdown
+      className="font-normal"
       options={[
         {
           label: "공개",

@@ -14,23 +14,25 @@ const CategorySelect = () => {
   const setArticle = useSetRecoilState(articleState);
 
   return (
-    <Dropdown
-      options={Object.values(SectionNames).map(
-        (sectionName) => {
-          return {
-            label: SectionTitles[sectionName],
-            value: sectionName,
-          };
-        }
-      )}
-      onChange={(selectedOption) => {
-        setArticle((prev) => ({
-          ...prev,
-          ["articleType"]:
-            selectedOption as SectionNames,
-        }));
-      }}
-    />
+    <div>
+      <Dropdown
+        options={Object.values(SectionNames).map(
+          (sectionName) => {
+            return {
+              label: SectionTitles[sectionName],
+              value: sectionName,
+            };
+          }
+        )}
+        onChange={(selectedOption) => {
+          setArticle((prev) => ({
+            ...prev,
+            ["articleType"]:
+              selectedOption as SectionNames,
+          }));
+        }}
+      />
+    </div>
   );
 };
 

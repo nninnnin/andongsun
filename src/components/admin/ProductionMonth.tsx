@@ -1,21 +1,25 @@
 import React from "react";
 import useArticle from "@/hooks/useArticle";
+import clsx from "clsx";
 
 const ProductionMonth = () => {
   const { value, handleChange } =
     useArticle<string>("year");
 
   return (
-    <div className="flex items-center space-x-[12px] bg-white selector cursor-pointer">
-      <input
-        className="bg-transparent cursor-pointer"
-        type="month"
-        onChange={(e) => {
-          handleChange(e.target.value);
-        }}
-        value={value}
-      />
-    </div>
+    <input
+      className={clsx(
+        "bg-white h-[44px] pl-[15px] mt-[1px] pr-[15px]",
+        "font-bold",
+        "cursor-pointer",
+        "outline-none"
+      )}
+      type="month"
+      onChange={(e) => {
+        handleChange(e.target.value);
+      }}
+      value={value}
+    />
   );
 };
 

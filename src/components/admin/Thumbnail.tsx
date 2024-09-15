@@ -50,11 +50,7 @@ const Thumbnail = () => {
 
   return (
     <div
-      className="selector bg-white mb-[1px] cursor-pointer"
-      style={{
-        width: thumbnailInputWidth ?? 0,
-        overflow: "hidden",
-      }}
+      className="selector bg-white mb-[1px] cursor-pointer w-full !mr-[0px]"
       onClick={handleClick}
     >
       <label className="w-full h-full flex justify-between cursor-pointer">

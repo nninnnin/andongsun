@@ -194,7 +194,7 @@ const SubmitButton = () => {
 
   return (
     <div
-      className="btn selector cursor-pointer"
+      className="btn selector cursor-pointer mt-[-1px]"
       onClick={handleSubmit}
     >
       완료

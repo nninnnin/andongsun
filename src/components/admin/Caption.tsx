@@ -7,9 +7,8 @@ const Caption = () => {
     useArticle<string>("caption");
 
   return (
-    <input
-      type="text"
-      className="caption input min-w-full resize-none outline-none"
+    <textarea
+      className="caption input min-w-full resize-none outline-none h-[88px]"
       onChange={(e) => handleChange(e.target.value)}
       value={value}
       placeholder="이미지 대신 주요 문장을 표시할 경우 입력해 주세요."

@@ -8,12 +8,14 @@ import React, {
 const Dropdown = ({
   options,
   onChange,
+  className,
 }: {
   options: {
     label: string;
     value: unknown;
   }[];
   onChange?: (value: unknown) => void;
+  className?: string;
 }) => {
   const [selected, setSelected] = React.useState(
     options[0].label
@@ -41,15 +43,17 @@ const Dropdown = ({
 
     if (!container) return;
 
-    container.style.width = `${listRef.current.scrollWidth}px`;
+    container.style.width = `${listRef.current.offsetWidth}px`;
   }, [listRef]);
 
   return (
     <div
       className={clsx(
-        "container relative h-[44px] w-fit z-[999] mr-[-1px]",
-        isOpen ? "h-[44px]" : "overflow-hidden",
-        "cursor-pointer"
+        "container relative h-[44px] w-fit z-[999] mr-[-2px] mt-[-1px]",
+        !isOpen && "overflow-hidden",
+        "cursor-pointer",
+        "font-bold",
+        className
       )}
       tabIndex={0}
       onBlur={() => setIsOpen(false)}
@@ -105,9 +109,10 @@ Dropdown.Item = (
   return (
     <li
       className={clsx(
-        "h-[44px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[999]",
+        "w-[calc(100%-1px)] h-[44px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[999]",
         "border-[1px] border-themeBlue",
         "mt-[-1px] first:mt-0",
+        "border-b-0 first:border-b-[1px] last:border-b-[1px]",
         "px-[13.25px] py-[10px]",
         "flex justify-between items-center",
         "select-none"

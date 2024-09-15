@@ -20,60 +20,43 @@ import { thumbnailInputWidthState } from "@/components/admin/Thumbnail";
 import "react-quill/dist/quill.snow.css";
 
 const Editor = () => {
-  const setThumbnailInputWidth = useSetRecoilState(
-    thumbnailInputWidthState
-  );
-
   return (
-    <div
-      className={clsx(
-        "w-[60vw] min-w-[750px] h-full mx-auto",
-        "flex flex-col justify-center items-center"
-      )}
-    >
-      <Editor.Row className="w-fit">
-        <div className="flex justify-between items-center w-full">
-          <div
-            className="flex"
-            ref={(ref) => {
-              if (ref) {
-                setThumbnailInputWidth(
-                  ref.offsetWidth + 0.5
-                );
-              }
-            }}
-          >
-            <CategorySelect />
-            {/* <Tags /> */}
-            <ProductionMonth />
-          </div>
+    <>
+      <div
+        className={clsx(
+          "w-[60vw] min-w-[750px] h-full mx-auto",
+          "flex flex-col justify-start items-center",
+          "fixed left-1/2 -translate-x-1/2 top-[90px]"
+        )}
+      >
+        <Editor.Row className="flex">
+          <CategorySelect />
+          <Tags />
+          <ProductionMonth />
+          <Thumbnail />
+        </Editor.Row>
 
-          <div className="flex">
-            <DeleteButton />
-            <PublishStatus />
-            <SubmitButton />
-          </div>
-        </div>
-      </Editor.Row>
+        <Editor.Row>
+          <Title />
+        </Editor.Row>
 
-      <Editor.Row>
-        <Thumbnail />
-      </Editor.Row>
+        <Editor.Row>
+          <Caption />
+        </Editor.Row>
 
-      <Editor.Row>
-        <Title />
-      </Editor.Row>
+        <Editor.Row>
+          <Credits />
+        </Editor.Row>
 
-      <Editor.Row>
-        <Caption />
-      </Editor.Row>
+        <RichTextEditor />
+      </div>
 
-      <Editor.Row>
-        <Credits />
-      </Editor.Row>
-
-      <RichTextEditor />
-    </div>
+      <div className="fixed top-[90px] right-[52px] flex flex-col bg-green-500 text-themeBlue">
+        <DeleteButton />
+        <PublishStatus />
+        <SubmitButton />
+      </div>
+    </>
   );
 };
 
@@ -90,10 +73,11 @@ Editor.Row = ({
         "w-full flex justify-center items-center relative",
         "mt-[-1px] first:mt-0",
         "text-themeBlue",
+        "bg-violet-500",
         className
       )}
     >
-      <div className="w-full">{children}</div>
+      {children}
     </div>
   );
 };

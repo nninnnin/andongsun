@@ -2,14 +2,13 @@
 "use client";
 
 import useArticles from "@/hooks/useArticles";
+import { ArticleInterface } from "@/types/article";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const AdminPage = () => {
-  const router = useRouter();
-
   const {
     data: articles,
     isLoading,
@@ -23,11 +22,26 @@ const AdminPage = () => {
   return (
     <div className="px-10">
       <Link href="/admin/new">
-        <button className="text-white bg-themeBlue p-3 mb-6 mt-3 px-5">
-          New Project
+        <button className="text-white bg-themeBlue p-3 mb-6 mt-3 px-5 flex">
+          <span>New Project</span>
+          <img className="ml-[40px]" src="/plus.svg" />
         </button>
       </Link>
 
+      <AdminPage.ArticleList articles={articles} />
+    </div>
+  );
+};
+
+AdminPage.ArticleList = ({
+  articles,
+}: {
+  articles: ArticleInterface[];
+}) => {
+  const router = useRouter();
+
+  return (
+    <>
       {articles.map((article, index) => (
         <div
           className={clsx(
@@ -48,14 +62,14 @@ const AdminPage = () => {
             {article.articleType}
           </p>
 
-          {/* <p className="flex-1">
-            {article.tags[0].tagName}
-          </p> */}
+          <p className="flex-1">
+            {article.tags[0]?.tagName}
+          </p>
 
           <p>{article.producedAt}.</p>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

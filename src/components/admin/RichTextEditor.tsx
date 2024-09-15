@@ -124,9 +124,7 @@ const RichTextEditor = () => {
             modules={{
               toolbar: {
                 container: [
-                  [{ header: [1, 2, false] }],
                   ["bold", "underline", "italic"],
-                  [{ align: [] }, { color: [] }],
                   ["image"],
                 ],
                 handlers: {

@@ -7,7 +7,7 @@ const Credits = () => {
 
   return (
     <textarea
-      className="credits input w-full resize-none outline-none"
+      className="credits input w-full resize-none outline-none h-[88px] !mb-[-2px]"
       onChange={(e) => {
         handleChange(e.target.value);
       }}

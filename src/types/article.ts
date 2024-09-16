@@ -67,4 +67,5 @@ export interface ArticleStateInterface {
   thumbnail: File | null;
   thumbnailName: string | null;
   thumbnailPath: string | null;
+  tag: string;
 }

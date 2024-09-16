@@ -44,9 +44,8 @@ const EditPage = () => {
         articleType,
         thumbnailPath,
         thumbnailName,
+        tags,
       } = articleFromServer;
-
-      console.log(contents);
 
       return {
         ...prev,
@@ -58,6 +57,7 @@ const EditPage = () => {
         articleType,
         thumbnailPath,
         thumbnailName,
+        tag: tags[0].tagName,
       };
     });
   }, [articles]);

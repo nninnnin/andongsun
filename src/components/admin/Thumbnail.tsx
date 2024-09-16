@@ -50,16 +50,16 @@ const Thumbnail = () => {
 
   return (
     <div
-      className="selector bg-white mb-[1px] cursor-pointer w-full !mr-[0px]"
+      className="selector bg-white cursor-pointer w-full !mr-[0px] mt-[-1px] !h-[43px]"
       onClick={handleClick}
     >
-      <label className="w-full h-full flex justify-between cursor-pointer">
+      <label className="flex justify-between w-full h-full cursor-pointer">
         <span className="text-ellipsis whitespace-nowrap overflow-hidden flex-1 mr-[16px]">
           {label || article.thumbnailName}
         </span>
 
         <object
-          className="pointer-events-none cursor-pointer"
+          className="cursor-pointer pointer-events-none"
           data="/button--add-image.svg"
         />
       </label>

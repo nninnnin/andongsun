@@ -16,7 +16,6 @@ import {
   BareArticle,
 } from "@/types/article";
 import { SectionNames } from "@/constants";
-import { last } from "lodash";
 
 type Argument = Omit<
   ArticleStateInterface,
@@ -158,8 +157,6 @@ export const checkImageVaildity = (path: string) => {
 export const getImageNameFromImageTagString = (
   tagString: string
 ) => {
-  console.log(tagString);
-
   // get image name dataset from tag string
   const imageNameMatched = tagString.match(
     /data-name\s*=\s*['"]([^'"]*?)['"]/

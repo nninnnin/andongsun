@@ -29,7 +29,7 @@ const Editor = () => {
           "fixed left-1/2 -translate-x-1/2 top-[90px]"
         )}
       >
-        <Editor.Row className="flex">
+        <Editor.Row>
           <CategorySelect />
           <Tags />
           <ProductionMonth />

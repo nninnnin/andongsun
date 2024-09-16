@@ -11,15 +11,14 @@ import {
 } from "@/utils";
 import useMemex from "@/hooks/useMemex";
 import { articleState, mediaState } from "@/states";
-import {
-  getCategoryId,
-  getImageNameFromImageTagString,
-} from "@/utils/index";
+import { getCategoryId } from "@/utils/index";
 import {
   useParams,
   usePathname,
   useRouter,
 } from "next/navigation";
+import useTags from "@/hooks/useTags";
+import clsx from "clsx";
 
 const SubmitButton = () => {
   const {
@@ -29,6 +28,7 @@ const SubmitButton = () => {
     registerImage,
     readImage,
     postImage,
+    postTag,
   } = useMemex();
 
   const article = useRecoilValue(articleState);
@@ -43,6 +43,8 @@ const SubmitButton = () => {
   const { articleId } = useParams();
 
   const isEditing = pathname.includes("edit");
+
+  const { data: tags } = useTags();
 
   const handleSubmit = async () => {
     if (article.articleType === null) {
@@ -92,6 +94,29 @@ const SubmitButton = () => {
       thumbnailPath: imagePath,
     });
 
+    // 새로운 태그 세팅
+    const newTags: Array<string> = [];
+
+    const hasTag = tags!
+      .map((tag) => tag.name)
+      .includes(article.tag);
+
+    if (hasTag) {
+      const tagId = tags!.find(
+        (tag) => tag.name === article.tag
+      )!.id;
+
+      newTags.push(tagId);
+    } else {
+      // 새롭게 태그를 등록해야 한다.
+      const tagId = await postTag(article.tag);
+
+      newTags.push(tagId);
+    }
+
+    articleBody.data.tags = newTags;
+
+    // 새로운 컨텐츠 (이미지 매핑) 세팅
     const contents = articleBody.data.contents;
 
     // search image tags on contents using regex
@@ -194,7 +219,10 @@ const SubmitButton = () => {
 
   return (
     <div
-      className="btn selector cursor-pointer mt-[-1px]"
+      className={clsx(
+        "btn selector cursor-pointer mt-[-1px]",
+        !tags && "pointer-events-none bg-slate-200"
+      )}
       onClick={handleSubmit}
     >
       완료

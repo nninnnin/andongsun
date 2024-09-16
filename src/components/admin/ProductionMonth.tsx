@@ -9,7 +9,7 @@ const ProductionMonth = () => {
   return (
     <input
       className={clsx(
-        "bg-white h-[44px] pl-[15px] mt-[1px] pr-[15px]",
+        "bg-white h-[44px] pl-[15px] pr-[15px] border-y-[1px] border-themeBlue",
         "font-bold",
         "cursor-pointer",
         "outline-none"

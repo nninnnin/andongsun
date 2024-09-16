@@ -12,6 +12,7 @@ export const articleDefault = {
   thumbnail: null,
   thumbnailPath: null,
   thumbnailName: null,
+  tag: "",
 };
 
 export const articleState =

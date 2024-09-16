@@ -120,6 +120,54 @@ const useMemex = () => {
     return result;
   };
 
+  const getTags = async (): Promise<
+    {
+      id: string;
+      name: string;
+    }[]
+  > => {
+    const res = await memexFetcher.getList(
+      PROJECT_ID,
+      "tags",
+      {
+        size: 9999,
+        page: 0,
+      }
+    );
+
+    const result = await res.json();
+
+    return pipe(
+      result,
+      pluckList,
+      mapListItems((item: any) => {
+        const { data, uid } = item;
+
+        return {
+          id: uid,
+          name: data.name["KO"],
+        };
+      })
+    );
+  };
+
+  const postTag = async (tagName: string) => {
+    const res = await memexFetcher.postItem(
+      PROJECT_ID,
+      "tags",
+      JSON.stringify({
+        publish: true,
+        data: {
+          name: {
+            KO: tagName,
+          },
+        },
+      })
+    );
+
+    return await res.text();
+  };
+
   return {
     postArticle,
     updateArticle,
@@ -127,6 +175,8 @@ const useMemex = () => {
     registerImage,
     readImage,
     postImage,
+    getTags,
+    postTag,
   };
 };
 

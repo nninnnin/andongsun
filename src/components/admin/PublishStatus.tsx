@@ -8,7 +8,7 @@ const PublishStatus = () => {
 
   return (
     <Dropdown
-      className="font-normal"
+      className="font-normal w-[100px]"
       options={[
         {
           label: "공개",
@@ -20,6 +20,7 @@ const PublishStatus = () => {
         },
       ]}
       onChange={handleChange}
+      selected={value ? "공개" : "비공개"}
     />
   );
 };

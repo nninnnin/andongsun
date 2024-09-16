@@ -20,6 +20,7 @@ export interface ArticleBody {
     tags: string[];
     thumbnailPath: string;
     thumbnailName: string;
+    hidden: string;
   };
 }
 
@@ -54,6 +55,7 @@ export interface ArticleInterface {
   }>;
   thumbnailPath: string;
   thumbnailName: string;
+  hidden: boolean;
 }
 
 export interface ArticleStateInterface {

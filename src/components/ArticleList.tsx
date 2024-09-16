@@ -32,16 +32,20 @@ const ArticleList = ({
     ``;
   }
 
-  const filteredArticles = articles.filter(
-    (article) => {
+  const filteredArticles = articles
+    // 1. '숨김' 상태인 게시물은 제외
+    .filter((article) => {
+      return !article.hidden;
+    })
+    // 2. 선택된 태그에 해당하는 게시물만 필터링
+    .filter((article) => {
       if (selectedTag === null) return true;
 
       if (!article.tags || !article.tags[0])
         return false;
 
       return article.tags[0].tagName === selectedTag;
-    }
-  );
+    });
 
   return (
     <ul

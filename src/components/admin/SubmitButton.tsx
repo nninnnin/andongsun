@@ -81,11 +81,28 @@ const SubmitButton = () => {
 
     let imagePath = "";
 
-    // thumbnail 등록
-    if (article.thumbnail) {
-      imagePath = await registerImage(
-        article.thumbnail
+    const hasChangedThumbnail = !!article.thumbnail;
+
+    if (hasChangedThumbnail) {
+      const thumbnailName = article.thumbnail!.name;
+
+      const hasImageAlready = await readImage(
+        thumbnailName
       );
+
+      if (hasImageAlready) {
+        imagePath = hasImageAlready.data.path;
+      } else {
+        const registeredPath = await registerImage(
+          article.thumbnail!
+        );
+
+        imagePath = registeredPath;
+
+        await postImage(thumbnailName, registeredPath);
+      }
+    } else {
+      imagePath = article.thumbnailPath!;
     }
 
     const articleBody = createArticleBody({

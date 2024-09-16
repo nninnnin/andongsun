@@ -36,10 +36,11 @@ export const createArticleBody = (
     credits,
     thumbnail,
     thumbnailPath,
+    thumbnailName,
   } = articleState;
 
   return {
-    publish: published,
+    publish: true, // 이것으로는 삭제여부 결정
     data: {
       title: {
         KO: title!,
@@ -51,7 +52,9 @@ export const createArticleBody = (
       producedAt: format(new Date(), "yyyy.MM"),
       tags: [],
       thumbnailPath: thumbnailPath ?? "",
-      thumbnailName: thumbnail?.name ?? "",
+      thumbnailName:
+        thumbnail?.name || thumbnailName || "",
+      hidden: `${!published}`, // 이것으로 공개 여부 결정
     },
   };
 };

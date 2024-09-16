@@ -7,15 +7,16 @@ import {
 } from "@/constants";
 
 import "./categorySelect.css";
-import { useSetRecoilState } from "recoil";
-import { articleState } from "@/states";
+import useArticle from "@/hooks/useArticle";
 
 const CategorySelect = () => {
-  const setArticle = useSetRecoilState(articleState);
+  const { value, handleChange } =
+    useArticle("articleType");
 
   return (
     <div>
       <Dropdown
+        className="w-[180px]"
         options={Object.values(SectionNames).map(
           (sectionName) => {
             return {
@@ -24,13 +25,10 @@ const CategorySelect = () => {
             };
           }
         )}
-        onChange={(selectedOption) => {
-          setArticle((prev) => ({
-            ...prev,
-            ["articleType"]:
-              selectedOption as SectionNames,
-          }));
-        }}
+        onChange={(selectedOption) =>
+          handleChange(selectedOption)
+        }
+        selected={value as string}
       />
     </div>
   );

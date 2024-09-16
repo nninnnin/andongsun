@@ -45,6 +45,7 @@ const EditPage = () => {
         thumbnailPath,
         thumbnailName,
         tags,
+        hidden,
       } = articleFromServer;
 
       return {
@@ -57,7 +58,8 @@ const EditPage = () => {
         articleType,
         thumbnailPath,
         thumbnailName,
-        tag: tags[0].tagName,
+        tag: tags[0]?.tagName ?? "",
+        published: !hidden,
       };
     });
   }, [articles]);

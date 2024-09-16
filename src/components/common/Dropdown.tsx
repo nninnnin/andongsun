@@ -8,6 +8,7 @@ import React, {
 const Dropdown = ({
   options,
   onChange,
+  selected,
   className,
 }: {
   options: {
@@ -15,12 +16,9 @@ const Dropdown = ({
     value: unknown;
   }[];
   onChange?: (value: unknown) => void;
+  selected: string;
   className?: string;
 }) => {
-  const [selected, setSelected] = React.useState(
-    options[0].label
-  );
-
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleListClick = () =>
@@ -29,12 +27,6 @@ const Dropdown = ({
   const listRef = useRef<HTMLUListElement | null>(
     null
   );
-
-  useEffect(() => {
-    if (!onChange) return;
-
-    onChange(options[0].value);
-  }, []);
 
   useLayoutEffect(() => {
     if (!listRef.current) return;
@@ -54,7 +46,7 @@ const Dropdown = ({
         "container relative h-[43px] w-full z-[9999] mt-[-1px]",
         !isOpen && "overflow-hidden",
         "cursor-pointer",
-        "font-bold",
+        "font-bold outline-none",
         className
       )}
       tabIndex={0}
@@ -71,7 +63,7 @@ const Dropdown = ({
           {selected}
 
           <object
-            className="ml-[30px] pointer-events-none"
+            className="pointer-events-none"
             width="14px"
             data="/arrow--down.svg"
           />
@@ -86,7 +78,6 @@ const Dropdown = ({
 
                 e.stopPropagation();
 
-                setSelected(option.label);
                 setIsOpen(false);
 
                 if (onChange) {
@@ -111,7 +102,7 @@ Dropdown.Item = (
   return (
     <li
       className={clsx(
-        "w-[calc(100%)] h-[43px] flex items-center justify-center whitespace-nowrap px-2 bg-white relative z-[9999]",
+        "w-full h-[43px] flex items-center justify-center whitespace-nowrap bg-white relative z-[9999]",
         "border-[1px] border-themeBlue",
         "mt-[-1px] first:mt-0",
         "border-b-0 first:border-b-[1px] last:border-b-[1px]",

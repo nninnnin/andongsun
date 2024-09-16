@@ -14,7 +14,6 @@ const useArticle = <T,>(
     useRecoilState(articleState);
 
   useEffect(() => {
-    // year 값 없으면 초기화
     if (!article.year) {
       setArticle((prev) => ({
         ...prev,

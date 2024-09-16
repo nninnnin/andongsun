@@ -20,10 +20,6 @@ export const thumbnailInputWidthState = atom<
 const Thumbnail = () => {
   const [label, setLabel] = useState("");
 
-  const thumbnailInputWidth = useRecoilValue(
-    thumbnailInputWidthState
-  );
-
   const { value, handleChange } =
     useArticle<File>("thumbnail");
 

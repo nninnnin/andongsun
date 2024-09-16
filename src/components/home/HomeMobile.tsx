@@ -17,6 +17,9 @@ const HomeMobile = () => {
     selectedSectionNameState
   );
 
+  const isSelectedSection =
+    selectedSection === SectionNames.About;
+
   return (
     <div
       className={clsx("h-[100dvh]", "flex flex-col")}
@@ -29,7 +32,11 @@ const HomeMobile = () => {
               `bg-${SectionColors[selectedSection]}`
             )}
           >
-            <Section.Header>
+            <Section.Header
+              className={clsx(
+                isSelectedSection && "font-bold"
+              )}
+            >
               <b>{SectionTitles[selectedSection]}</b>
             </Section.Header>
 

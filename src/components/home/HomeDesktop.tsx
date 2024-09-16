@@ -63,7 +63,11 @@ HomeDesktop.Sections = () => {
             key={sectionName}
             handleClick={handleClick}
           >
-            <Section.Header>
+            <Section.Header
+              className={clsx(
+                isSelectedSection && "font-bold"
+              )}
+            >
               {sectionTitle}
             </Section.Header>
 

@@ -1,19 +1,12 @@
 import { MouseEvent } from "react";
 import clsx from "clsx";
-import {
-  atom,
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-} from "recoil";
+import { atom, useRecoilValue } from "recoil";
 import { selectedArticleState } from "@/states";
 import ArticleList from "@/components/ArticleList";
 import Article from "@/components/Article";
-import {
-  SectionColors,
-  SectionNames,
-} from "@/constants";
+import { SectionNames } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import ArticleTags from "@/components/ArticleTags";
 
 export const selectedSectionNameState =
   atom<null | SectionNames>({
@@ -55,10 +48,16 @@ Section.Container = ({
 
 Section.Header = ({
   children,
+  className,
 }: {
   children: React.ReactNode;
+  className?: string;
 }) => {
-  return <h1 className="text-[1em]">{children}</h1>;
+  return (
+    <h1 className={clsx("text-[1em]", className)}>
+      {children}
+    </h1>
+  );
 };
 
 Section.Contents = ({
@@ -70,8 +69,6 @@ Section.Contents = ({
     selectedArticleState
   );
 
-  const { isMobile } = useBreakpoint();
-
   const animateFadeIn = clsx("opacity-0", "fade-in");
 
   return (
@@ -79,9 +76,14 @@ Section.Contents = ({
       className={clsx(
         "pointer-events-none",
         animateFadeIn,
-        "flex-1 mt-[59px] overflow-y-scroll"
+        "flex-1 overflow-y-scroll"
       )}
     >
+      <ArticleTags
+        className="mb-[60px]"
+        sectionName={sectionName}
+      />
+
       {selectedArticle ? (
         <Article />
       ) : (

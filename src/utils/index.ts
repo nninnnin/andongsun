@@ -22,6 +22,7 @@ type Argument = Omit<
   "articleType"
 > & {
   articleType: number | null;
+  remove?: boolean;
 };
 
 export const createArticleBody = (
@@ -37,10 +38,11 @@ export const createArticleBody = (
     thumbnail,
     thumbnailPath,
     thumbnailName,
+    remove,
   } = articleState;
 
   return {
-    publish: true, // 이것으로는 삭제여부 결정
+    publish: true, // 이것으로는 아무것도 결정하지 않음, 항상 true
     data: {
       title: {
         KO: title!,
@@ -55,6 +57,7 @@ export const createArticleBody = (
       thumbnailName:
         thumbnail?.name || thumbnailName || "",
       hidden: `${!published}`, // 이것으로 공개 여부 결정
+      removed: `${Boolean(remove)}`, // 이것으로 삭제 여부 결정
     },
   };
 };

@@ -33,6 +33,10 @@ const ArticleList = ({
   }
 
   const filteredArticles = articles
+    // 1. '삭제' 상태인 게시물은 제외
+    .filter((article) => {
+      return !article.removed;
+    })
     // 1. '숨김' 상태인 게시물은 제외
     .filter((article) => {
       return !article.hidden;

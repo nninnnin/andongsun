@@ -46,6 +46,7 @@ const EditPage = () => {
         thumbnailName,
         tags,
         hidden,
+        removed,
       } = articleFromServer;
 
       return {
@@ -60,6 +61,7 @@ const EditPage = () => {
         thumbnailName,
         tag: tags[0]?.tagName ?? "",
         published: !hidden,
+        removed,
       };
     });
   }, [articles]);

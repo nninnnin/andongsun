@@ -21,6 +21,7 @@ export interface ArticleBody {
     thumbnailPath: string;
     thumbnailName: string;
     hidden: string;
+    removed: string;
   };
 }
 
@@ -56,6 +57,7 @@ export interface ArticleInterface {
   thumbnailPath: string;
   thumbnailName: string;
   hidden: boolean;
+  removed: boolean;
 }
 
 export interface ArticleStateInterface {

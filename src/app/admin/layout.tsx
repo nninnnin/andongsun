@@ -1,5 +1,9 @@
-import AdminHeader from "@/components/admin/Header";
+"use client";
+
 import React from "react";
+import { OverlayProvider } from "@toss/use-overlay";
+
+import AdminHeader from "@/components/admin/Header";
 
 const AdminLayout = ({
   children,
@@ -7,11 +11,13 @@ const AdminLayout = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="bg-black flex flex-col h-[100dvh] w-screen">
-      <AdminHeader />
+    <OverlayProvider>
+      <div className="bg-black flex flex-col h-[100dvh] w-screen">
+        <AdminHeader />
 
-      <div className="flex-1">{children}</div>
-    </div>
+        <div className="flex-1">{children}</div>
+      </div>
+    </OverlayProvider>
   );
 };
 

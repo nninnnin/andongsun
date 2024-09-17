@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Dropdown from "@/components/common/Dropdown";
 import {
@@ -13,10 +13,16 @@ const CategorySelect = () => {
   const { value, handleChange } =
     useArticle("articleType");
 
+  useEffect(() => {
+    if (!value) {
+      handleChange(SectionNames.About);
+    }
+  }, [value]);
+
   return (
     <div>
       <Dropdown
-        className="w-[180px]"
+        className="!w-[180px]"
         options={Object.values(SectionNames).map(
           (sectionName) => {
             return {
@@ -28,7 +34,11 @@ const CategorySelect = () => {
         onChange={(selectedOption) =>
           handleChange(selectedOption)
         }
-        selected={value as string}
+        selected={
+          SectionTitles[
+            value as SectionNames
+          ] as string
+        }
       />
     </div>
   );

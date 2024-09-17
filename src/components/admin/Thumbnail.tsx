@@ -9,6 +9,7 @@ import useArticle from "@/hooks/useArticle";
 
 import "./thumbnail.css";
 import { articleState } from "@/states";
+import clsx from "clsx";
 
 export const thumbnailInputWidthState = atom<
   null | number
@@ -46,13 +47,18 @@ const Thumbnail = () => {
 
   return (
     <div
-      className="selector bg-white cursor-pointer w-full !mr-[0px] mt-[-1px] !h-[43px]"
+      className="selector bg-white cursor-pointer w-full !mr-[0px] mt-[-1px] !h-[43px] !p-[0px]"
       onClick={handleClick}
     >
-      <label className="flex justify-between w-full h-full cursor-pointer">
-        <span className="text-ellipsis whitespace-nowrap overflow-hidden flex-1 mr-[16px]">
-          {label || article.thumbnailName}
-        </span>
+      <label className="flex items-center justify-between w-full h-full cursor-pointer px-[15px]">
+        <div
+          className={clsx(
+            "w-[calc(100%-40px)] h-fit",
+            "truncate"
+          )}
+        >
+          {label || article.thumbnailName || "Image"}
+        </div>
 
         <object
           className="cursor-pointer pointer-events-none"

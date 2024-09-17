@@ -1,9 +1,5 @@
 import clsx from "clsx";
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import React, { useLayoutEffect, useRef } from "react";
 
 const Dropdown = ({
   options,

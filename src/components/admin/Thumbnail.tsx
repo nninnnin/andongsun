@@ -45,9 +45,20 @@ const Thumbnail = () => {
     input.click();
   };
 
+  const hasNoThumbnail = !(
+    label || article.thumbnailName
+  );
+
   return (
     <div
-      className="selector bg-white cursor-pointer w-full !mr-[0px] mt-[-1px] !h-[43px] !p-[0px]"
+      className={clsx(
+        "selector",
+        "w-full !h-[43px]",
+        "!mr-[0px] mt-[-1px]",
+        "!p-[0px]",
+        hasNoThumbnail ? "bg-[#d9d9d9]" : "bg-white",
+        "cursor-pointer"
+      )}
       onClick={handleClick}
     >
       <label className="flex items-center justify-between w-full h-full cursor-pointer px-[15px]">

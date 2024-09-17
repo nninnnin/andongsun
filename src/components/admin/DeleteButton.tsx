@@ -59,7 +59,9 @@ const DeleteButton = () => {
 
   return (
     <div
-      className={clsx("cursor-pointer btn selector")}
+      className={clsx(
+        "cursor-pointer btn selector bg-[#333333]"
+      )}
       onClick={handleClick}
     >
       삭제

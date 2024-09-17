@@ -12,7 +12,7 @@ const AdminLayout = ({
 }) => {
   return (
     <OverlayProvider>
-      <div className="bg-black flex flex-col h-[100dvh] w-screen">
+      <div className="bg-[#333333] flex flex-col h-[100dvh] w-screen">
         <AdminHeader />
 
         <div className="flex-1">{children}</div>

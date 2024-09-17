@@ -97,7 +97,7 @@ const Article = () => {
             className="rotate-[270deg] mr-[0.5em] h-[0.8em]"
             src="/arrow--top.svg"
           />{" "}
-          List
+          <span className="text-[20px]">List</span>
         </div>
       </div>
 
@@ -115,7 +115,7 @@ const Article = () => {
             className="rotate-[270deg] mr-[0.5em] h-[0.8em]"
             src="/arrow--top.svg"
           />{" "}
-          List
+          <span className="text-[20px]">List</span>
         </div>
       )}
     </>

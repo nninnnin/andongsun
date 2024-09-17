@@ -57,25 +57,53 @@ HomeDesktop.Sections = () => {
             className={clsx(
               `bg-${sectionColor}`,
               isSelectedSection
-                ? "min-w-[max(50vw,650px)]"
-                : "min-w-[calc(calc(100vw-max(50vw,650px))/4)]"
+                ? "min-w-[max(60vw,650px)]"
+                : "min-w-[calc(calc(100vw-max(60vw,650px))/4)]"
             )}
             key={sectionName}
             handleClick={handleClick}
           >
             <Section.Header
               className={clsx(
+                "w-[calc(100%-0px)] whitespace-nowrap overflow-hidden",
+                "text-[24px]",
                 isSelectedSection && "font-bold"
               )}
             >
               {sectionTitle}
             </Section.Header>
 
-            {isSelectedSection && (
-              <Section.Contents
-                sectionName={sectionName}
-              />
-            )}
+            {isSelectedSection &&
+              sectionName !== SectionNames.About && (
+                <Section.Contents
+                  sectionName={sectionName}
+                />
+              )}
+
+            {isSelectedSection &&
+              SectionNames.About === sectionName && (
+                <div className="opacity-0 pointer-events-none fade-in">
+                  <div className="text-[24px]">
+                    Art Diary
+                  </div>
+
+                  <div
+                    className={clsx(
+                      "mt-[60px] max-w-[454px] break-keep font-medium"
+                    )}
+                  >
+                    Harper’s Bazaar Korea 피처 디렉터
+                    출신으로 현재 프리랜서 에디터로
+                    활동하며 출판과 전시를 기획한다. IG{" "}
+                    <a
+                      className="underline"
+                      href="https://instagram.com/andongza"
+                    >
+                      @andongza
+                    </a>
+                  </div>
+                </div>
+              )}
           </Section.Container>
         );
       }

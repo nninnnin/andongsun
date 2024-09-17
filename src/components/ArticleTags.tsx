@@ -1,9 +1,14 @@
 import clsx from "clsx";
-import { atom, useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import React, { useEffect } from "react";
 
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
+import { selectedArticleState } from "@/states/index";
 
 export const selectedTagState = atom<null | string>({
   key: "selectedTagState",
@@ -17,6 +22,10 @@ const ArticleTags = ({
   sectionName: SectionNames;
   className?: string;
 }) => {
+  const setSelectedArticle = useSetRecoilState(
+    selectedArticleState
+  );
+
   const [selectedTag, setSelectedTag] = useRecoilState(
     selectedTagState
   );
@@ -40,7 +49,9 @@ const ArticleTags = ({
   return (
     <ul
       className={clsx(
-        "flex space-x-[24px] mt-[0.2em]",
+        "sticky top-0 z-[9999]",
+        "flex space-x-[24px] pt-[0.2em]",
+        "text-[24px]",
         className
       )}
     >
@@ -49,7 +60,10 @@ const ArticleTags = ({
           "cursor-pointer",
           selectedTag === null && "underline"
         )}
-        onClick={() => setSelectedTag(null)}
+        onClick={() => {
+          setSelectedTag(null);
+          setSelectedArticle(null);
+        }}
       >
         All
       </li>
@@ -65,7 +79,10 @@ const ArticleTags = ({
               "capitalize cursor-pointer",
               isSelectedTag && "underline"
             )}
-            onClick={() => setSelectedTag(tag.tagName)}
+            onClick={() => {
+              setSelectedTag(tag.tagName);
+              setSelectedArticle(null);
+            }}
           >
             {tag.tagName}
           </li>

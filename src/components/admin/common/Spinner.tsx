@@ -8,7 +8,7 @@ const Spinner = ({
   contents: string;
 }) => {
   return createPortal(
-    <div className="fixed top-0 left-0 z-[9999] w-screen h-[calc(100dvh-[100px])] bg-black bg-opacity-50">
+    <div className="fixed top-0 left-0 z-[9999] w-screen h-[calc(100dvh-[100px])] bg-[#333333] bg-opacity-50">
       <div
         className={clsx(
           "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",

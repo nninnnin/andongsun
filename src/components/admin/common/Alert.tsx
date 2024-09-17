@@ -17,24 +17,25 @@ const Alert = ({
   return (
     <div
       className={clsx(
-        "w-screen h-screen bg-black bg-opacity-50",
+        "w-screen h-screen bg-[#333333] bg-opacity-50",
         "fixed top-0 left-0",
         "p-10"
       )}
     >
       <div
         className={clsx(
+          "min-w-[180px]",
           "bg-white text-white",
           "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
           "flex flex-col gap-[1px]",
           "border-[1.5px] border-white"
         )}
       >
-        <p className="flex-1 px-[15px] py-[10px] bg-themeBlue font-bold">
+        <p className="flex-1 px-[15px] py-[10px] bg-themeBlue font-bold text-center">
           {desc}
         </p>
 
-        <div className="flex flex-1 w-full gap-[1px]">
+        <div className="flex flex-1 w-full">
           <Alert.Button handleClick={handleConfirm}>
             확인
           </Alert.Button>
@@ -60,7 +61,8 @@ Alert.Button = ({
       className={clsx(
         "flex items-center justify-center",
         "flex-1 p-3 bg-themeBlue",
-        "cursor-pointer"
+        "cursor-pointer",
+        "border-white border-r-[2px] last:border-r-0"
       )}
       onClick={handleClick}
     >

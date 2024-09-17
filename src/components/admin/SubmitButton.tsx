@@ -19,6 +19,8 @@ import {
 } from "next/navigation";
 import useTags from "@/hooks/useTags";
 import clsx from "clsx";
+import { useOverlay } from "@toss/use-overlay";
+import Alert from "@/components/admin/common/Alert";
 
 const SubmitButton = () => {
   const {
@@ -46,7 +48,7 @@ const SubmitButton = () => {
 
   const { data: tags } = useTags();
 
-  const handleSubmit = async () => {
+  const submitArticle = async () => {
     if (article.articleType === null) {
       alert("카테고리를 지정해주세요.");
       return;
@@ -227,11 +229,26 @@ const SubmitButton = () => {
     } else {
       await postArticle(articleBody);
     }
+  };
 
-    resetMediaContents();
-    resetArticle();
+  const overlay = useOverlay();
 
-    router.push("/admin");
+  const handleSubmit = async () => {
+    overlay.open(({ close, isOpen }) => (
+      <Alert
+        show={isOpen}
+        desc="등록하시겠습니까?"
+        handleClose={() => close()}
+        handleConfirm={() => {
+          submitArticle();
+
+          resetMediaContents();
+          resetArticle();
+
+          router.push("/admin");
+        }}
+      />
+    ));
   };
 
   return (

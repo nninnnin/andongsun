@@ -1,12 +1,18 @@
 import { MouseEvent } from "react";
 import clsx from "clsx";
-import { atom, useRecoilValue } from "recoil";
+import {
+  atom,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { selectedArticleState } from "@/states";
 import ArticleList from "@/components/ArticleList";
 import Article from "@/components/Article";
 import { SectionNames } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
-import ArticleTags from "@/components/ArticleTags";
+import ArticleTags, {
+  selectedTagState,
+} from "@/components/ArticleTags";
 
 export const selectedSectionNameState =
   atom<null | SectionNames>({
@@ -53,8 +59,25 @@ Section.Header = ({
   children: React.ReactNode;
   className?: string;
 }) => {
+  const setSelectedArticle = useSetRecoilState(
+    selectedArticleState
+  );
+
+  const setSelectedTag = useSetRecoilState(
+    selectedTagState
+  );
+
   return (
-    <h1 className={clsx("text-[1em]", className)}>
+    <h1
+      className={clsx(
+        "text-[1em] cursor-pointer",
+        className
+      )}
+      onClick={() => {
+        setSelectedArticle(null);
+        setSelectedTag(null);
+      }}
+    >
       {children}
     </h1>
   );
@@ -74,6 +97,7 @@ Section.Contents = ({
   return (
     <div
       className={clsx(
+        "section-contents",
         "pointer-events-none",
         animateFadeIn,
         "flex-1 overflow-y-scroll"

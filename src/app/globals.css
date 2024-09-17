@@ -60,3 +60,7 @@ body {
 object {
   pointer-events: none;
 }
+
+.section-contents {
+  overscroll-behavior: none;
+}

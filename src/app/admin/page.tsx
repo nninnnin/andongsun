@@ -16,7 +16,7 @@ const AdminPage = () => {
   }
 
   return (
-    <div className="mx-[190px] mt-[90px] min-w-[600px]">
+    <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto">
       <Link href="/admin/new">
         <button className="flex p-3 px-5 mt-3 mb-6 text-white bg-themeBlue">
           <span>New Project</span>

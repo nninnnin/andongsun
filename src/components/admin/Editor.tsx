@@ -1,8 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import React from "react";
-import { useSetRecoilState } from "recoil";
+import React, { Suspense } from "react";
 
 import Tags from "@/components/admin/Tags";
 import Title from "@/components/admin/Title";
@@ -15,7 +14,6 @@ import PublishStatus from "@/components/admin/PublishStatus";
 import CategorySelect from "@/components/admin/CategorySelect";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 import ProductionMonth from "@/components/admin/ProductionMonth";
-import { thumbnailInputWidthState } from "@/components/admin/Thumbnail";
 
 import "react-quill/dist/quill.snow.css";
 
@@ -24,6 +22,7 @@ const Editor = () => {
     <>
       <div
         className={clsx(
+          "editor",
           "w-[60vw] min-w-[750px] h-full mx-auto",
           "flex flex-col justify-start items-center",
           "fixed left-1/2 -translate-x-1/2 top-[90px]"

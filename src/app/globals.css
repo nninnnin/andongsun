@@ -47,6 +47,16 @@ body {
   line-height: 166%;
 }
 
+/* 
+.ql-container.ql-snow {
+  border: 1px solid #0067ff !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: 1px solid #0067ff !important;
+  border-bottom: 0px !important;
+} */
+
 object {
   pointer-events: none;
 }

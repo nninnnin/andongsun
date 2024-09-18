@@ -90,7 +90,10 @@ const Article = () => {
           ></p>
 
           <p
-            className="leading-[166%] text-left break-keep"
+            className={clsx(
+              "leading-[166%] text-left break-keep",
+              "border-t-[1px] border-black pt-[36px] !mt-[24px]"
+            )}
             dangerouslySetInnerHTML={{
               __html: contents,
             }}

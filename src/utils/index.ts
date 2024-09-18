@@ -189,3 +189,11 @@ export const convertDOMToString = (dom: Element) => {
 
   return div.innerHTML;
 };
+
+export const removePrefixZero = (
+  yearMonthString: string
+) => {
+  const [year, month] = yearMonthString.split(".");
+
+  return `${parseInt(year)}.${parseInt(month)}`;
+};

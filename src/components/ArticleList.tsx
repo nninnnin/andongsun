@@ -70,7 +70,7 @@ const ArticleList = ({
     <motion.ul
       animate={controls}
       className={clsx(
-        "w-full flex justify-between flex-wrap pb-[24px] px-[min(24px,3/4vw)]"
+        "w-full flex flex-wrap justify-between pb-[24px] px-[min(24px,3/4vw)]"
       )}
     >
       {filteredArticles.map(
@@ -130,6 +130,21 @@ const ArticleList = ({
             </li>
           );
         }
+      )}
+
+      {filteredArticles.length % 2 === 0 && (
+        <li
+          className={clsx(
+            isMobile
+              ? "w-full"
+              : "w-[calc(calc(100%-min(96px,3vw))/3)]",
+            "text-[20px]",
+            "cursor-default",
+            "flex flex-col",
+            "space-y-[6px]",
+            "mb-[24px]"
+          )}
+        ></li>
       )}
     </motion.ul>
   );

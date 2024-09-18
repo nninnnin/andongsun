@@ -12,6 +12,7 @@ import { selectedArticleState } from "@/states";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { ArticleInterface } from "@/types/article";
 import { selectedSectionNameState } from "@/components/Section";
+import { removePrefixZero } from "@/utils";
 
 const Article = () => {
   const { isMobile } = useBreakpoint();
@@ -77,9 +78,16 @@ const Article = () => {
             {title}
           </p>
 
-          <p className="font-semibold">{producedAt}</p>
+          <p className="font-semibold text-[9px]">
+            {removePrefixZero(producedAt)}
+          </p>
 
-          <p>{credits}</p>
+          <p
+            className="text-[9px]"
+            dangerouslySetInnerHTML={{
+              __html: credits,
+            }}
+          ></p>
 
           <p
             className="leading-[166%] text-left break-keep"

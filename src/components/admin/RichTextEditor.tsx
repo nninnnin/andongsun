@@ -10,9 +10,51 @@ import React, {
 import ReactQuill, { Quill } from "react-quill";
 import { atom, useSetRecoilState } from "recoil";
 
+const BaseImageFormat = Quill.import("formats/image");
+const ImageFormatAttributesList = [
+  "alt",
+  "height",
+  "width",
+  "style",
+];
+
+class ImageFormat extends BaseImageFormat {
+  domNode: any;
+
+  // @ts-ignore
+  static formats(domNode) {
+    // tslint:disable-next-line: only-arrow-functions
+    return ImageFormatAttributesList.reduce(function (
+      formats,
+      attribute
+    ) {
+      if (domNode.hasAttribute(attribute)) {
+        // @ts-ignore
+        formats[attribute] =
+          domNode.getAttribute(attribute);
+      }
+      return formats;
+    },
+    {});
+  }
+  // @ts-ignore
+  format(name, value) {
+    if (ImageFormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+
 // @ts-ignore
 import ImageResize from "quill-image-resize";
 Quill.register("modules/ImageResize", ImageResize);
+Quill.register(ImageFormat, true);
 import "react-quill/dist/quill.snow.css";
 
 import useArticle from "@/hooks/useArticle";
@@ -27,8 +69,6 @@ export const richEditorLoadedState = atom({
 
 const RichTextEditor = () => {
   const pathname = usePathname();
-
-  console.log(pathname);
 
   const isEditing = pathname.includes("edit");
 
@@ -94,6 +134,12 @@ const RichTextEditor = () => {
       quillRef
         .getEditor()
         .clipboard.dangerouslyPasteHTML(value);
+
+      quillRef.getEditor().on("editor-change", () => {
+        handleChange(
+          quillRef.getEditor().root.innerHTML
+        );
+      });
     }
   }, [quillRef, value]);
 

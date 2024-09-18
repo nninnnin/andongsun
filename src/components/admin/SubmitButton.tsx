@@ -21,8 +21,11 @@ import useTags from "@/hooks/useTags";
 import clsx from "clsx";
 import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
+import { useSWRConfig } from "swr";
 
 const SubmitButton = () => {
+  const { mutate } = useSWRConfig();
+
   const {
     postArticle,
     updateArticle,
@@ -166,6 +169,8 @@ const SubmitButton = () => {
                 name: imageName,
                 path: hasImageAlready.data.path,
                 width: dom?.getAttribute("width"),
+                style: dom?.getAttribute("style"),
+                align: dom?.getAttribute("align"),
               };
             }
 
@@ -190,6 +195,8 @@ const SubmitButton = () => {
               name: imageName,
               path: registeredPath,
               width: dom?.getAttribute("width"),
+              style: dom?.getAttribute("style"),
+              align: dom?.getAttribute("align"),
             };
           }
         )
@@ -204,11 +211,14 @@ const SubmitButton = () => {
             return "<img src='nothing' />";
           }
 
-          const { path, name, width } = imagePath;
+          const { path, name, width, style, align } =
+            imagePath;
 
           const newImage = new Image();
           newImage.src = path;
           newImage.alt = name;
+          newImage.setAttribute("style", style ?? "");
+          newImage.setAttribute("align", align ?? "");
 
           if (width) {
             newImage.width = parseInt(width);
@@ -239,8 +249,9 @@ const SubmitButton = () => {
         show={isOpen}
         desc="등록하시겠습니까?"
         handleClose={() => close()}
-        handleConfirm={() => {
-          submitArticle();
+        handleConfirm={async () => {
+          await submitArticle();
+          mutate("articles");
 
           resetMediaContents();
           resetArticle();

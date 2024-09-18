@@ -38,13 +38,17 @@ const ArticleTags = ({
 
   if (!articles) return <></>;
 
-  const tags = Array.from(
-    new Set(
-      articles
-        .map((article) => article.tags[0])
-        .filter((tag) => tag)
-    )
-  );
+  const tags = articles
+    .map((article) => article.tags[0])
+    .filter((tag) => tag)
+    .reduce((acc, cur) => {
+      if (acc.find((tag) => tag.uid === cur.uid))
+        return acc;
+
+      return [...acc, cur];
+    }, [] as { tagName: string; uid: string }[]);
+
+  console.log(tags);
 
   return (
     <ul

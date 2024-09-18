@@ -54,7 +54,7 @@ const ArticleList = ({
   return (
     <ul
       className={clsx(
-        "w-full flex flex-wrap gap-[24px] pb-[24px]"
+        "w-full flex justify-between flex-wrap pb-[24px] px-[min(24px,3/4vw)]"
       )}
     >
       {filteredArticles.map(
@@ -63,11 +63,14 @@ const ArticleList = ({
             <li
               key={article.id}
               className={clsx(
-                isMobile ? "w-full" : "w-[200px]",
+                isMobile
+                  ? "w-full"
+                  : "w-[calc(calc(100%-min(96px,3vw))/3)]",
                 "text-[20px]",
                 "cursor-pointer",
                 "flex flex-col",
-                "space-y-[6px]"
+                "space-y-[6px]",
+                "mb-[24px]"
               )}
               onClick={(e) => {
                 e.stopPropagation();
@@ -82,10 +85,10 @@ const ArticleList = ({
               ) : (
                 <div
                   className={clsx(
-                    "max-h-[240px]",
                     "w-full",
                     "border-t-[1px] border-black",
-                    "text-[20px] leading-[150%] pt-[8px]"
+                    "text-[20px] leading-[150%] pt-[8px]",
+                    "line-clamp-[8]"
                   )}
                 >
                   {article.caption}

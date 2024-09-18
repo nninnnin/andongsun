@@ -1,9 +1,10 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+import { motion, useAnimation } from "framer-motion";
 
 import { ArticleInterface } from "@/types/article";
 import { SectionNames } from "@/constants";
@@ -26,6 +27,20 @@ const ArticleList = ({
   const selectedTag = useRecoilValue(selectedTagState);
 
   const { isMobile } = useBreakpoint();
+
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.set({ opacity: 0 });
+
+    controls.start({
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        delay: 0.2,
+      },
+    });
+  }, [controls, selectedTag]);
 
   if (!articles) {
     return <></>;
@@ -52,7 +67,8 @@ const ArticleList = ({
     });
 
   return (
-    <ul
+    <motion.ul
+      animate={controls}
       className={clsx(
         "w-full flex justify-between flex-wrap pb-[24px] px-[min(24px,3/4vw)]"
       )}
@@ -115,7 +131,7 @@ const ArticleList = ({
           );
         }
       )}
-    </ul>
+    </motion.ul>
   );
 };
 

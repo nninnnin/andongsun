@@ -48,29 +48,29 @@ const ArticleTags = ({
       return [...acc, cur];
     }, [] as { tagName: string; uid: string }[]);
 
-  console.log(tags);
-
   return (
     <ul
       className={clsx(
         "sticky top-0 z-[9999]",
         "flex space-x-[24px] pt-[0.2em]",
-        "text-[24px]",
+        "text-[20px]",
         className
       )}
     >
-      <li
-        className={clsx(
-          "cursor-pointer",
-          selectedTag === null && "underline"
-        )}
-        onClick={() => {
-          setSelectedTag(null);
-          setSelectedArticle(null);
-        }}
-      >
-        All
-      </li>
+      {tags && !!tags.length && (
+        <li
+          className={clsx(
+            "cursor-pointer",
+            selectedTag === null && "underline"
+          )}
+          onClick={() => {
+            setSelectedTag(null);
+            setSelectedArticle(null);
+          }}
+        >
+          All
+        </li>
+      )}
 
       {tags.map((tag) => {
         const isSelectedTag =

@@ -2,15 +2,16 @@ import {
   useRecoilValue,
   useResetRecoilState,
 } from "recoil";
+import clsx from "clsx";
 import React from "react";
+import { motion } from "framer-motion";
 
+import { SectionColors } from "@/constants";
 import useArticles from "@/hooks/useArticles";
 import { selectedArticleState } from "@/states";
+import useBreakpoint from "@/hooks/useBreakpoint";
 import { ArticleInterface } from "@/types/article";
 import { selectedSectionNameState } from "@/components/Section";
-import clsx from "clsx";
-import useBreakpoint from "@/hooks/useBreakpoint";
-import { SectionColors } from "@/constants";
 
 const Article = () => {
   const { isMobile } = useBreakpoint();
@@ -42,17 +43,19 @@ const Article = () => {
 
   const {
     title,
-    caption,
     contents,
     credits,
     producedAt,
-    tags,
     thumbnailPath,
   } = article;
 
   return (
     <>
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        exit={{ opacity: 0 }}
         className={clsx(
           "h-full flex flex-col px-[68px] relative",
           isMobile &&
@@ -100,7 +103,7 @@ const Article = () => {
           />{" "}
           <span className="text-[20px]">List</span>
         </div>
-      </div>
+      </motion.div>
 
       {isMobile && (
         <div

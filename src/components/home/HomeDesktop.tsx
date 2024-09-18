@@ -66,7 +66,7 @@ HomeDesktop.Sections = () => {
             <Section.Header
               className={clsx(
                 "w-[calc(100%-0px)] whitespace-nowrap overflow-hidden",
-                "text-[24px]",
+                "text-[20px]",
                 isSelectedSection && "font-bold"
               )}
             >
@@ -83,7 +83,7 @@ HomeDesktop.Sections = () => {
             {isSelectedSection &&
               SectionNames.About === sectionName && (
                 <div className="opacity-0 pointer-events-none fade-in">
-                  <div className="text-[24px]">
+                  <div className="text-[20px]">
                     Art Diary
                   </div>
 

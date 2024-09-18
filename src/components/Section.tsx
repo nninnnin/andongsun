@@ -1,18 +1,20 @@
-import { MouseEvent } from "react";
-import clsx from "clsx";
 import {
   atom,
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+import clsx from "clsx";
+import { MouseEvent } from "react";
+import { AnimatePresence } from "framer-motion";
+
+import ArticleTags, {
+  selectedTagState,
+} from "@/components/ArticleTags";
 import { selectedArticleState } from "@/states";
 import ArticleList from "@/components/ArticleList";
 import Article from "@/components/Article";
 import { SectionNames } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
-import ArticleTags, {
-  selectedTagState,
-} from "@/components/ArticleTags";
 
 export const selectedSectionNameState =
   atom<null | SectionNames>({
@@ -40,7 +42,7 @@ Section.Container = ({
       className={clsx(
         "flex-1",
         "transition-[min-width min-height width height] duration-700",
-        "p-[24px]",
+        "p-[24px] py-[20px]",
         isMobile && "pb-0",
         "flex flex-col",
         className
@@ -108,11 +110,13 @@ Section.Contents = ({
         sectionName={sectionName}
       />
 
-      {selectedArticle ? (
-        <Article />
-      ) : (
-        <ArticleList sectionName={sectionName} />
-      )}
+      <AnimatePresence>
+        {selectedArticle ? (
+          <Article />
+        ) : (
+          <ArticleList sectionName={sectionName} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

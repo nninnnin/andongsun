@@ -65,7 +65,7 @@ const Article = () => {
         <header className="space-y-[16px] pb-[40px] text-center">
           {thumbnailPath && (
             <img
-              className="h-[340px] object-cover mx-auto mb-[36px]"
+              className="object-cover mx-auto mb-[36px]"
               src={thumbnailPath}
             />
           )}
@@ -79,6 +79,7 @@ const Article = () => {
           <p>{credits}</p>
 
           <p
+            className="leading-[166%] text-left break-keep"
             dangerouslySetInnerHTML={{
               __html: contents,
             }}

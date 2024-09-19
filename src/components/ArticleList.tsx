@@ -12,13 +12,14 @@ import useArticles from "@/hooks/useArticles";
 import { selectedArticleState } from "@/states";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { selectedTagState } from "@/components/ArticleTags";
+import { filterArticleList } from "@/utils/filters";
 
 const ArticleList = ({
   sectionName,
 }: {
   sectionName: SectionNames;
 }) => {
-  const { data: articles } = useArticles(sectionName);
+  const { data: articles } = useArticles();
 
   const setSelectedArticle = useSetRecoilState(
     selectedArticleState
@@ -47,24 +48,11 @@ const ArticleList = ({
     ``;
   }
 
-  const filteredArticles = articles
-    // 1. '삭제' 상태인 게시물은 제외
-    .filter((article) => {
-      return !article.removed;
-    })
-    // 1. '숨김' 상태인 게시물은 제외
-    .filter((article) => {
-      return !article.hidden;
-    })
-    // 2. 선택된 태그에 해당하는 게시물만 필터링
-    .filter((article) => {
-      if (selectedTag === null) return true;
-
-      if (!article.tags || !article.tags[0])
-        return false;
-
-      return article.tags[0].tagName === selectedTag;
-    });
+  const filteredArticles = filterArticleList(
+    articles,
+    sectionName,
+    selectedTag
+  );
 
   return (
     <motion.ul

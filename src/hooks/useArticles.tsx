@@ -1,6 +1,6 @@
-import { SectionNames } from "@/constants";
-import { BareArticle } from "@/types/article";
+import { ArticleInterface } from "@/types/article";
 import { transformArticles } from "@/utils";
+
 import Mf from "@rebel9/memex-fetcher";
 
 const memexFetcher = Mf.createMemexFetcher(
@@ -20,25 +20,21 @@ const fetchArticles = async () => {
     }
   );
 
-  return await res.json();
+  const result = await res.json();
+
+  return transformArticles(result);
 };
 
 import useSWR from "swr";
 
-const useArticles = (sectionName?: SectionNames) => {
-  const swr = useSWR<BareArticle>(
+const useArticles = () => {
+  const swr = useSWR<ArticleInterface[]>(
     "articles",
     fetchArticles
   );
 
-  const formattedData = swr.data
-    ? transformArticles(swr.data, sectionName)
-    : undefined;
-
   return {
     ...swr,
-    data: formattedData,
-    isLoading: swr.isLoading || !formattedData,
   };
 };
 

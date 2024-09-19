@@ -77,8 +77,7 @@ export const getCategoryId = (
 };
 
 export const transformArticles = (
-  bareArticle: BareArticle,
-  sectionName?: SectionNames
+  bareArticle: BareArticle
 ): ArticleInterface[] => {
   return pipe(
     bareArticle,
@@ -128,13 +127,7 @@ export const transformArticles = (
       );
 
       return newItem;
-    }),
-    (items: any) =>
-      items.filter((item: any) => {
-        if (!sectionName) return true;
-
-        return item.articleType === sectionName;
-      })
+    })
   );
 };
 

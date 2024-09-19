@@ -5,11 +5,13 @@ import {
   useRecoilState,
   useResetRecoilState,
 } from "recoil";
+import { useSWRConfig } from "swr";
 
 import { articleState, mediaState } from "@/states";
 import { useParams } from "next/navigation";
 import useArticles from "@/hooks/useArticles";
 import Editor from "@/components/admin/Editor";
+import { ArticleInterface } from "@/types/article";
 
 const EditPage = () => {
   const [article, setArticle] =
@@ -23,48 +25,60 @@ const EditPage = () => {
 
   const { data: articles } = useArticles();
 
+  const { mutate } = useSWRConfig();
+
   useEffect(() => {
-    if (article.title && article.contents) return;
+    (async function () {
+      const articlesFromServer = await mutate(
+        "articles"
+      );
 
-    if (!articles) return;
+      console.log(articlesFromServer);
 
-    const articleFromServer = articles.find(
-      (article) => article.id === articleId
-    );
+      if (!articlesFromServer) return;
 
-    if (!articleFromServer) return;
+      const articleFromServer =
+        articlesFromServer.find(
+          (article: ArticleInterface) =>
+            article.id === articleId
+        );
 
-    setArticle((prev) => {
-      const {
-        title,
-        caption,
-        credits,
-        contents,
-        producedAt,
-        articleType,
-        thumbnailPath,
-        thumbnailName,
-        tags,
-        hidden,
-        removed,
-      } = articleFromServer;
+      if (!articleFromServer) return;
 
-      return {
-        ...prev,
-        title,
-        caption,
-        credits,
-        contents,
-        year: producedAt.split(".").join("-"),
-        articleType,
-        thumbnailPath,
-        thumbnailName,
-        tag: tags[0]?.tagName ?? "",
-        published: !hidden,
-        removed,
-      };
-    });
-  }, [articles]);
+      console.log(articleFromServer);
+
+      setArticle((prev) => {
+        const {
+          title,
+          caption,
+          credits,
+          contents,
+          producedAt,
+          articleType,
+          thumbnailPath,
+          thumbnailName,
+          tags,
+          hidden,
+          removed,
+        } = articleFromServer;
+
+        return {
+          ...prev,
+          title,
+          caption,
+          credits,
+          contents,
+          year: producedAt.split(".").join("-"),
+          articleType,
+          thumbnailPath,
+          thumbnailName,
+          tag: tags[0]?.tagName ?? "",
+          published: !hidden,
+          removed,
+        };
+      });
+    })();
+  }, []);
 
   useEffect(() => {
     return () => {

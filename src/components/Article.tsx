@@ -29,9 +29,7 @@ const Article = () => {
     selectedArticleState
   );
 
-  const { data: articles, isLoading } = useArticles(
-    selectedSection!
-  );
+  const { data: articles, isLoading } = useArticles();
 
   if (!articles || isLoading) return <></>;
 

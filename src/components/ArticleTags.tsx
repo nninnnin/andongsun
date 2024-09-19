@@ -9,6 +9,7 @@ import React, { useEffect } from "react";
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
 import { selectedArticleState } from "@/states/index";
+import { filterArticleList } from "@/utils/filters";
 
 export const selectedTagState = atom<null | string>({
   key: "selectedTagState",
@@ -34,11 +35,17 @@ const ArticleTags = ({
     return () => setSelectedTag(null);
   }, []);
 
-  const { data: articles } = useArticles(sectionName);
+  const { data: articles } = useArticles();
 
   if (!articles) return <></>;
 
-  const tags = articles
+  const filteredArticles = filterArticleList(
+    articles,
+    sectionName,
+    null
+  );
+
+  const tags = filteredArticles
     .map((article) => article.tags[0])
     .filter((tag) => tag)
     .reduce((acc, cur) => {

@@ -3,6 +3,13 @@ import {
   useRecoilValue,
   useResetRecoilState,
 } from "recoil";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+} from "next/navigation";
+import clsx from "clsx";
+import { useSWRConfig } from "swr";
 
 import {
   convertDOMToString,
@@ -12,16 +19,11 @@ import {
 import useMemex from "@/hooks/useMemex";
 import { articleState, mediaState } from "@/states";
 import { getCategoryId } from "@/utils/index";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-} from "next/navigation";
 import useTags from "@/hooks/useTags";
-import clsx from "clsx";
 import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
-import { useSWRConfig } from "swr";
+import Spinner from "@/components/admin/common/Spinner";
+import { ArticleStateInterface } from "@/types/article";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();
@@ -51,36 +53,13 @@ const SubmitButton = () => {
 
   const { data: tags } = useTags();
 
-  const submitArticle = async () => {
-    if (article.articleType === null) {
-      alert("카테고리를 지정해주세요.");
-      return;
-    }
-
-    if (!article.title) {
-      alert("제목을 입력해주세요.");
-      return;
-    }
-
-    if (!article.caption) {
-      alert("캡션을 입력해주세요.");
-      return;
-    }
-
-    if (!article.credits) {
-      alert("크레딧을 입력해주세요.");
-      return;
-    }
-
-    if (!article.contents) {
-      alert("내용을 입력해주세요.");
-      return;
-    }
-
+  const submitArticle = async (
+    article: ArticleStateInterface
+  ) => {
     const categories = await getArticleCategories();
 
     const categoryId = getCategoryId(
-      article.articleType,
+      article.articleType!,
       categories
     );
 
@@ -244,19 +223,89 @@ const SubmitButton = () => {
   const overlay = useOverlay();
 
   const handleSubmit = async () => {
-    overlay.open(({ close, isOpen }) => (
+    overlay.open(({ close: closeAlert, isOpen }) => (
       <Alert
         show={isOpen}
         desc="등록하시겠습니까?"
-        handleClose={() => close()}
+        handleClose={() => closeAlert()}
         handleConfirm={async () => {
-          await submitArticle();
-          mutate("articles");
+          if (article.articleType === null) {
+            overlay.open(({ close, isOpen }) => (
+              <Alert
+                show={isOpen}
+                desc="카테고리를 지정해주세요."
+                handleClose={() => close()}
+                handleConfirm={() => close()}
+              />
+            ));
 
-          resetMediaContents();
-          resetArticle();
+            closeAlert();
+            return;
+          }
 
-          router.push("/admin");
+          if (!article.title) {
+            overlay.open(({ close, isOpen }) => (
+              <Alert
+                show={isOpen}
+                desc="제목을 입력해주세요."
+                handleClose={() => close()}
+                handleConfirm={() => close()}
+              />
+            ));
+
+            closeAlert();
+            return;
+          }
+
+          if (!article.contents) {
+            overlay.open(({ close, isOpen }) => (
+              <Alert
+                show={isOpen}
+                desc="내용을 입력해주세요."
+                handleClose={() => close()}
+                handleConfirm={() => close()}
+              />
+            ));
+
+            closeAlert();
+            return;
+          }
+
+          overlay.open(({ close: closeSpinner }) => {
+            return (
+              <Spinner
+                contents="업로드 중입니다… ⌛…"
+                onMount={async () => {
+                  try {
+                    closeAlert();
+
+                    await submitArticle(article);
+
+                    mutate("articles");
+
+                    resetMediaContents();
+                    resetArticle();
+
+                    closeSpinner();
+                    router.push("/admin");
+                  } catch (error) {
+                    closeSpinner();
+
+                    overlay.open(
+                      ({ close, isOpen }) => (
+                        <Alert
+                          show={isOpen}
+                          desc="등록 실패, 시스템 오류"
+                          handleClose={() => close()}
+                          handleConfirm={() => close()}
+                        />
+                      )
+                    );
+                  }
+                }}
+              />
+            );
+          });
         }}
       />
     ));

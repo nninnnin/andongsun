@@ -18,7 +18,7 @@ const AdminPage = () => {
   return (
     <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto">
       <Link href="/admin/new">
-        <button className="flex p-3 px-5 mt-3 mb-6 text-white bg-themeBlue">
+        <button className="flex items-center p-3 px-5 mt-3 text-white bg-themeBlue">
           <span>New Project</span>
           <img className="ml-[40px]" src="/plus.svg" />
         </button>
@@ -44,9 +44,10 @@ AdminPage.ArticleList = ({
           <div
             className={clsx(
               "text-white text-[20px] flex space-x-10 border-b-[1px]",
-              "mb-[24px] pb-[20px]",
+              "pt-[24px] first:pt-0 pb-[20px]",
               "cursor-pointer",
-              "w-full overflow-hidden"
+              "w-full overflow-hidden",
+              "hover:border-themeBlue hover:!text-themeBlue transition-all duration-[400]"
             )}
             onClick={() => {
               router.push(`/admin/edit/${article.id}`);

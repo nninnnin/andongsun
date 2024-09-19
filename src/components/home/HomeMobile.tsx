@@ -33,11 +33,9 @@ const HomeMobile = () => {
             )}
           >
             <Section.Header
-              className={clsx(
-                isSelectedSection && "font-bold"
-              )}
+              className={clsx("font-bold text-[20px]")}
             >
-              <b>{SectionTitles[selectedSection]}</b>
+              {SectionTitles[selectedSection]}
             </Section.Header>
 
             {selectedSection === SectionNames.About ? (

@@ -57,8 +57,7 @@ const Article = () => {
         exit={{ opacity: 0 }}
         className={clsx(
           "h-full flex flex-col px-[68px] relative",
-          isMobile &&
-            "px-0 h-[calc(100%-40px)] mb-[40px]"
+          isMobile && "!px-[0px] h-[calc(100%-40px)]"
         )}
         onClick={(e) => {
           e.stopPropagation();
@@ -117,15 +116,15 @@ const Article = () => {
       {isMobile && (
         <div
           className={clsx(
-            "w-[calc(100%-48px)] h-[40px]",
+            "w-[calc(100%)] h-[40px]",
             "flex justify-start items-center",
-            "absolute bottom-[0px]",
+            "absolute bottom-[0px] left-[0px]",
             `bg-${SectionColors[selectedSection!]}`
           )}
           onClick={() => resetSelectedArticle()}
         >
           <img
-            className="rotate-[270deg] mr-[0.5em] h-[0.8em]"
+            className="rotate-[270deg] h-[20px] mx-[6.5px]"
             src="/arrow--top.svg"
           />{" "}
           <span className="text-[20px]">List</span>

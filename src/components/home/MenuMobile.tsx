@@ -135,6 +135,7 @@ MenuMobile.ItemList = ({
       {items.map((item, index) => {
         return (
           <MenuMobile.Item
+            key={item}
             handleClick={handleItemClick(item)}
             className={clsx(
               transitionOpacity,
@@ -176,7 +177,8 @@ MenuMobile.Item = ({
       className={clsx(
         "h-[60px] w-full",
         "flex items-center justify-start",
-        "pl-[27px]",
+        "pl-[18px]",
+        "text-[20px]",
         className
       )}
       onClick={(e) => {

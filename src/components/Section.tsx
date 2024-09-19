@@ -43,7 +43,7 @@ Section.Container = ({
         "flex-1",
         "transition-[min-width min-height width height] duration-700",
         "p-[24px] py-[20px]",
-        isMobile && "pb-0",
+        isMobile && "pb-0 px-[1.5em]",
         "flex flex-col",
         className
       )}
@@ -94,6 +94,8 @@ Section.Contents = ({
     selectedArticleState
   );
 
+  const { isMobile } = useBreakpoint();
+
   const animateFadeIn = clsx("opacity-0", "fade-in");
 
   return (
@@ -102,7 +104,8 @@ Section.Contents = ({
         "section-contents",
         "pointer-events-none",
         animateFadeIn,
-        "flex-1 overflow-y-scroll"
+        "flex-1 overflow-y-scroll",
+        isMobile && "!mb-[40px]"
       )}
     >
       <ArticleTags

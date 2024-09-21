@@ -2,6 +2,8 @@ import clsx from "clsx";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 
+import { isServer } from "@toss/utils";
+
 const Spinner = ({
   contents,
   onMount,
@@ -12,6 +14,10 @@ const Spinner = ({
   useEffect(() => {
     onMount();
   }, []);
+
+  if (isServer()) {
+    return <></>;
+  }
 
   return createPortal(
     <div className="fixed top-0 left-0 z-[9999] w-screen h-[calc(100dvh-[100px])] bg-[#333333] bg-opacity-50">

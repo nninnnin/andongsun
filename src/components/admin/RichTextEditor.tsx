@@ -2,6 +2,7 @@ import clsx from "clsx";
 import dynamic from "next/dynamic";
 import React, {
   LegacyRef,
+  MouseEvent,
   useEffect,
   useMemo,
   useRef,
@@ -140,6 +141,17 @@ const RichTextEditor = () => {
           quillRef.getEditor().root.innerHTML
         );
       });
+
+      quillRef
+        .getEditor()
+        .root.addEventListener("click", (e) => {
+          console.log(e.target);
+
+          // @ts-ignore
+          if (e.target.tagName === "IMG") {
+            console.log("image clicked");
+          }
+        });
     }
   }, [quillRef, value]);
 

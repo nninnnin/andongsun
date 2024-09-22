@@ -42,7 +42,7 @@ Section.Container = ({
       className={clsx(
         "flex-1",
         "transition-[min-width min-height width height] duration-700",
-        "p-[24px] py-[20px]",
+        "p-[24px] py-[18px]",
         isMobile && "pb-0 px-[1.5em]",
         "flex flex-col",
         className

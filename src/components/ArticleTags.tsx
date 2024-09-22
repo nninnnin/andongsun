@@ -60,7 +60,7 @@ const ArticleTags = ({
       className={clsx(
         "sticky top-0 z-[9999]",
         "flex space-x-[24px] pt-[0.2em]",
-        "text-[20px]",
+        "text-large",
         className
       )}
     >
@@ -68,7 +68,8 @@ const ArticleTags = ({
         <li
           className={clsx(
             "cursor-pointer",
-            selectedTag === null && "underline"
+            selectedTag === null &&
+              "border-t-[1px] border-black"
           )}
           onClick={() => {
             setSelectedTag(null);
@@ -88,7 +89,8 @@ const ArticleTags = ({
             key={tag.uid}
             className={clsx(
               "capitalize cursor-pointer",
-              isSelectedTag && "underline"
+              isSelectedTag &&
+                "border-t-[1px] border-black"
             )}
             onClick={() => {
               setSelectedTag(tag.tagName);

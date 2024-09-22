@@ -58,7 +58,7 @@ const ArticleList = ({
     <motion.ul
       animate={controls}
       className={clsx(
-        "w-full flex flex-wrap justify-between pb-[24px] px-[min(24px,3/4vw)]"
+        "w-full flex flex-wrap justify-between pb-[24px] px-[20px]"
       )}
     >
       {filteredArticles.map(
@@ -70,11 +70,11 @@ const ArticleList = ({
                 isMobile
                   ? "w-full"
                   : "w-[calc(calc(100%-min(96px,3vw))/3)]",
-                "text-[20px]",
+                "text-large",
                 "cursor-pointer",
                 "flex flex-col",
                 "space-y-[6px]",
-                "mb-[24px]"
+                "mb-[48px]"
               )}
               onClick={(e) => {
                 e.stopPropagation();
@@ -91,7 +91,7 @@ const ArticleList = ({
                   className={clsx(
                     "w-full",
                     "border-t-[1px] border-black",
-                    "text-[20px] leading-[150%] pt-[8px]",
+                    "text-large leading-[150%] pt-[8px]",
                     "line-clamp-[8]"
                   )}
                 >
@@ -102,16 +102,16 @@ const ArticleList = ({
               <div
                 className={clsx(
                   "w-full h-[20px]",
-                  "text-[12px] font-bold",
+                  "text-small font-bold",
                   "flex justify-center items-center",
-                  isMobile && "!mt-[24px]"
+                  "!mt-[12px]"
                 )}
               >
                 {article.title}
               </div>
 
               {isMobile && (
-                <div className="text-[9px] font-medium leading-[166%] mt-[6px] text-center">
+                <div className="text-small font-medium leading-[166%] mt-[6px] text-center">
                   {article.producedAt.split(".")[0]}
                 </div>
               )}
@@ -126,7 +126,7 @@ const ArticleList = ({
             isMobile
               ? "w-full"
               : "w-[calc(calc(100%-min(96px,3vw))/3)]",
-            "text-[20px]",
+            "text-large",
             "cursor-default",
             "flex flex-col",
             "space-y-[6px]",

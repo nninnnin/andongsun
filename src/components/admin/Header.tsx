@@ -9,7 +9,7 @@ const AdminHeader = () => {
         className={clsx(
           "fixed",
           "flex bg-transparent text-white w-fit cursor-pointer",
-          "text-[20px] leading-[150%]",
+          "text-large leading-[150%]",
           "mt-[18px] ml-[32px]"
         )}
       >

@@ -43,7 +43,7 @@ AdminPage.ArticleList = ({
         .map((article, index) => (
           <div
             className={clsx(
-              "text-white text-[20px] flex space-x-10 border-b-[1px]",
+              "text-white text-large flex space-x-10 border-b-[1px]",
               "pt-[24px] first:pt-0 pb-[20px]",
               "cursor-pointer",
               "w-full overflow-hidden",

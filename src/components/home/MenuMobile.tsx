@@ -178,7 +178,7 @@ MenuMobile.Item = ({
         "h-[60px] w-full",
         "flex items-center justify-start",
         "pl-[18px]",
-        "text-[20px]",
+        "text-large",
         className
       )}
       onClick={(e) => {

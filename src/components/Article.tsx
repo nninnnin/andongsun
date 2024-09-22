@@ -71,16 +71,16 @@ const Article = () => {
             />
           )}
 
-          <p className="text-[20px] leading-[150%]">
+          <p className="text-large leading-[150%]">
             {title}
           </p>
 
-          <p className="font-semibold text-[9px]">
+          <p className="font-semibold text-small">
             {removePrefixZero(producedAt)}
           </p>
 
           <p
-            className="text-[9px]"
+            className="text-small"
             dangerouslySetInnerHTML={{
               __html: credits,
             }}
@@ -88,8 +88,9 @@ const Article = () => {
 
           <p
             className={clsx(
-              "leading-[166%] text-left break-keep",
-              "border-t-[1px] border-black pt-[36px] !mt-[24px]"
+              "leading-[180%] text-left break-keep",
+              "border-t-[1px] border-black pt-[36px] !mt-[36px]",
+              "text-medium"
             )}
             dangerouslySetInnerHTML={{
               __html: contents,
@@ -109,7 +110,7 @@ const Article = () => {
             className="rotate-[270deg] mr-[0.5em] h-[0.8em]"
             src="/arrow--top.svg"
           />{" "}
-          <span className="text-[20px]">List</span>
+          <span className="text-large">List</span>
         </div>
       </motion.div>
 
@@ -127,7 +128,7 @@ const Article = () => {
             className="rotate-[270deg] h-[20px] mx-[6.5px]"
             src="/arrow--top.svg"
           />{" "}
-          <span className="text-[20px]">List</span>
+          <span className="text-large">List</span>
         </div>
       )}
     </>

@@ -33,7 +33,7 @@ const HomeMobile = () => {
             )}
           >
             <Section.Header
-              className={clsx("font-bold text-[20px]")}
+              className={clsx("font-bold text-large")}
             >
               {SectionTitles[selectedSection]}
             </Section.Header>

@@ -13,6 +13,7 @@ import { selectedArticleState } from "@/states";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { selectedTagState } from "@/components/ArticleTags";
 import { filterArticleList } from "@/utils/filters";
+import { orderBy, sortBy } from "lodash";
 
 const ArticleList = ({
   sectionName,
@@ -54,6 +55,12 @@ const ArticleList = ({
     selectedTag
   );
 
+  const sortedArticles = orderBy(
+    filteredArticles,
+    ["producedAt", "updatedAt"],
+    ["desc", "desc"]
+  );
+
   return (
     <motion.ul
       animate={controls}
@@ -61,7 +68,7 @@ const ArticleList = ({
         "w-full flex flex-wrap justify-between pb-[24px] px-[20px]"
       )}
     >
-      {filteredArticles.map(
+      {sortedArticles.map(
         (article: ArticleInterface) => {
           return (
             <li
@@ -120,7 +127,7 @@ const ArticleList = ({
         }
       )}
 
-      {filteredArticles.length % 2 === 0 && (
+      {filteredArticles.length % 3 === 2 && (
         <li
           className={clsx(
             isMobile

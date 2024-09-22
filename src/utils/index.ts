@@ -80,11 +80,17 @@ export const getCategoryId = (
 export const transformArticles = (
   bareArticle: BareArticle
 ): ArticleInterface[] => {
+  console.log(bareArticle);
+
   return pipe(
     bareArticle,
     pluckList,
     mapListItems((item: any) => {
-      return { ...pluckData(item), id: item.uid };
+      return {
+        ...pluckData(item),
+        id: item.uid,
+        updatedAt: item.updateAt ?? item.createdAt,
+      };
     }),
     mapListItems((item: any) => {
       const newItem = pipe(

@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import React, { Suspense } from "react";
+import React from "react";
 
 import Tags from "@/components/admin/Tags";
 import Title from "@/components/admin/Title";

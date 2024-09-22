@@ -32,6 +32,7 @@ export const createArticleBody = (
     published,
     articleType,
     title,
+    year,
     contents,
     caption,
     credits,
@@ -51,7 +52,7 @@ export const createArticleBody = (
       contents: contents!,
       caption: caption!,
       credits: credits!,
-      producedAt: format(new Date(), "yyyy.MM"),
+      producedAt: format(year, "yyyy.MM"),
       tags: [],
       thumbnailPath: thumbnailPath ?? "",
       thumbnailName:

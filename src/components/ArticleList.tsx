@@ -93,7 +93,7 @@ const ArticleList = ({
             >
               {article.thumbnailPath ? (
                 <img
-                  className="min-h-[160px] max-h-[240px] object-cover"
+                  className="min-h-[160px] object-cover"
                   src={article.thumbnailPath}
                 />
               ) : (

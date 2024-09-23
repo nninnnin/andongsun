@@ -102,7 +102,8 @@ const ArticleList = ({
                     "w-full",
                     "border-t-[1px] border-black",
                     "text-large leading-[150%] pt-[8px]",
-                    "line-clamp-[8]"
+                    "line-clamp-[8]",
+                    "break-keep"
                   )}
                 >
                   {article.caption}

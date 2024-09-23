@@ -84,7 +84,7 @@ const Article = () => {
           <p
             className="text-small"
             dangerouslySetInnerHTML={{
-              __html: credits,
+              __html: credits.replaceAll("\n", "<br>"),
             }}
           ></p>
 

@@ -13,7 +13,6 @@ import {
   SectionTitles,
   SectionColors,
 } from "@/constants";
-import { selectedArticleState } from "@/states";
 import { selectedSectionNameState } from "@/components/Section";
 
 const HomeDesktop = () => {
@@ -28,9 +27,13 @@ HomeDesktop.Sections = () => {
   const [selectedSectionName, setSelectedSectionName] =
     useRecoilState(selectedSectionNameState);
 
-  const resetSelectedArticle = useResetRecoilState(
-    selectedArticleState
-  );
+  const resetSelectedArticle = () => {
+    window.history.pushState(
+      null,
+      "",
+      window.location.pathname
+    );
+  };
 
   return useMemo(() => {
     return Object.values(SectionNames).map(

@@ -8,7 +8,6 @@ import React, { useEffect } from "react";
 
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
-import { selectedArticleState } from "@/states/index";
 import { filterArticleList } from "@/utils/filters";
 
 export const selectedTagState = atom<null | string>({
@@ -23,10 +22,6 @@ const ArticleTags = ({
   sectionName: SectionNames;
   className?: string;
 }) => {
-  const setSelectedArticle = useSetRecoilState(
-    selectedArticleState
-  );
-
   const [selectedTag, setSelectedTag] = useRecoilState(
     selectedTagState
   );
@@ -55,6 +50,14 @@ const ArticleTags = ({
       return [...acc, cur];
     }, [] as { tagName: string; uid: string }[]);
 
+  const resetSelectedArticle = () => {
+    window.history.pushState(
+      null,
+      "",
+      window.location.pathname
+    );
+  };
+
   return (
     <ul
       className={clsx(
@@ -73,7 +76,7 @@ const ArticleTags = ({
           )}
           onClick={() => {
             setSelectedTag(null);
-            setSelectedArticle(null);
+            resetSelectedArticle();
           }}
         >
           All
@@ -94,7 +97,7 @@ const ArticleTags = ({
             )}
             onClick={() => {
               setSelectedTag(tag.tagName);
-              setSelectedArticle(null);
+              resetSelectedArticle();
             }}
           >
             {tag.tagName}

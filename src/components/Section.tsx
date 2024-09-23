@@ -1,8 +1,4 @@
-import {
-  atom,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
+import { atom, useSetRecoilState } from "recoil";
 import clsx from "clsx";
 import { MouseEvent } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -10,11 +6,11 @@ import { AnimatePresence } from "framer-motion";
 import ArticleTags, {
   selectedTagState,
 } from "@/components/ArticleTags";
-import { selectedArticleState } from "@/states";
 import ArticleList from "@/components/ArticleList";
 import Article from "@/components/Article";
 import { SectionNames } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import { useSearchParams } from "next/navigation";
 
 export const selectedSectionNameState =
   atom<null | SectionNames>({
@@ -61,13 +57,17 @@ Section.Header = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  const setSelectedArticle = useSetRecoilState(
-    selectedArticleState
-  );
-
   const setSelectedTag = useSetRecoilState(
     selectedTagState
   );
+
+  const resetArticleId = () => {
+    window.history.pushState(
+      null,
+      "",
+      window.location.pathname
+    );
+  };
 
   return (
     <h1
@@ -76,7 +76,7 @@ Section.Header = ({
         className
       )}
       onClick={() => {
-        setSelectedArticle(null);
+        resetArticleId();
         setSelectedTag(null);
       }}
     >
@@ -90,9 +90,10 @@ Section.Contents = ({
 }: {
   sectionName: SectionNames;
 }) => {
-  const selectedArticle = useRecoilValue(
-    selectedArticleState
-  );
+  const searchParams = useSearchParams();
+
+  const selectedArticle =
+    searchParams.get("articleId");
 
   const { isMobile } = useBreakpoint();
 

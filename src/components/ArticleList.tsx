@@ -1,19 +1,15 @@
 import clsx from "clsx";
 import React, { useEffect } from "react";
-import {
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilValue } from "recoil";
 import { motion, useAnimation } from "framer-motion";
 
 import { ArticleInterface } from "@/types/article";
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
-import { selectedArticleState } from "@/states";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { selectedTagState } from "@/components/ArticleTags";
 import { filterArticleList } from "@/utils/filters";
-import { orderBy, sortBy } from "lodash";
+import { orderBy } from "lodash";
 
 const ArticleList = ({
   sectionName,
@@ -21,10 +17,6 @@ const ArticleList = ({
   sectionName: SectionNames;
 }) => {
   const { data: articles } = useArticles();
-
-  const setSelectedArticle = useSetRecoilState(
-    selectedArticleState
-  );
 
   const selectedTag = useRecoilValue(selectedTagState);
 
@@ -85,7 +77,18 @@ const ArticleList = ({
               )}
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedArticle(article.id);
+
+                const params = new URLSearchParams();
+
+                params.set("articleId", article.id);
+
+                window.history.pushState(
+                  null,
+                  "",
+                  `${
+                    window.location.pathname
+                  }?${params.toString()}`
+                );
               }}
             >
               {article.thumbnailPath ? (

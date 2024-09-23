@@ -1,18 +1,15 @@
-import {
-  useRecoilValue,
-  useResetRecoilState,
-} from "recoil";
+import { useRecoilValue } from "recoil";
 import clsx from "clsx";
 import React from "react";
 import { motion } from "framer-motion";
 
 import { SectionColors } from "@/constants";
 import useArticles from "@/hooks/useArticles";
-import { selectedArticleState } from "@/states";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { ArticleInterface } from "@/types/article";
 import { selectedSectionNameState } from "@/components/Section";
 import { removePrefixZero } from "@/utils";
+import { useSearchParams } from "next/navigation";
 
 const Article = () => {
   const { isMobile } = useBreakpoint();
@@ -21,13 +18,18 @@ const Article = () => {
     selectedSectionNameState
   );
 
-  const selectedArticle = useRecoilValue(
-    selectedArticleState
-  );
+  const searchParams = useSearchParams();
 
-  const resetSelectedArticle = useResetRecoilState(
-    selectedArticleState
-  );
+  const selectedArticle =
+    searchParams.get("articleId");
+
+  const resetSelectedArticle = () => {
+    window.history.pushState(
+      null,
+      "",
+      window.location.pathname
+    );
+  };
 
   const { data: articles, isLoading } = useArticles();
 

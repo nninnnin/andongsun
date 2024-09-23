@@ -21,13 +21,6 @@ export const articleState =
     default: articleDefault,
   });
 
-export const selectedArticleState = atom<
-  string | null
->({
-  key: "selectedArticleState",
-  default: null,
-});
-
 export const mediaState = atom<
   Array<{
     name: string;

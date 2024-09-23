@@ -2,6 +2,7 @@ import React from "react";
 import { useMemo, MouseEvent } from "react";
 import {
   useRecoilState,
+  useRecoilValue,
   useResetRecoilState,
 } from "recoil";
 import clsx from "clsx";
@@ -14,6 +15,9 @@ import {
   SectionColors,
 } from "@/constants";
 import { selectedSectionNameState } from "@/components/Section";
+import ArticleTags, {
+  selectedTagState,
+} from "@/components/ArticleTags";
 
 const HomeDesktop = () => {
   return (
@@ -24,6 +28,8 @@ const HomeDesktop = () => {
 };
 
 HomeDesktop.Sections = () => {
+  const selectedTag = useRecoilValue(selectedTagState);
+
   const [selectedSectionName, setSelectedSectionName] =
     useRecoilState(selectedSectionNameState);
 
@@ -85,25 +91,40 @@ HomeDesktop.Sections = () => {
 
             {isSelectedSection &&
               SectionNames.About === sectionName && (
-                <div className="opacity-0 pointer-events-none fade-in">
-                  <div className="text-large">
-                    Art Diary
-                  </div>
+                <div
+                  className={clsx(
+                    "flex flex-col pointer-events-none h-fullopacity-0 fade-in",
+                    "opacity-0",
+                    "fade-in"
+                  )}
+                >
+                  <ArticleTags
+                    sectionName={SectionNames.About}
+                  />
 
-                  <div
-                    className={clsx(
-                      "mt-[60px] max-w-[454px] break-keep font-medium"
+                  <div className="flex-1 mt-[60px]">
+                    {!!selectedTag ? (
+                      <Section.Contents
+                        sectionName={sectionName}
+                      />
+                    ) : (
+                      <div
+                        className={clsx(
+                          "max-w-[454px] break-keep font-medium"
+                        )}
+                      >
+                        Harper’s Bazaar Korea 피처
+                        디렉터 출신으로 현재 프리랜서
+                        에디터로 활동하며 출판과 전시를
+                        기획한다. IG{" "}
+                        <a
+                          className="underline"
+                          href="https://instagram.com/andongza"
+                        >
+                          @andongza
+                        </a>
+                      </div>
                     )}
-                  >
-                    Harper’s Bazaar Korea 피처 디렉터
-                    출신으로 현재 프리랜서 에디터로
-                    활동하며 출판과 전시를 기획한다. IG{" "}
-                    <a
-                      className="underline"
-                      href="https://instagram.com/andongza"
-                    >
-                      @andongza
-                    </a>
                   </div>
                 </div>
               )}
@@ -111,7 +132,7 @@ HomeDesktop.Sections = () => {
         );
       }
     );
-  }, [selectedSectionName]);
+  }, [selectedSectionName, selectedTag]);
 };
 
 export default HomeDesktop;

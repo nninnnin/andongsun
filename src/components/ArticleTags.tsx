@@ -2,13 +2,14 @@ import clsx from "clsx";
 import {
   atom,
   useRecoilState,
-  useSetRecoilState,
+  useRecoilValue,
 } from "recoil";
 import React, { useEffect } from "react";
 
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
 import { filterArticleList } from "@/utils/filters";
+import { selectedSectionNameState } from "@/components/Section";
 
 export const selectedTagState = atom<null | string>({
   key: "selectedTagState",
@@ -22,6 +23,10 @@ const ArticleTags = ({
   sectionName: SectionNames;
   className?: string;
 }) => {
+  const selectedSectionName = useRecoilValue(
+    selectedSectionNameState
+  );
+
   const [selectedTag, setSelectedTag] = useRecoilState(
     selectedTagState
   );
@@ -39,6 +44,9 @@ const ArticleTags = ({
     sectionName,
     null
   );
+
+  console.log("..", articles);
+  console.log("filtered", filteredArticles);
 
   const tags = filteredArticles
     .map((article) => article.tags[0])
@@ -67,21 +75,23 @@ const ArticleTags = ({
         className
       )}
     >
-      {tags && !!tags.length && (
-        <li
-          className={clsx(
-            "cursor-pointer",
-            selectedTag === null &&
-              "border-t-[1px] border-black"
-          )}
-          onClick={() => {
-            setSelectedTag(null);
-            resetSelectedArticle();
-          }}
-        >
-          All
-        </li>
-      )}
+      {tags &&
+        !!tags.length &&
+        selectedSectionName !== SectionNames.About && (
+          <li
+            className={clsx(
+              "cursor-pointer",
+              selectedTag === null &&
+                "border-t-[1px] border-black"
+            )}
+            onClick={() => {
+              setSelectedTag(null);
+              resetSelectedArticle();
+            }}
+          >
+            All
+          </li>
+        )}
 
       {tags.map((tag) => {
         const isSelectedTag =

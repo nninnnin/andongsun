@@ -1,4 +1,8 @@
-import { atom, useSetRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import clsx from "clsx";
 import { MouseEvent } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -92,6 +96,9 @@ Section.Contents = ({
 }) => {
   const searchParams = useSearchParams();
 
+  const selectedSection = useRecoilValue(
+    selectedSectionNameState
+  );
   const selectedArticle =
     searchParams.get("articleId");
 
@@ -103,16 +110,22 @@ Section.Contents = ({
     <div
       className={clsx(
         "section-contents",
+        "h-full",
         "pointer-events-none",
         animateFadeIn,
         "flex-1 overflow-y-scroll",
         isMobile && "!mb-[40px]"
       )}
     >
-      <ArticleTags
-        className="mb-[60px]"
-        sectionName={sectionName}
-      />
+      {selectedSection !== SectionNames.About && (
+        <ArticleTags
+          className={clsx(
+            "mb-[60px]",
+            isMobile && "!mb-[50px]"
+          )}
+          sectionName={sectionName}
+        />
+      )}
 
       <AnimatePresence>
         {selectedArticle ? (

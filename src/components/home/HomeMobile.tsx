@@ -11,14 +11,16 @@ import {
   SectionNames,
   SectionTitles,
 } from "@/constants";
+import ArticleTags, {
+  selectedTagState,
+} from "@/components/ArticleTags";
 
 const HomeMobile = () => {
   const selectedSection = useRecoilValue(
     selectedSectionNameState
   );
 
-  const isSelectedSection =
-    selectedSection === SectionNames.About;
+  const selectedTag = useRecoilValue(selectedTagState);
 
   return (
     <div
@@ -39,17 +41,32 @@ const HomeMobile = () => {
             </Section.Header>
 
             {selectedSection === SectionNames.About ? (
-              <p className="mt-[30px] max-w-[307px] break-keep">
-                Harper’s Bazaar Korea 피처 디렉터
-                출신으로 현재 프리랜서 에디터로
-                활동하며 출판과 전시를 기획한다. IG{" "}
-                <a
-                  className="underline"
-                  href="https://instagram.com/andongza"
-                >
-                  @andongza
-                </a>
-              </p>
+              <>
+                <ArticleTags
+                  sectionName={SectionNames.About}
+                />
+
+                <div className="mt-[50px]">
+                  {!!selectedTag ? (
+                    <Section.Contents
+                      sectionName={SectionNames.About}
+                    />
+                  ) : (
+                    <p className="max-w-[307px] break-keep">
+                      Harper’s Bazaar Korea 피처 디렉터
+                      출신으로 현재 프리랜서 에디터로
+                      활동하며 출판과 전시를 기획한다.
+                      IG{" "}
+                      <a
+                        className="underline"
+                        href="https://instagram.com/andongza"
+                      >
+                        @andongza
+                      </a>
+                    </p>
+                  )}
+                </div>
+              </>
             ) : (
               <Section.Contents
                 sectionName={selectedSection}

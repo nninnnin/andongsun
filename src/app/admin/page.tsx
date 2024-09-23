@@ -18,7 +18,7 @@ const AdminPage = () => {
 
   return (
     <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto">
-      <Link href="/admin/new">
+      <Link className="block w-fit" href="/admin/new">
         <button className="flex items-center p-3 px-5 mt-3 text-white bg-themeBlue">
           <span>New Project</span>
           <img className="ml-[40px]" src="/plus.svg" />
@@ -48,7 +48,7 @@ AdminPage.ArticleList = ({
   );
 
   return (
-    <>
+    <ul className="mt-[33px]">
       {articlesSorted.map((article, index) => (
         <div
           className={clsx(
@@ -84,7 +84,7 @@ AdminPage.ArticleList = ({
           </p>
         </div>
       ))}
-    </>
+    </ul>
   );
 };
 

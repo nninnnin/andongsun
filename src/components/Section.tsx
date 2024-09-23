@@ -119,20 +119,12 @@ Section.Contents = ({
       containerRef.current?.scrollTo({
         top: 0,
       });
-
-      setFade(false);
     }, 0);
   }, [containerRef, articleSelected]);
 
   const { isMobile } = useBreakpoint();
 
   const animateFadeIn = clsx("opacity-0", "fade-in");
-
-  const [fade, setFade] = useState(false);
-
-  const handleClick = () => {
-    setFade(true);
-  };
 
   return (
     <div
@@ -143,11 +135,8 @@ Section.Contents = ({
         animateFadeIn,
         "flex-1 overflow-y-scroll",
         isMobile && "!mb-[40px]",
-        "transition-opacity duration-500",
-        fade ? "opacity-0" : "opacity-100"
+        "transition-opacity duration-500"
       )}
-      onClick={handleClick}
-      onTouchEnd={handleClick}
       ref={containerRef}
     >
       {selectedSection !== SectionNames.About && (

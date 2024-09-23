@@ -18,6 +18,7 @@ import { selectedSectionNameState } from "@/components/Section";
 import ArticleTags, {
   selectedTagState,
 } from "@/components/ArticleTags";
+import useAbout from "@/hooks/useAbout";
 
 const HomeDesktop = () => {
   return (
@@ -40,6 +41,8 @@ HomeDesktop.Sections = () => {
       window.location.pathname
     );
   };
+
+  const about = useAbout();
 
   return useMemo(() => {
     return Object.values(SectionNames).map(
@@ -93,7 +96,7 @@ HomeDesktop.Sections = () => {
               SectionNames.About === sectionName && (
                 <div
                   className={clsx(
-                    "flex flex-col pointer-events-none h-fullopacity-0 fade-in",
+                    "flex flex-col pointer-events-none h-full opacity-0 fade-in",
                     "opacity-0",
                     "fade-in"
                   )}
@@ -112,18 +115,14 @@ HomeDesktop.Sections = () => {
                         className={clsx(
                           "max-w-[454px] break-keep font-medium"
                         )}
-                      >
-                        Harper’s Bazaar Korea 피처
-                        디렉터 출신으로 현재 프리랜서
-                        에디터로 활동하며 출판과 전시를
-                        기획한다. IG{" "}
-                        <a
-                          className="underline"
-                          href="https://instagram.com/andongza"
-                        >
-                          @andongza
-                        </a>
-                      </div>
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            about?.contents.replaceAll(
+                              "\n",
+                              "<br>"
+                            ) ?? "",
+                        }}
+                      ></div>
                     )}
                   </div>
                 </div>
@@ -132,7 +131,7 @@ HomeDesktop.Sections = () => {
         );
       }
     );
-  }, [selectedSectionName, selectedTag]);
+  }, [selectedSectionName, selectedTag, about]);
 };
 
 export default HomeDesktop;

@@ -14,6 +14,7 @@ import {
 import ArticleTags, {
   selectedTagState,
 } from "@/components/ArticleTags";
+import useAbout from "@/hooks/useAbout";
 
 const HomeMobile = () => {
   const selectedSection = useRecoilValue(
@@ -21,6 +22,8 @@ const HomeMobile = () => {
   );
 
   const selectedTag = useRecoilValue(selectedTagState);
+
+  const about = useAbout();
 
   return (
     <div
@@ -52,18 +55,16 @@ const HomeMobile = () => {
                       sectionName={SectionNames.About}
                     />
                   ) : (
-                    <p className="max-w-[307px] break-keep">
-                      Harper’s Bazaar Korea 피처 디렉터
-                      출신으로 현재 프리랜서 에디터로
-                      활동하며 출판과 전시를 기획한다.
-                      IG{" "}
-                      <a
-                        className="underline"
-                        href="https://instagram.com/andongza"
-                      >
-                        @andongza
-                      </a>
-                    </p>
+                    <p
+                      className="max-w-[307px] break-keep"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          about?.contents.replaceAll(
+                            "\n",
+                            "<br>"
+                          ) ?? "",
+                      }}
+                    ></p>
                   )}
                 </div>
               </>

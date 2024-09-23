@@ -4,7 +4,12 @@ import {
   useSetRecoilState,
 } from "recoil";
 import clsx from "clsx";
-import { MouseEvent } from "react";
+import {
+  MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { AnimatePresence } from "framer-motion";
 
 import ArticleTags, {
@@ -94,28 +99,56 @@ Section.Contents = ({
 }: {
   sectionName: SectionNames;
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const searchParams = useSearchParams();
 
   const selectedSection = useRecoilValue(
     selectedSectionNameState
   );
-  const selectedArticle =
-    searchParams.get("articleId");
+
+  const [articleSelected, setArticleSelected] =
+    useState<string | null>(null);
+
+  useEffect(() => {
+    setArticleSelected(searchParams.get("articleId"));
+  }, [searchParams.get("articleId")]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      containerRef.current?.scrollTo({
+        top: 0,
+      });
+
+      setFade(false);
+    }, 0);
+  }, [containerRef, articleSelected]);
 
   const { isMobile } = useBreakpoint();
 
   const animateFadeIn = clsx("opacity-0", "fade-in");
 
+  const [fade, setFade] = useState(false);
+
+  const handleClick = () => {
+    setFade(true);
+  };
+
   return (
     <div
       className={clsx(
-        "section-contents",
+        !isMobile && "section-contents",
         "h-full",
         "pointer-events-none",
         animateFadeIn,
         "flex-1 overflow-y-scroll",
-        isMobile && "!mb-[40px]"
+        isMobile && "!mb-[40px]",
+        "transition-opacity duration-500",
+        fade ? "opacity-0" : "opacity-100"
       )}
+      onClick={handleClick}
+      onTouchEnd={handleClick}
+      ref={containerRef}
     >
       {selectedSection !== SectionNames.About && (
         <ArticleTags
@@ -128,7 +161,7 @@ Section.Contents = ({
       )}
 
       <AnimatePresence>
-        {selectedArticle ? (
+        {articleSelected ? (
           <Article />
         ) : (
           <ArticleList sectionName={sectionName} />

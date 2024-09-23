@@ -45,9 +45,6 @@ const ArticleTags = ({
     null
   );
 
-  console.log("..", articles);
-  console.log("filtered", filteredArticles);
-
   const tags = filteredArticles
     .map((article) => article.tags[0])
     .filter((tag) => tag)

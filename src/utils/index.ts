@@ -80,8 +80,6 @@ export const getCategoryId = (
 export const transformArticles = (
   bareArticle: BareArticle
 ): ArticleInterface[] => {
-  console.log(bareArticle);
-
   return pipe(
     bareArticle,
     pluckList,

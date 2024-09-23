@@ -145,8 +145,6 @@ const RichTextEditor = () => {
       quillRef
         .getEditor()
         .root.addEventListener("click", (e) => {
-          console.log(e.target);
-
           // @ts-ignore
           if (e.target.tagName === "IMG") {
             console.log("image clicked");

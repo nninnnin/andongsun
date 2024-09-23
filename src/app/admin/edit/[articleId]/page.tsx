@@ -33,8 +33,6 @@ const EditPage = () => {
         "articles"
       );
 
-      console.log(articlesFromServer);
-
       if (!articlesFromServer) return;
 
       const articleFromServer =
@@ -44,8 +42,6 @@ const EditPage = () => {
         );
 
       if (!articleFromServer) return;
-
-      console.log(articleFromServer);
 
       setArticle((prev) => {
         const {

@@ -7,7 +7,6 @@ import { useOverlay } from "@toss/use-overlay";
 import useMemex from "@/hooks/useMemex";
 import { articleState } from "@/states";
 import { createArticleBody } from "@/utils";
-import { getCategoryId } from "@/utils/index";
 import Alert from "@/components/admin/common/Alert";
 
 const DeleteButton = () => {
@@ -15,22 +14,13 @@ const DeleteButton = () => {
 
   const { articleId } = useParams();
 
-  const { updateArticle, getArticleCategories } =
-    useMemex();
+  const { updateArticle } = useMemex();
 
   const article = useRecoilValue(articleState);
 
   const removeArticle = async () => {
-    const categories = await getArticleCategories();
-    const categoryId = getCategoryId(
-      article.articleType!,
-      categories
-    );
-
-    const articleBody = createArticleBody({
+    const articleBody = await createArticleBody({
       ...article,
-      articleType: categoryId,
-      thumbnailPath: "",
       remove: true,
     });
 

@@ -66,9 +66,13 @@ AdminPage.ArticleList = ({
 }) => {
   const router = useRouter();
 
-  const articlesFiltered = articles.filter(
-    (article) => !article.removed
-  );
+  const articlesFiltered = articles
+    .filter((article) => !article.removed)
+    .filter(
+      (article) =>
+        // @ts-ignore
+        article.articleType !== "AboutEditor"
+    );
 
   const articlesSorted = orderBy(
     articlesFiltered,
@@ -155,7 +159,9 @@ AdminPage.ArticleListItem = ({
 
       <p className="flex-1 min-w-[100px]">{tag}</p>
 
-      <p className="min-w-[100px]">{producedAt}.</p>
+      <p className="min-w-[100px]">
+        {producedAt ? `${producedAt}.` : ""}
+      </p>
     </div>
   );
 };

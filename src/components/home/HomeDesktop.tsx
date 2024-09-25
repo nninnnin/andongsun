@@ -77,7 +77,7 @@ HomeDesktop.Sections = () => {
           >
             <Section.Header
               className={clsx(
-                "w-[calc(100%-0px)] whitespace-nowrap overflow-hidden",
+                "w-[calc(100%-0px)] min-h-[25.5px] whitespace-nowrap overflow-hidden",
                 "text-large",
                 isSelectedSection && "font-bold"
               )}
@@ -103,12 +103,15 @@ HomeDesktop.Sections = () => {
                 >
                   <ArticleTags
                     sectionName={SectionNames.About}
+                    className="mb-[60px]"
                   />
 
                   {!!selectedTag ? (
-                    <Section.Contents
-                      sectionName={sectionName}
-                    />
+                    <div className="flex-1 overflow-y-scroll mb-[24px]">
+                      <Section.Contents
+                        sectionName={sectionName}
+                      />
+                    </div>
                   ) : (
                     <div
                       className={clsx(

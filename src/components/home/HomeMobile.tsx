@@ -47,6 +47,7 @@ const HomeMobile = () => {
               <>
                 <ArticleTags
                   sectionName={SectionNames.About}
+                  className="mb-[50px]"
                 />
 
                 {!!selectedTag ? (

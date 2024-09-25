@@ -36,7 +36,7 @@ const AdminPage = () => {
           <AdminPage.ArticleList articles={articles} />
         </div>
       ) : (
-        <Noom />
+        <></>
       )}
     </AnimatePresence>
   );

@@ -4,7 +4,7 @@ import React from "react";
 
 const AdminHeader = () => {
   return (
-    <Link href="/admin">
+    <>
       <div
         className={clsx(
           "fixed",
@@ -13,10 +13,22 @@ const AdminHeader = () => {
           "mt-[18px] ml-[32px]"
         )}
       >
-        Dongsun An
-        <b className="ml-[16px] font-bold">Admin</b>
+        <Link href="/admin">
+          Dongsun An
+          <b className="ml-[16px] font-bold">Admin</b>
+        </Link>
       </div>
-    </Link>
+
+      <div
+        className={clsx(
+          "fixed right-[30px] top-[18px]",
+          "flex bg-transparent text-white w-fit cursor-pointer",
+          "text-large leading-[150%]"
+        )}
+      >
+        <Link href="/">Home</Link>
+      </div>
+    </>
   );
 };
 

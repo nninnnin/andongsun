@@ -4,6 +4,10 @@ import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
 import { ArticleInterface } from "@/types/article";
 import clsx from "clsx";
+import {
+  AnimatePresence,
+  motion,
+} from "framer-motion";
 import { orderBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,21 +16,46 @@ import React from "react";
 const AdminPage = () => {
   const { data: articles } = useArticles();
 
-  if (!articles) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto">
-      <Link className="block w-fit" href="/admin/new">
-        <button className="flex items-center p-3 px-5 mt-3 text-white bg-themeBlue">
-          <span>New Project</span>
-          <img className="ml-[40px]" src="/plus.svg" />
-        </button>
-      </Link>
+    <AnimatePresence>
+      {articles ? (
+        <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto">
+          <Link
+            className="block w-fit"
+            href="/admin/new"
+          >
+            <button className="flex items-center p-3 px-5 mt-3 text-white bg-themeBlue">
+              <span>New Project</span>
+              <img
+                className="ml-[40px]"
+                src="/plus.svg"
+              />
+            </button>
+          </Link>
 
-      <AdminPage.ArticleList articles={articles} />
-    </div>
+          <AdminPage.ArticleList articles={articles} />
+        </div>
+      ) : (
+        <Noom />
+      )}
+    </AnimatePresence>
+  );
+};
+
+const Noom = () => {
+  return (
+    <motion.div
+      className="w-[60vw] min-w-[750px] rounded-md mx-auto bg-slate-100 mt-[90px] h-[calc(100dvh-150px)] bg-opacity-5"
+      initial={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.5,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+    ></motion.div>
   );
 };
 

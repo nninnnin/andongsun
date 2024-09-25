@@ -2,7 +2,10 @@
 
 import clsx from "clsx";
 import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import {
+  useRecoilValue,
+  useResetRecoilState,
+} from "recoil";
 
 import useBreakpoint from "@/hooks/useBreakpoint";
 import HomeDesktop from "@/components/home/HomeDesktop";
@@ -15,12 +18,22 @@ export default function Home() {
     selectedSectionNameState
   );
 
+  const resetSelectedArticle = () => {
+    window.history.pushState(
+      null,
+      "",
+      window.location.pathname
+    );
+  };
+
   const router = useRouter();
 
   useEffect(() => {
     if (!selectedSection) {
       router.replace("/");
     }
+
+    resetSelectedArticle();
   }, [selectedSection]);
 
   const { isMobile } = useBreakpoint();

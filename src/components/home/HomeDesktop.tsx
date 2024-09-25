@@ -105,26 +105,24 @@ HomeDesktop.Sections = () => {
                     sectionName={SectionNames.About}
                   />
 
-                  <div className="flex-1 mt-[60px]">
-                    {!!selectedTag ? (
-                      <Section.Contents
-                        sectionName={sectionName}
-                      />
-                    ) : (
-                      <div
-                        className={clsx(
-                          "max-w-[454px] break-keep font-medium"
-                        )}
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            about?.contents.replaceAll(
-                              "\n",
-                              "<br>"
-                            ) ?? "",
-                        }}
-                      ></div>
-                    )}
-                  </div>
+                  {!!selectedTag ? (
+                    <Section.Contents
+                      sectionName={sectionName}
+                    />
+                  ) : (
+                    <div
+                      className={clsx(
+                        "max-w-[454px] break-keep font-medium"
+                      )}
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          about?.contents.replaceAll(
+                            "\n",
+                            "<br>"
+                          ) ?? "",
+                      }}
+                    ></div>
+                  )}
                 </div>
               )}
           </Section.Container>

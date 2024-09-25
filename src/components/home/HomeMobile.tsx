@@ -49,24 +49,22 @@ const HomeMobile = () => {
                   sectionName={SectionNames.About}
                 />
 
-                <div className="mt-[50px]">
-                  {!!selectedTag ? (
-                    <Section.Contents
-                      sectionName={SectionNames.About}
-                    />
-                  ) : (
-                    <p
-                      className="max-w-[307px] break-keep"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          about?.contents.replaceAll(
-                            "\n",
-                            "<br>"
-                          ) ?? "",
-                      }}
-                    ></p>
-                  )}
-                </div>
+                {!!selectedTag ? (
+                  <Section.Contents
+                    sectionName={SectionNames.About}
+                  />
+                ) : (
+                  <p
+                    className="max-w-[307px] break-keep"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        about?.contents.replaceAll(
+                          "\n",
+                          "<br>"
+                        ) ?? "",
+                    }}
+                  ></p>
+                )}
               </>
             ) : (
               <Section.Contents

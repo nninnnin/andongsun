@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import Mf from "@rebel9/memex-fetcher";
+
 const {
   pipe,
   pluckList,
@@ -16,31 +17,37 @@ import {
   BareArticle,
 } from "@/types/article";
 import { SectionNames } from "@/constants";
+import { getThumbnailPath } from "@/utils/submit";
+import { getArticleCategories } from "@/utils/memex";
 
-type Argument = Omit<
-  ArticleStateInterface,
-  "articleType"
-> & {
-  articleType: number | null;
+type Argument = ArticleStateInterface & {
   remove?: boolean;
 };
 
-export const createArticleBody = (
+export const createArticleBody = async (
   articleState: Argument
-): ArticleBody => {
+): Promise<ArticleBody> => {
   const {
     published,
-    articleType,
     title,
     year,
     contents,
     caption,
     credits,
     thumbnail,
-    thumbnailPath,
     thumbnailName,
     remove,
   } = articleState;
+
+  const categories = await getArticleCategories();
+  const articleType = getCategoryId(
+    articleState.articleType!,
+    categories
+  );
+
+  const thumbnailPath = await getThumbnailPath(
+    articleState
+  );
 
   return {
     publish: true, // 이것으로는 아무것도 결정하지 않음, 항상 true

@@ -10,33 +10,28 @@ import {
 } from "next/navigation";
 import clsx from "clsx";
 import { useSWRConfig } from "swr";
+import Mf from "@rebel9/memex-fetcher";
 
-import {
-  convertDOMToString,
-  convertStringToDOM,
-  createArticleBody,
-} from "@/utils";
+const { pipe } = Mf;
+
+import { createArticleBody } from "@/utils";
 import useMemex from "@/hooks/useMemex";
 import { articleState, mediaState } from "@/states";
-import { getCategoryId } from "@/utils/index";
 import useTags from "@/hooks/useTags";
 import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
 import Spinner from "@/components/admin/common/Spinner";
 import { ArticleStateInterface } from "@/types/article";
+import {
+  replaceImageTags,
+  tagStringsToPaths,
+} from "@/utils/submit";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();
 
-  const {
-    postArticle,
-    updateArticle,
-    getArticleCategories,
-    registerImage,
-    readImage,
-    postImage,
-    postTag,
-  } = useMemex();
+  const { postArticle, updateArticle, postTag } =
+    useMemex();
 
   const article = useRecoilValue(articleState);
   const mediaContents = useRecoilValue(mediaState);
@@ -56,44 +51,10 @@ const SubmitButton = () => {
   const submitArticle = async (
     article: ArticleStateInterface
   ) => {
-    const categories = await getArticleCategories();
-
-    const categoryId = getCategoryId(
-      article.articleType!,
-      categories
+    // 아티클 바디 생성
+    const articleBody = await createArticleBody(
+      article
     );
-
-    let imagePath = "";
-
-    const hasChangedThumbnail = !!article.thumbnail;
-
-    if (hasChangedThumbnail) {
-      const thumbnailName = article.thumbnail!.name;
-
-      const hasImageAlready = await readImage(
-        thumbnailName
-      );
-
-      if (hasImageAlready) {
-        imagePath = hasImageAlready.data.path;
-      } else {
-        const registeredPath = await registerImage(
-          article.thumbnail!
-        );
-
-        imagePath = registeredPath;
-
-        await postImage(thumbnailName, registeredPath);
-      }
-    } else {
-      imagePath = article.thumbnailPath!;
-    }
-
-    const articleBody = createArticleBody({
-      ...article,
-      articleType: categoryId,
-      thumbnailPath: imagePath,
-    });
 
     // 새로운 태그 세팅
     const newTags: Array<string> = [];
@@ -109,7 +70,6 @@ const SubmitButton = () => {
 
       newTags.push(tagId);
     } else {
-      // 새롭게 태그를 등록해야 한다.
       const tagId = await postTag(article.tag);
 
       newTags.push(tagId);
@@ -128,83 +88,13 @@ const SubmitButton = () => {
     let newContents = `${contents}`;
 
     if (imageTagStrings) {
-      const imagePaths = await Promise.all(
-        imageTagStrings.map(
-          async (tagString: string) => {
-            const dom = convertStringToDOM(tagString);
-
-            const imageName = dom?.alt || "";
-
-            if (!imageName) {
-              return false;
-            }
-
-            const hasImageAlready = await readImage(
-              imageName
-            );
-
-            if (hasImageAlready) {
-              return {
-                name: imageName,
-                path: hasImageAlready.data.path,
-                width: dom?.getAttribute("width"),
-                style: dom?.getAttribute("style"),
-                align: dom?.getAttribute("align"),
-              };
-            }
-
-            const media = mediaContents.find(
-              (media) => media.name === imageName
-            );
-
-            if (!media) {
-              return false;
-            }
-
-            const registeredPath = await registerImage(
-              media.file
-            );
-
-            const result = await postImage(
-              imageName,
-              registeredPath
-            );
-
-            return {
-              name: imageName,
-              path: registeredPath,
-              width: dom?.getAttribute("width"),
-              style: dom?.getAttribute("style"),
-              align: dom?.getAttribute("align"),
-            };
-          }
-        )
-      );
-
-      newContents = newContents.replace(
-        /<img\s+[^>]*src="([^"]+)"[^>]*>/g,
-        () => {
-          const imagePath = imagePaths.shift();
-
-          if (!imagePath) {
-            return "<img src='nothing' />";
-          }
-
-          const { path, name, width, style, align } =
-            imagePath;
-
-          const newImage = new Image();
-          newImage.src = path;
-          newImage.alt = name;
-          newImage.setAttribute("style", style ?? "");
-          newImage.setAttribute("align", align ?? "");
-
-          if (width) {
-            newImage.width = parseInt(width);
-          }
-
-          return convertDOMToString(newImage);
-        }
+      newContents = pipe(
+        await tagStringsToPaths(
+          imageTagStrings,
+          mediaContents
+        ),
+        (imagePaths: Array<Record<string, string>>) =>
+          replaceImageTags(imagePaths, newContents)
       );
     }
 
@@ -290,6 +180,11 @@ const SubmitButton = () => {
                     router.push("/admin");
                   } catch (error) {
                     closeSpinner();
+
+                    console.log(
+                      "업로드 중 에러 발생:",
+                      error
+                    );
 
                     overlay.open(
                       ({ close, isOpen }) => (

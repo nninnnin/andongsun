@@ -14,10 +14,12 @@
     "@rebel9/memex-fetcher": "^1.3.0",
     "@toss/use-overlay": "^1.4.0",
     "@toss/utils": "^1.5.0",
+    "@types/fxjs": "^0.15.3",
     "@types/lodash": "^4.17.7",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.5.4",
+    "fxjs": "^0.21.3",
     "lodash": "^4.17.21",
     "next": "14.2.5",
     "quill": "^1.3.7",
@@ -27,6 +29,7 @@
     "react-dom": "^18",
     "react-quill": "^2.0.0",
     "recoil": "^0.7.7",
+    "sanitize-filename": "^1.6.3",
     "swr": "^2.2.5"
   },
   "devDependencies": {

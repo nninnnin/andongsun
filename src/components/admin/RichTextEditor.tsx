@@ -62,6 +62,7 @@ import useArticle from "@/hooks/useArticle";
 import { mediaState } from "@/states";
 import { converFileToBase64 } from "@/utils/index";
 import { usePathname } from "next/navigation";
+import sanitize from "sanitize-filename";
 
 export const richEditorLoadedState = atom({
   key: "richEditorLoadedState",
@@ -166,7 +167,7 @@ const RichTextEditor = () => {
       setMediaContents((prev) => [
         ...prev,
         {
-          name: file.name,
+          name: sanitize(file.name),
           file: file,
         },
       ]);
@@ -188,10 +189,17 @@ const RichTextEditor = () => {
       );
 
       setTimeout(() => {
-        const [leaf] = quill.getLeaf(range.index);
+        const [line] = quill.getLine(range.index);
 
-        if (leaf && leaf.domNode) {
-          leaf.domNode.alt = file.name;
+        // Iterate through all leaves in the line
+        let lastImageLeaf: any = line.children.tail;
+
+        // const [leaf] = quill.getLeaf(range.index);
+
+        if (lastImageLeaf && lastImageLeaf.domNode) {
+          lastImageLeaf.domNode.alt = sanitize(
+            file.name
+          );
         }
 
         handleChange(quill.root.innerHTML);

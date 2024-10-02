@@ -1,61 +1,107 @@
 "use client";
 
-import { SectionNames } from "@/constants";
-import useArticles from "@/hooks/useArticles";
-import { ArticleInterface } from "@/types/article";
 import clsx from "clsx";
-import {
-  AnimatePresence,
-  motion,
-} from "framer-motion";
+import React from "react";
+import { AnimatePresence } from "framer-motion";
 import { orderBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+
+import { SectionNames } from "@/constants";
+import useArticles from "@/hooks/useArticles";
+import { ArticleInterface } from "@/types/article";
+import TagFilter, {
+  tagFilterState,
+  필터기본값 as 태그필터기본값,
+} from "@/components/admin/TagFilter";
+import CategoryFilter, {
+  categoryFilterState,
+  필터기본값 as 카테고리필터기본값,
+} from "@/components/admin/CategoryFilter";
+import { useRecoilValue } from "recoil";
 
 const AdminPage = () => {
   const { data: articles } = useArticles();
 
+  const categoryFilter = useRecoilValue(
+    categoryFilterState
+  );
+
+  const tagFilter = useRecoilValue(tagFilterState);
+
+  if (!articles) return <></>;
+
+  const filteredArticles = articles
+    .filter((article) => {
+      const noCategoryFilter =
+        categoryFilter === 카테고리필터기본값;
+
+      if (noCategoryFilter) {
+        return true;
+      }
+
+      return article.articleType === categoryFilter;
+    })
+    .filter((article) => {
+      if (tagFilter === 태그필터기본값) {
+        return true;
+      }
+
+      return article.tags[0]?.tagName === tagFilter;
+    });
+
   return (
     <AnimatePresence>
-      {articles ? (
-        <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto">
-          <Link
-            className="block w-fit"
-            href="/admin/new"
-          >
-            <button className="flex items-center p-3 px-5 mt-3 text-white bg-themeBlue">
-              <span>New Project</span>
-              <img
-                className="ml-[40px]"
-                src="/plus.svg"
-              />
-            </button>
-          </Link>
+      <AdminPage.Container>
+        <AdminPage.Header>
+          <AdminPage.NewArticleButton />
 
-          <AdminPage.ArticleList articles={articles} />
-        </div>
-      ) : (
-        <></>
-      )}
+          <div className="flex space-x-[1.7em]">
+            <CategoryFilter />
+            <TagFilter />
+          </div>
+        </AdminPage.Header>
+
+        <AdminPage.ArticleList
+          articles={filteredArticles}
+        />
+      </AdminPage.Container>
     </AnimatePresence>
   );
 };
 
-const Noom = () => {
+AdminPage.Container = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
-    <motion.div
-      className="w-[60vw] min-w-[750px] rounded-md mx-auto bg-slate-100 mt-[90px] h-[calc(100dvh-150px)] bg-opacity-5"
-      initial={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.5,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-    ></motion.div>
+    <div className="mt-[90px] w-[60vw] min-w-[750px] mx-auto h-fit">
+      {children}
+    </div>
+  );
+};
+
+AdminPage.Header = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className="flex justify-between items-end">
+      {children}
+    </div>
+  );
+};
+
+AdminPage.NewArticleButton = () => {
+  return (
+    <Link className="block w-fit" href="/admin/new">
+      <button className="flex items-center p-3 px-5 text-white bg-themeBlue">
+        <span>New Project</span>
+        <img className="ml-[40px]" src="/plus.svg" />
+      </button>
+    </Link>
   );
 };
 
@@ -147,19 +193,15 @@ AdminPage.ArticleListItem = ({
       )}
       onClick={handleClick}
     >
-      <h2 className="flex-1 min-w-[240px]">{title}</h2>
-
-      <p className="flex-1 min-w-[200px] whitespace-nowrap truncate">
-        {credits}
-      </p>
-
-      <p className="flex-1 min-w-[100px]">
+      <p className="text-center w-[60px]">
         {articleType}
       </p>
 
-      <p className="flex-1 min-w-[100px]">{tag}</p>
+      <p className="text-center w-[50px]">{tag}</p>
 
-      <p className="min-w-[100px]">
+      <h2 className="flex-1 min-w-[240px]">{title}</h2>
+
+      <p className="min-w-[100px] text-right">
         {producedAt ? `${producedAt}.` : ""}
       </p>
     </div>

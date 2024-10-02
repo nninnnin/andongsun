@@ -32,7 +32,7 @@ const Dropdown = ({
     if (!container) return;
 
     container.style.width = `${
-      Math.ceil(listRef.current.scrollWidth) + 1
+      Math.ceil(listRef.current.scrollWidth) + 24
     }px`;
   }, [listRef]);
 

@@ -58,8 +58,11 @@ const Article = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
         exit={{ opacity: 0 }}
         className={clsx(
-          "h-full flex flex-col px-[68px] relative",
-          isMobile && "!px-[0px] h-[calc(100%-40px)]"
+          "absolute top-0 left-0",
+          "mt-[133.5px]",
+          isMobile && "mt-[100px]",
+          "h-full flex flex-col px-[92px]",
+          isMobile && "!px-[1.5em] h-[calc(100%-40px)]"
         )}
         onClick={(e) => {
           e.stopPropagation();
@@ -99,40 +102,7 @@ const Article = () => {
             }}
           ></p>
         </header>
-
-        <div
-          className={clsx(
-            "mt-auto cursor-pointer sticky bottom-0 w-fit translate-x-[-130%]",
-            "flex justify-start items-center",
-            isMobile && "hidden"
-          )}
-          onClick={() => resetSelectedArticle()}
-        >
-          <img
-            className="rotate-[270deg] mr-[0.5em] h-[0.8em]"
-            src="/arrow--top.svg"
-          />{" "}
-          <span className="text-large">List</span>
-        </div>
       </motion.div>
-
-      {isMobile && (
-        <div
-          className={clsx(
-            "w-[calc(100%)] h-[40px]",
-            "flex justify-start items-center",
-            "absolute bottom-[0px] left-[0px]",
-            `bg-${SectionColors[selectedSection!]}`
-          )}
-          onClick={() => resetSelectedArticle()}
-        >
-          <img
-            className="rotate-[270deg] h-[20px] mx-[6.5px]"
-            src="/arrow--top.svg"
-          />{" "}
-          <span className="text-large">List</span>
-        </div>
-      )}
     </>
   );
 };

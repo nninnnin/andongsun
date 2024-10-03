@@ -19,7 +19,10 @@ const config: Config = {
     "bg-pastelOrange",
     "bg-pastelYellow",
     "bg-pastelGrey",
-    "bg-pastelBlue",
+    "bg-pastelBlue1",
+    "bg-pastelBlue2",
+    "bg-pastelBlue3",
+    "bg-pastelBlue4",
   ],
   theme: {
     extend: {
@@ -30,6 +33,10 @@ const config: Config = {
         pastelGrey: "#FAFAFA",
         pastelBlue: "#F6F8FF",
         themeBlue: "#0067FF",
+        pastelBlue1: "#F6F8FB",
+        pastelBlue2: "#EDF2F6",
+        pastelBlue3: "#E6EDF3",
+        pastelBlue4: "#DEE9EF",
       },
       color: {
         themeBlue: "#0067FF",

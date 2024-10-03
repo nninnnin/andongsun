@@ -45,11 +45,13 @@ Section.Container = ({
   return (
     <section
       className={clsx(
+        "section",
         "flex-1",
         "transition-[min-width min-height width height] duration-700",
         "p-[24px] py-[18px]",
-        isMobile && "pb-0 px-[1.5em]",
         "flex flex-col",
+        isMobile &&
+          "pb-0 px-[1.5em] overflow-y-scroll",
         className
       )}
       onClick={handleClick}
@@ -79,18 +81,26 @@ Section.Header = ({
   };
 
   return (
-    <h1
+    <div
       className={clsx(
-        "text-[1em] cursor-pointer",
-        className
+        "flex flex-col",
+        "sticky top-0 z-[9999]"
       )}
-      onClick={() => {
-        resetArticleId();
-        setSelectedTag(null);
-      }}
     >
-      {children}
-    </h1>
+      <h1
+        className={clsx(
+          "relative z-[9999]",
+          "text-[1em] cursor-pointer",
+          className
+        )}
+        onClick={() => {
+          resetArticleId();
+          setSelectedTag(null);
+        }}
+      >
+        {children}
+      </h1>
+    </div>
   );
 };
 
@@ -143,7 +153,8 @@ Section.Contents = ({
         <ArticleTags
           className={clsx(
             "mb-[60px]",
-            isMobile && "!mb-[50px]"
+            isMobile &&
+              "!mb-[50px] !fixed !left-0 !w-screen"
           )}
           sectionName={sectionName}
         />

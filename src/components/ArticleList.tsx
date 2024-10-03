@@ -57,7 +57,10 @@ const ArticleList = ({
     <motion.ul
       animate={controls}
       className={clsx(
-        "w-full flex flex-wrap justify-between pb-[24px] px-[20px]"
+        "w-full flex flex-wrap justify-between pb-[24px] px-[44px]",
+        "absolute top-0 left-0",
+        "mt-[133.5px]",
+        isMobile && "mt-[100px]"
       )}
     >
       {sortedArticles.map(

@@ -16,8 +16,8 @@ export const SectionTitles = {
 
 export const SectionColors = {
   [SectionNames.About]: "white",
-  [SectionNames.Writing]: "pastelOrange",
-  [SectionNames.Directing]: "pastelYellow",
-  [SectionNames.Curating]: "pastelGrey",
-  [SectionNames.Moderating]: "pastelBlue",
+  [SectionNames.Writing]: "pastelBlue1",
+  [SectionNames.Directing]: "pastelBlue2",
+  [SectionNames.Curating]: "pastelBlue3",
+  [SectionNames.Moderating]: "pastelBlue4",
 };

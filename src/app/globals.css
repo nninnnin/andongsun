@@ -61,6 +61,17 @@ object {
   pointer-events: none;
 }
 
+.section {
+  position: relative;
+}
+
 .section-contents {
   overscroll-behavior: none;
+
+  width: 100%;
+  height: 100dvh !important;
+
+  position: absolute;
+  top: 0;
+  left: 0;
 }

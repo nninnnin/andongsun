@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { orderBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
 import { SectionNames } from "@/constants";
 import useArticles from "@/hooks/useArticles";
@@ -18,7 +19,6 @@ import CategoryFilter, {
   categoryFilterState,
   필터기본값 as 카테고리필터기본값,
 } from "@/components/admin/CategoryFilter";
-import { useRecoilValue } from "recoil";
 
 const AdminPage = () => {
   const { data: articles } = useArticles();

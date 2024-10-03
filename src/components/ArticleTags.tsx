@@ -66,8 +66,8 @@ const ArticleTags = ({
   return (
     <ul
       className={clsx(
-        "sticky top-0 z-[9999]",
-        "flex space-x-[24px] pt-[0.2em]",
+        "sticky top-[44px] z-[9999]",
+        "flex space-x-[24px] pt-[0.2em] px-[24px]",
         "text-large",
         className
       )}

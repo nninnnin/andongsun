@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useRecoilValue } from "recoil";
 
 import Section, {
@@ -15,6 +15,7 @@ import ArticleTags, {
   selectedTagState,
 } from "@/components/ArticleTags";
 import useAbout from "@/hooks/useAbout";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 const HomeMobile = () => {
   const selectedSection = useRecoilValue(
@@ -24,6 +25,8 @@ const HomeMobile = () => {
   const selectedTag = useRecoilValue(selectedTagState);
 
   const about = useAbout();
+
+  const { isMobile } = useBreakpoint();
 
   return (
     <div
@@ -47,7 +50,11 @@ const HomeMobile = () => {
               <>
                 <ArticleTags
                   sectionName={SectionNames.About}
-                  className="mb-[50px]"
+                  className={clsx(
+                    "mb-[50px]",
+                    isMobile &&
+                      "!mb-[50px] !fixed !left-0 !w-screen"
+                  )}
                 />
 
                 {!!selectedTag ? (
@@ -56,7 +63,10 @@ const HomeMobile = () => {
                   />
                 ) : (
                   <p
-                    className="max-w-[307px] break-keep"
+                    className={clsx(
+                      "max-w-[307px] break-keep",
+                      isMobile && "mt-[100px]"
+                    )}
                     dangerouslySetInnerHTML={{
                       __html:
                         about?.contents.replaceAll(

@@ -6,6 +6,7 @@ dotenv.config();
 const nextConfig = {
   env: {
     MEMEX_TOKEN: process.env.MEMEX_TOKEN,
+    PASSWORD: process.env.PASSWORD,
   },
   reactStrictMode: false,
 };

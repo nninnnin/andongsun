@@ -19,6 +19,8 @@ import ArticleTags, {
   selectedTagState,
 } from "@/components/ArticleTags";
 import useAbout from "@/hooks/useAbout";
+import useSectionColor from "@/hooks/useSectionColor";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 const HomeDesktop = () => {
   return (
@@ -44,6 +46,10 @@ HomeDesktop.Sections = () => {
 
   const about = useAbout();
 
+  const sectionColors = useSectionColor();
+
+  const { isMobile } = useBreakpoint();
+
   return useMemo(() => {
     return Object.values(SectionNames).map(
       (sectionName) => {
@@ -54,7 +60,7 @@ HomeDesktop.Sections = () => {
           selectedSectionName === sectionName;
 
         const sectionColor =
-          SectionColors[sectionName];
+          sectionColors[sectionName];
 
         const handleClick = (e: MouseEvent) => {
           if (selectedSectionName === sectionName)
@@ -87,9 +93,12 @@ HomeDesktop.Sections = () => {
 
             {isSelectedSection &&
               sectionName !== SectionNames.About && (
-                <Section.Contents
-                  sectionName={sectionName}
-                />
+                <>
+                  <Section.Contents
+                    sectionName={sectionName}
+                  />
+                  {!isMobile && <BackButton />}
+                </>
               )}
 
             {isSelectedSection &&
@@ -103,7 +112,7 @@ HomeDesktop.Sections = () => {
                 >
                   <ArticleTags
                     sectionName={SectionNames.About}
-                    className="mb-[60px]"
+                    className="mb-[60px] px-0"
                   />
 
                   {!!selectedTag ? (
@@ -133,6 +142,38 @@ HomeDesktop.Sections = () => {
       }
     );
   }, [selectedSectionName, selectedTag, about]);
+};
+
+const BackButton = () => {
+  const { isMobile } = useBreakpoint();
+
+  const resetSelectedArticle = () => {
+    window.history.pushState(
+      null,
+      "",
+      window.location.pathname
+    );
+  };
+
+  return (
+    <div
+      className={clsx(
+        "w-full",
+        "sticky bottom-0 left-0",
+        "flex justify-start items-center",
+        "mt-auto",
+        "cursor-pointer",
+        isMobile && "hidden"
+      )}
+      onClick={() => resetSelectedArticle()}
+    >
+      <img
+        className="rotate-[270deg] mr-[0.5em] h-[0.8em]"
+        src="/arrow--top.svg"
+      />{" "}
+      <span className="text-large">List</span>
+    </div>
+  );
 };
 
 export default HomeDesktop;

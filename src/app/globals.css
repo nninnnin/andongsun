@@ -12,6 +12,17 @@
   text-rendering: optimizeLegibility;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.section-contents::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.section-contents {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 html,
 body {
   margin: 0;

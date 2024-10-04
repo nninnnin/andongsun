@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMemo, MouseEvent } from "react";
 import {
   useRecoilState,
@@ -21,6 +21,7 @@ import ArticleTags, {
 import useAbout from "@/hooks/useAbout";
 import useSectionColor from "@/hooks/useSectionColor";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import { useSearchParams } from "next/navigation";
 
 const HomeDesktop = () => {
   return (
@@ -49,6 +50,15 @@ HomeDesktop.Sections = () => {
   const sectionColors = useSectionColor();
 
   const { isMobile } = useBreakpoint();
+
+  const [articleSelected, setArticleSelected] =
+    useState<string | null>(null);
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setArticleSelected(searchParams.get("articleId"));
+  }, [searchParams.get("articleId")]);
 
   return useMemo(() => {
     return Object.values(SectionNames).map(
@@ -97,7 +107,9 @@ HomeDesktop.Sections = () => {
                   <Section.Contents
                     sectionName={sectionName}
                   />
-                  {!isMobile && <BackButton />}
+                  {!isMobile && articleSelected && (
+                    <BackButton />
+                  )}
                 </>
               )}
 
@@ -112,7 +124,7 @@ HomeDesktop.Sections = () => {
                 >
                   <ArticleTags
                     sectionName={SectionNames.About}
-                    className="mb-[60px] px-0"
+                    className="mb-[60px] !px-0"
                   />
 
                   {!!selectedTag ? (
@@ -141,7 +153,12 @@ HomeDesktop.Sections = () => {
         );
       }
     );
-  }, [selectedSectionName, selectedTag, about]);
+  }, [
+    selectedSectionName,
+    selectedTag,
+    about,
+    articleSelected,
+  ]);
 };
 
 const BackButton = () => {

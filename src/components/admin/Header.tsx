@@ -10,7 +10,7 @@ const AdminHeader = () => {
           "fixed",
           "flex bg-transparent text-white w-fit cursor-pointer",
           "text-large leading-[150%]",
-          "mt-[18px] ml-[32px]"
+          "mt-[18px] ml-[18px]"
         )}
       >
         <Link href="/admin">

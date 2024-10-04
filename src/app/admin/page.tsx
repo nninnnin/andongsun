@@ -98,7 +98,7 @@ AdminPage.NewArticleButton = () => {
   return (
     <Link className="block w-fit" href="/admin/new">
       <button className="flex items-center p-3 px-5 text-white bg-themeBlue">
-        <span>New Project</span>
+        <span className="font-bold">New Project</span>
         <img className="ml-[40px]" src="/plus.svg" />
       </button>
     </Link>
@@ -197,7 +197,7 @@ AdminPage.ArticleListItem = ({
         {articleType}
       </p>
 
-      <p className="text-center w-[50px]">{tag}</p>
+      <p className="w-[100px] truncate">{tag}</p>
 
       <h2 className="flex-1 min-w-[240px]">{title}</h2>
 

@@ -5,7 +5,7 @@ import Dropdown from "@/components/common/Dropdown";
 import useArticleCategories from "@/hooks/useArticleCategories";
 
 const 필터제거옵션 = "필터 제거";
-export const 필터기본값 = "카테고리 필터";
+export const 필터기본값 = "Category";
 
 export const categoryFilterState = atom({
   key: "categoryFilterState",

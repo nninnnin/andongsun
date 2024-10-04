@@ -134,18 +134,27 @@ HomeDesktop.Sections = () => {
                       />
                     </div>
                   ) : (
-                    <div
-                      className={clsx(
-                        "max-w-[454px] break-keep font-medium"
-                      )}
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          about?.contents.replaceAll(
-                            "\n",
-                            "<br>"
-                          ) ?? "",
-                      }}
-                    ></div>
+                    <>
+                      <div
+                        className={clsx(
+                          "max-w-[454px] break-keep font-medium"
+                        )}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            about?.contents.replaceAll(
+                              "\n",
+                              "<br>"
+                            ) ?? "",
+                        }}
+                      ></div>
+
+                      <footer className="mt-auto opacity-40 font-medium text-[6px]">
+                        © 2024 Dongsun An All right
+                        reserved.｜Site Development by
+                        Donggyu Lee｜Design by Daesoon
+                        Kim
+                      </footer>
+                    </>
                   )}
                 </div>
               )}

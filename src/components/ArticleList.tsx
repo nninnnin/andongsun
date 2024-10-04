@@ -105,7 +105,7 @@ const ArticleList = ({
                   className={clsx(
                     "w-full",
                     "border-t-[1px] border-black",
-                    "text-large leading-[150%] pt-[8px]",
+                    "text-large leading-[150%] pt-[10px]",
                     "line-clamp-[8]",
                     "break-keep"
                   )}

@@ -5,11 +5,11 @@ import Dropdown from "@/components/common/Dropdown";
 import useArticleTags from "@/hooks/useArticleTags";
 
 const 필터제거옵션 = "필터 제거";
-export const 필터기본값 = "태그 필터";
+export const 필터기본값 = "Tag";
 
 export const tagFilterState = atom({
   key: "tagFilterState",
-  default: "태그 필터",
+  default: 필터기본값,
 });
 
 const TagFilter = () => {

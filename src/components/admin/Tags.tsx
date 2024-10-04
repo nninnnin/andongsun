@@ -1,5 +1,5 @@
 import useArticle from "@/hooks/useArticle";
-import useTags from "@/hooks/useTags";
+import useArticleTags from "@/hooks/useArticleTags";
 
 import clsx from "clsx";
 import { debounce } from "lodash";
@@ -21,7 +21,7 @@ const Tags = () => {
     value: string;
   } = useArticle("tag");
 
-  const { data: tags } = useTags();
+  const tags = useArticleTags();
 
   const recognizeValue = useCallback(
     debounce(
@@ -58,7 +58,7 @@ const Tags = () => {
       (tags ?? []).filter((tag) => {
         const regex = new RegExp(`^${value}`, "i");
 
-        return regex.test(tag.name);
+        return regex.test(tag.tagName);
       }),
     [tags, value]
   );
@@ -106,11 +106,13 @@ const Tags = () => {
             {filteredTags.map((tag) => {
               return (
                 <li
-                  key={tag.id}
-                  onClick={handleItemClick(tag.name)}
+                  key={tag.uid}
+                  onClick={handleItemClick(
+                    tag.tagName
+                  )}
                   className={itemStyle}
                 >
-                  {tag.name}
+                  {tag.tagName}
                 </li>
               );
             })}

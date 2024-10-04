@@ -1,5 +1,9 @@
 import clsx from "clsx";
-import React, { ChangeEvent, useEffect } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useRef,
+} from "react";
 import { atom, useRecoilState } from "recoil";
 import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
@@ -27,11 +31,17 @@ const Password = () => {
     setPassword(e.target.value);
   };
 
-  useEffect(() => {}, []);
-
   const overlay = useOverlay();
 
+  const inputRef = useRef<null | HTMLInputElement>(
+    null
+  );
+
   const handleClick = () => {
+    if (!inputRef || !inputRef.current) return;
+
+    inputRef.current.blur();
+
     if (password === process.env.PASSWORD) {
       setIsAuthenticated(true);
 
@@ -55,12 +65,18 @@ const Password = () => {
         "w-screen h-screen",
         "flex items-center justify-center"
       )}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleClick();
+        }
+      }}
     >
       <div className="flex items-center justify-center">
         <input
           className="input outline-none h-[40px] !mb-0"
           value={password}
           onChange={handleChange}
+          ref={inputRef}
         />
 
         <button

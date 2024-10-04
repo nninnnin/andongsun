@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useOverlay } from "@toss/use-overlay";
 
 import useMemex from "@/hooks/useMemex";
@@ -10,6 +10,7 @@ import { createArticleBody } from "@/utils";
 import Alert from "@/components/admin/common/Alert";
 
 const DeleteButton = () => {
+  const router = useRouter();
   const overlay = useOverlay();
 
   const { articleId } = useParams();
@@ -31,7 +32,7 @@ const DeleteButton = () => {
     );
 
     // redirect to admin page
-    window.location.href = "/admin";
+    router.push("/admin");
   };
 
   const handleClick = async () => {

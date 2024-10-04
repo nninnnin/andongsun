@@ -85,14 +85,6 @@ const MenuMobile = ({
           )}
           src="/arrow--top.svg"
         />
-        <span
-          className={clsx(
-            "transition-opacity duration-500",
-            openMenu ? "opacity-0" : "opacity-100"
-          )}
-        >
-          Menu
-        </span>
       </MenuMobile.Item>
 
       <MenuMobile.ItemList items={items} />

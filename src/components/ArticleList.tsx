@@ -76,7 +76,8 @@ const ArticleList = ({
                 "cursor-pointer",
                 "flex flex-col",
                 "space-y-[6px]",
-                "mb-[120px]"
+                "mb-[120px]",
+                isMobile && "mb-[60px]"
               )}
               onClick={(e) => {
                 e.stopPropagation();

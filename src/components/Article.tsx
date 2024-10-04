@@ -76,7 +76,7 @@ const Article = () => {
             />
           )}
 
-          <p className="text-large leading-[150%]">
+          <p className="text-large leading-[150%] font-bold">
             {title}
           </p>
 

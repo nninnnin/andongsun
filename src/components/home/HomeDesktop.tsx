@@ -128,7 +128,7 @@ HomeDesktop.Sections = () => {
                   />
 
                   {!!selectedTag ? (
-                    <div className="flex-1 overflow-y-scroll mb-[24px]">
+                    <div className="flex-1 mb-[24px]">
                       <Section.Contents
                         sectionName={sectionName}
                       />

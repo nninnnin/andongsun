@@ -76,6 +76,16 @@ object {
   position: relative;
 }
 
+*::-moz-selection {
+  color: #dee9ef !important;
+  background: #000000 !important;
+}
+
+*::selection {
+  color: #dee9ef !important;
+  background: #000000 !important;
+}
+
 .section-contents {
   overscroll-behavior: none;
 

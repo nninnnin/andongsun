@@ -71,7 +71,7 @@ const Article = () => {
         <header className="space-y-[16px] pb-[40px] text-center">
           {thumbnailPath && (
             <img
-              className="object-cover mx-auto mb-[36px]"
+              className="object-cover mx-auto mb-[36px] max-h-[75dvh]"
               src={thumbnailPath}
             />
           )}

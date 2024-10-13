@@ -6,9 +6,9 @@ import { SectionNames } from "@/constants/index";
 const DEFAULT_COLORS = {
   [SectionNames.About]: "white",
   [SectionNames.Writing]: "pastelBlue1",
-  [SectionNames.Directing]: "pastelBlue2",
-  [SectionNames.Curating]: "pastelBlue3",
-  [SectionNames.Moderating]: "pastelBlue4",
+  [SectionNames.Project]: "pastelBlue2",
+  [SectionNames.Book]: "pastelBlue3",
+  [SectionNames.Diary]: "pastelBlue4",
 };
 
 const useSectionColor = () => {

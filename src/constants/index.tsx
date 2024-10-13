@@ -1,23 +1,23 @@
 export enum SectionNames {
   About = "About",
   Writing = "Writing",
-  Directing = "Directing",
-  Curating = "Curating",
-  Moderating = "Moderating",
+  Project = "Project",
+  Book = "Book",
+  Diary = "Diary",
 }
 
 export const SectionTitles = {
   [SectionNames.About]: "Dongsun An",
   [SectionNames.Writing]: "Writing",
-  [SectionNames.Directing]: "Directing",
-  [SectionNames.Curating]: "Curating",
-  [SectionNames.Moderating]: "Moderating",
+  [SectionNames.Project]: "Project",
+  [SectionNames.Book]: "Book",
+  [SectionNames.Diary]: "Diary",
 };
 
 export const SectionColors = {
   [SectionNames.About]: "white",
   [SectionNames.Writing]: "pastelBlue1",
-  [SectionNames.Directing]: "pastelBlue2",
-  [SectionNames.Curating]: "pastelBlue3",
-  [SectionNames.Moderating]: "pastelBlue4",
+  [SectionNames.Project]: "pastelBlue2",
+  [SectionNames.Book]: "pastelBlue3",
+  [SectionNames.Diary]: "pastelBlue4",
 };

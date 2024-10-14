@@ -61,14 +61,14 @@ const Article = () => {
           "absolute top-0 left-0",
           "mt-[133.5px]",
           isMobile && "mt-[100px]",
-          "h-full flex flex-col px-[92px]",
+          "w-full h-full flex flex-col px-[92px]",
           isMobile && "!px-[1.5em] h-[calc(100%-40px)]"
         )}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <header className="space-y-[16px] pb-[40px] text-center">
+        <header className="space-y-[16px] pb-[90px] text-center">
           {thumbnailPath && (
             <img
               className="object-cover mx-auto mb-[36px] max-h-[75dvh]"

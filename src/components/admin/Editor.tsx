@@ -16,8 +16,18 @@ import RichTextEditor from "@/components/admin/RichTextEditor";
 import ProductionMonth from "@/components/admin/ProductionMonth";
 
 import "react-quill/dist/quill.snow.css";
+import useArticle from "@/hooks/useArticle";
+import { matchImageTags } from "@/utils/matcher";
 
 const Editor = () => {
+  const { value } = useArticle<string>("contents");
+
+  console.log(value);
+
+  const imgTags = matchImageTags(value);
+
+  console.log(imgTags);
+
   return (
     <>
       <div
@@ -28,6 +38,31 @@ const Editor = () => {
           "fixed left-1/2 -translate-x-1/2 top-[90px]"
         )}
       >
+        <div
+          className={clsx(
+            "bg-white absolute left-[-30px] top-0",
+            "-translate-x-[100%]",
+            "w-[300px] h-[300px]",
+            "overflow-y-scroll"
+          )}
+        >
+          <h1 className="bg-slate-500 text-white p-2 font-bold sticky top-0">
+            첨부된 이미지들
+          </h1>
+
+          <div
+            className={clsx(
+              "flex flex-wrap justify-between",
+              "[&_img]:border-black [&_img]:border-[1px]",
+              "[&_img]:w-[97px] [&_img]:h-[97px] [&_img]:object-cover",
+              "[&_img]:mb-[6px]"
+            )}
+            dangerouslySetInnerHTML={{
+              __html: imgTags ?? "",
+            }}
+          ></div>
+        </div>
+
         <Editor.Row>
           <CategorySelect />
           <Tags />

@@ -2,7 +2,6 @@ import clsx from "clsx";
 import dynamic from "next/dynamic";
 import React, {
   LegacyRef,
-  MouseEvent,
   useEffect,
   useMemo,
   useRef,
@@ -201,6 +200,8 @@ const RichTextEditor = () => {
             file.name
           );
         }
+
+        console.log(quill.root.innerHTML);
 
         handleChange(quill.root.innerHTML);
       }, 0);

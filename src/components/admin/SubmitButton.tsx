@@ -26,6 +26,7 @@ import {
   replaceImageTags,
   tagStringsToPaths,
 } from "@/utils/submit";
+import { matchImageTags } from "@/utils/matcher";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();
@@ -81,9 +82,7 @@ const SubmitButton = () => {
     const contents = articleBody.data.contents;
 
     // search image tags on contents using regex
-    const imageTagStrings = contents.match(
-      /<img\s+[^>]*src="([^"]+)"[^>]*>/g
-    );
+    const imageTagStrings = matchImageTags(contents);
 
     let newContents = `${contents}`;
 

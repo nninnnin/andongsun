@@ -1,5 +1,6 @@
-import useArticle from "@/hooks/useArticle";
 import React from "react";
+
+import useArticle from "@/hooks/useArticle";
 
 const Credits = () => {
   const { handleChange, value } =
@@ -7,7 +8,7 @@ const Credits = () => {
 
   return (
     <textarea
-      className="credits input w-full resize-none outline-none h-[88px] !mb-[-2px]"
+      className="credits input w-full resize-none outline-none h-[88px] !mb-[-2px] text-[12px] placeholder:text-[12px]"
       onChange={(e) => {
         handleChange(e.target.value);
       }}

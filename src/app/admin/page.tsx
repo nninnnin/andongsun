@@ -157,9 +157,9 @@ AdminPage.ArticleList = ({
             articleType={articleType}
             producedAt={producedAt}
             tag={tags[0]?.tagName}
-            handleClick={() => {
-              router.push(`/admin/edit/${id}`);
-            }}
+            handleClick={() =>
+              router.push(`/admin/edit/${id}`)
+            }
           />
         );
       })}
@@ -193,15 +193,15 @@ AdminPage.ArticleListItem = ({
       )}
       onClick={handleClick}
     >
-      <p className="text-center w-[60px]">
+      <p className="text-left w-[90px]">
         {articleType}
       </p>
 
-      <p className="w-[100px] truncate">{tag}</p>
+      <p className="w-[140px] truncate">{tag}</p>
 
       <h2 className="flex-1 min-w-[240px]">{title}</h2>
 
-      <p className="min-w-[100px] text-right">
+      <p className="min-w-[140px] text-right">
         {producedAt ? `${producedAt}.` : ""}
       </p>
     </div>

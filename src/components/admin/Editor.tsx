@@ -22,11 +22,7 @@ import { matchImageTags } from "@/utils/matcher";
 const Editor = () => {
   const { value } = useArticle<string>("contents");
 
-  console.log(value);
-
   const imgTags = matchImageTags(value);
-
-  console.log(imgTags);
 
   return (
     <>

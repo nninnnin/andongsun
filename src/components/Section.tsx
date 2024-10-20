@@ -10,7 +10,11 @@ import {
   useRef,
   useState,
 } from "react";
-import { AnimatePresence } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+} from "framer-motion";
+import { useSearchParams } from "next/navigation";
 
 import ArticleTags, {
   selectedTagState,
@@ -19,7 +23,6 @@ import ArticleList from "@/components/ArticleList";
 import Article from "@/components/Article";
 import { SectionNames } from "@/constants";
 import useBreakpoint from "@/hooks/useBreakpoint";
-import { useSearchParams } from "next/navigation";
 
 export const selectedSectionNameState =
   atom<null | SectionNames>({
@@ -50,8 +53,7 @@ Section.Container = ({
         "transition-[min-width min-height width height] duration-700",
         "p-[24px] py-[18px]",
         "flex flex-col",
-        isMobile &&
-          "pb-0 px-[1.5em] overflow-y-scroll",
+        isMobile && "pb-0 px-[1.5em]",
         className
       )}
       onClick={handleClick}
@@ -109,8 +111,6 @@ Section.Contents = ({
 }: {
   sectionName: SectionNames;
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const searchParams = useSearchParams();
 
   const selectedSection = useRecoilValue(
@@ -123,14 +123,6 @@ Section.Contents = ({
   useEffect(() => {
     setArticleSelected(searchParams.get("articleId"));
   }, [searchParams.get("articleId")]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      containerRef.current?.scrollTo({
-        top: 0,
-      });
-    }, 0);
-  }, [containerRef, articleSelected]);
 
   const { isMobile } = useBreakpoint();
 
@@ -147,7 +139,6 @@ Section.Contents = ({
         isMobile && "!mb-[40px]",
         "transition-opacity duration-500"
       )}
-      ref={containerRef}
     >
       {selectedSection !== SectionNames.About && (
         <ArticleTags
@@ -161,10 +152,10 @@ Section.Contents = ({
       )}
 
       <AnimatePresence>
-        {articleSelected ? (
-          <Article />
-        ) : (
-          <ArticleList sectionName={sectionName} />
+        <ArticleList sectionName={sectionName} />
+
+        {articleSelected && (
+          <Article key="article-details" />
         )}
       </AnimatePresence>
     </div>

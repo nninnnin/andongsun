@@ -1,5 +1,8 @@
 import clsx from "clsx";
-import React, { useLayoutEffect } from "react";
+import React, {
+  useLayoutEffect,
+  useMemo,
+} from "react";
 import { useRecoilValue } from "recoil";
 
 import Section, {
@@ -86,7 +89,7 @@ const HomeMobile = () => {
         )}
       </div>
 
-      <MenuMobile className="absolute bottom-0 left-0 z-[9999]" />
+      <MenuMobile />
     </div>
   );
 };

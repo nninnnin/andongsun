@@ -25,7 +25,7 @@ const openMenuState = atom({
 const MenuMobile = ({
   className,
 }: {
-  className: string;
+  className?: string;
 }) => {
   const [openMenu, setOpenMenu] =
     useRecoilState(openMenuState);
@@ -66,6 +66,7 @@ const MenuMobile = ({
       className={clsx(
         "bg-slate-200 mt-auto",
         "w-full",
+        "absolute bottom-[-2px] left-0 z-[9999]",
         className
       )}
       onClick={handleMenuClick}
@@ -73,10 +74,10 @@ const MenuMobile = ({
         transition: "all 0.5s",
         minHeight: openMenu
           ? `${60 * (items.length + 1)}px`
-          : "60px",
+          : "64px",
       }}
     >
-      <MenuMobile.Item className="absolute bottom-0 z-[100]">
+      <MenuMobile.Item className="absolute bottom-[0px] z-[100]">
         <img
           className={clsx(
             "mr-[11.5px]",
@@ -121,6 +122,7 @@ MenuMobile.ItemList = ({
     <ul
       className={clsx(
         "w-full",
+        "pb-[10px]",
         "absolute left-0 top-0"
       )}
     >
@@ -145,8 +147,7 @@ MenuMobile.ItemList = ({
           "border-none",
           transitionOpacity,
           `delay-[${items.length * 100}`,
-          `bg-${SectionColors[last(items)!]}`,
-          "mt-[-1px]"
+          `bg-${SectionColors[last(items)!]}`
         )}
       >
         {""}

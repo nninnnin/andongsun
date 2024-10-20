@@ -1,6 +1,10 @@
 import clsx from "clsx";
 import React, { useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 import { motion, useAnimation } from "framer-motion";
 
 import { ArticleInterface } from "@/types/article";
@@ -13,8 +17,10 @@ import { orderBy } from "lodash";
 
 const ArticleList = ({
   sectionName,
+  className,
 }: {
   sectionName: SectionNames;
+  className?: string;
 }) => {
   const { data: articles } = useArticles();
 
@@ -59,8 +65,10 @@ const ArticleList = ({
       className={clsx(
         "w-full flex flex-wrap justify-between pb-[24px] px-[44px]",
         "absolute top-0 left-0",
-        "mt-[133.5px]",
-        isMobile && "mt-[100px]"
+        "pt-[133.5px]",
+        isMobile && "pt-[100px]",
+        "h-full overflow-y-scroll",
+        className
       )}
     >
       {sortedArticles.map(
@@ -87,7 +95,7 @@ const ArticleList = ({
                 params.set("articleId", article.id);
 
                 window.history.pushState(
-                  null,
+                  {},
                   "",
                   `${
                     window.location.pathname
@@ -97,8 +105,9 @@ const ArticleList = ({
             >
               {article.thumbnailPath ? (
                 <img
-                  className="min-h-[160px] object-cover"
+                  className="object-cover"
                   src={article.thumbnailPath}
+                  alt={`${article.title}-thumbnail`}
                 />
               ) : (
                 <div

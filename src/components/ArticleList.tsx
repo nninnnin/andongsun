@@ -1,10 +1,6 @@
 import clsx from "clsx";
 import React, { useEffect } from "react";
-import {
-  atom,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
+import { useRecoilValue } from "recoil";
 import { motion, useAnimation } from "framer-motion";
 
 import { ArticleInterface } from "@/types/article";
@@ -25,6 +21,14 @@ const ArticleList = ({
   const { data: articles } = useArticles();
 
   const selectedTag = useRecoilValue(selectedTagState);
+
+  const containerRef =
+    React.useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    // 선택된 태그가 변경되면 스크롤 위치를 초기화합니다.
+    containerRef.current?.scrollTo(0, 0);
+  }, [selectedTag]);
 
   const { isMobile } = useBreakpoint();
 
@@ -70,6 +74,7 @@ const ArticleList = ({
         "h-full overflow-y-scroll",
         className
       )}
+      ref={containerRef}
     >
       {sortedArticles.map(
         (article: ArticleInterface) => {

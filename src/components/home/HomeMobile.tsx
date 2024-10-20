@@ -67,8 +67,9 @@ const HomeMobile = () => {
                 ) : (
                   <p
                     className={clsx(
-                      "max-w-[307px] break-keep",
-                      isMobile && "mt-[100px]"
+                      "max-w-[307px]",
+                      "break-keep text-medium",
+                      isMobile && "mt-[50px]"
                     )}
                     dangerouslySetInnerHTML={{
                       __html:

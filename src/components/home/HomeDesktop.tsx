@@ -137,7 +137,8 @@ HomeDesktop.Sections = () => {
                     <>
                       <div
                         className={clsx(
-                          "max-w-[454px] break-keep font-medium"
+                          "max-w-[454px]",
+                          "break-keep text-medium"
                         )}
                         dangerouslySetInnerHTML={{
                           __html:

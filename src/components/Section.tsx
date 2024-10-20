@@ -145,7 +145,7 @@ Section.Contents = ({
           className={clsx(
             "mb-[60px]",
             isMobile &&
-              "!mb-[50px] !fixed !left-0 !w-screen"
+              "!mb-[50px] !fixed !left-0 !w-screen overflow-x-scroll hide-scrollbar"
           )}
           sectionName={sectionName}
         />

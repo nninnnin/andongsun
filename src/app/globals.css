@@ -14,6 +14,15 @@
   overscroll-behavior: none !important;
 }
 
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .section-contents::-webkit-scrollbar {
   display: none;

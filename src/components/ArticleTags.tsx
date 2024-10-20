@@ -98,6 +98,7 @@ const ArticleTags = ({
           <li
             key={tag.uid}
             className={clsx(
+              "whitespace-nowrap",
               "capitalize cursor-pointer",
               isSelectedTag &&
                 "border-t-[1px] border-black"

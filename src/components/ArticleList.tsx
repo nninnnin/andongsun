@@ -10,6 +10,7 @@ import useBreakpoint from "@/hooks/useBreakpoint";
 import { selectedTagState } from "@/components/ArticleTags";
 import { filterArticleList } from "@/utils/filters";
 import { orderBy } from "lodash";
+import useResetScroll from "@/hooks/useResetScroll";
 
 const ArticleList = ({
   sectionName,
@@ -22,13 +23,8 @@ const ArticleList = ({
 
   const selectedTag = useRecoilValue(selectedTagState);
 
-  const containerRef =
-    React.useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    // 선택된 태그가 변경되면 스크롤 위치를 초기화합니다.
-    containerRef.current?.scrollTo(0, 0);
-  }, [selectedTag]);
+  const { containerRef } =
+    useResetScroll<HTMLUListElement>([selectedTag]);
 
   const { isMobile } = useBreakpoint();
 

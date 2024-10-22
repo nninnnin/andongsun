@@ -20,27 +20,23 @@ const CategorySelect = () => {
   }, [value]);
 
   return (
-    <div>
-      <Dropdown
-        className="!w-[180px]"
-        options={Object.values(SectionNames).map(
-          (sectionName) => {
-            return {
-              label: SectionTitles[sectionName],
-              value: sectionName,
-            };
-          }
-        )}
-        onChange={(selectedOption) =>
-          handleChange(selectedOption)
+    <Dropdown
+      className="!w-[150px]"
+      options={Object.values(SectionNames).map(
+        (sectionName) => {
+          return {
+            label: SectionTitles[sectionName],
+            value: sectionName,
+          };
         }
-        selected={
-          SectionTitles[
-            value as SectionNames
-          ] as string
-        }
-      />
-    </div>
+      )}
+      onChange={(selectedOption) =>
+        handleChange(selectedOption)
+      }
+      selected={
+        SectionTitles[value as SectionNames] as string
+      }
+    />
   );
 };
 

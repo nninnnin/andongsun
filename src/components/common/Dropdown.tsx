@@ -39,7 +39,7 @@ const Dropdown = ({
   return (
     <div
       className={clsx(
-        "container relative h-[43px] w-full z-[9999] mt-[-1px]",
+        "container relative h-[44px] w-full z-[9999] mt-[-1px]",
         !isOpen && "overflow-hidden",
         "cursor-pointer",
         "font-bold outline-none",
@@ -98,7 +98,7 @@ Dropdown.Item = (
   return (
     <li
       className={clsx(
-        "w-full h-[43px] flex items-center justify-center whitespace-nowrap bg-white relative z-[9999]",
+        "w-full h-[44px] flex items-center justify-center whitespace-nowrap bg-white relative z-[9999]",
         "border-[1px] border-themeBlue",
         "mt-[-1px] first:mt-0",
         "border-b-0 first:border-b-[1px] last:border-b-[1px]",

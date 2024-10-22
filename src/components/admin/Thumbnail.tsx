@@ -68,7 +68,9 @@ const Thumbnail = () => {
             "truncate"
           )}
         >
-          {label || article.thumbnailName || "Image"}
+          {label ||
+            article.thumbnailName ||
+            "Thumbnail"}
         </div>
 
         <object

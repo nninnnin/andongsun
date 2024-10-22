@@ -25,68 +25,18 @@ const Editor = () => {
   const imgTags = matchImageTags(value);
 
   return (
-    <>
-      <div
-        className={clsx(
-          "editor",
-          "w-[60vw] min-w-[750px] h-full mx-auto",
-          "flex flex-col justify-start items-center",
-          "fixed left-1/2 -translate-x-1/2 top-[90px]"
-        )}
-      >
-        <div
-          className={clsx(
-            "bg-white absolute left-[-30px] top-0",
-            "-translate-x-[100%]",
-            "w-[300px] h-[300px]",
-            "overflow-y-scroll"
-          )}
-        >
-          <h1 className="bg-slate-500 text-white p-2 font-bold sticky top-0">
-            첨부된 이미지들
-          </h1>
-
-          <div
-            className={clsx(
-              "flex flex-wrap justify-between",
-              "[&_img]:border-black [&_img]:border-[1px]",
-              "[&_img]:w-[97px] [&_img]:h-[97px] [&_img]:object-cover",
-              "[&_img]:mb-[6px]"
-            )}
-            dangerouslySetInnerHTML={{
-              __html: imgTags ?? "",
-            }}
-          ></div>
-        </div>
-
-        <Editor.Row>
-          <CategorySelect />
-          <Tags />
-          <ProductionMonth />
-          <Thumbnail />
-        </Editor.Row>
-
-        <Editor.Row>
-          <Title />
-        </Editor.Row>
-
-        <Editor.Row>
-          <Caption />
-        </Editor.Row>
-
-        <Editor.Row>
-          <Credits />
-        </Editor.Row>
-
-        <RichTextEditor />
-      </div>
-
-      <div className="fixed top-[90px] right-[52px] flex flex-col text-themeBlue">
-        <DeleteButton />
-        <PublishStatus />
-        <SubmitButton />
-      </div>
-    </>
+    <div
+      className={clsx(
+        "w-full h-[calc(100%-90px)]",
+        "mt-auto flex",
+        "flex justify-between space-x-[39px]",
+        "pl-[73px] pr-[52px]"
+      )}
+    >
+      <Editor.Metadata />
+      <Editor.RichTextEditor />
+      <Editor.Buttons />
+    </div>
   );
 };
 
@@ -103,11 +53,63 @@ Editor.Row = ({
         "w-full flex justify-center items-center relative",
         "mt-[-1px] first:mt-0",
         "text-themeBlue",
-        "bg-violet-500",
         className
       )}
     >
       {children}
+    </div>
+  );
+};
+
+Editor.Metadata = () => {
+  return (
+    <div className="w-[calc(calc(100vw-333px)/3*1.2)] min-w-[452px]">
+      <Editor.Row className="z-[9999]">
+        <CategorySelect />
+        <Tags />
+        <ProductionMonth />
+      </Editor.Row>
+
+      <Editor.Row>
+        <Thumbnail />
+      </Editor.Row>
+
+      <Editor.Row>
+        <Title />
+      </Editor.Row>
+
+      <Editor.Row>
+        <Caption />
+      </Editor.Row>
+
+      <Editor.Row>
+        <Credits />
+      </Editor.Row>
+    </div>
+  );
+};
+
+Editor.RichTextEditor = () => {
+  return (
+    <div
+      className={clsx(
+        "w-[calc(calc(100vw-333px)/3*1.8)] min-w-[500px]",
+        "h-[calc(100dvh-120px)]"
+      )}
+    >
+      <RichTextEditor />
+    </div>
+  );
+};
+
+Editor.Buttons = () => {
+  return (
+    <div
+      className={clsx("flex flex-col text-themeBlue")}
+    >
+      <DeleteButton />
+      <PublishStatus />
+      <SubmitButton />
     </div>
   );
 };

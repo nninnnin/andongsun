@@ -64,16 +64,17 @@ const Tags = () => {
   );
 
   return (
-    <div className="relative ml-[-2px] h-[44px]">
+    <div className="relative ml-[-2px] h-[44px] flex-1 bg-red-500">
       <div
         className={clsx(
+          "w-full h-full",
           "flex items-center",
           "bg-white text-themeBlue border-[1px] border-themeBlue",
           "pr-[15px]"
         )}
       >
         <input
-          className="h-[42px] w-[140px] pl-[15px] outline-none border-none mr-[3px]"
+          className="w-full h-[42px] pl-[15px] outline-none border-none mr-[3px]"
           placeholder="태그를 입력"
           onChange={(
             e: ChangeEvent<HTMLInputElement>
@@ -85,7 +86,10 @@ const Tags = () => {
           value={value as string}
         />
 
-        <object data="/hashtag.svg" />
+        <object
+          className="w-[11px]"
+          data="/hashtag.svg"
+        />
       </div>
 
       {showTags &&

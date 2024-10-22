@@ -97,7 +97,7 @@ const RichTextEditor = () => {
     {
       ssr: false,
       loading: () => (
-        <div className="w-full h-[calc(100dvh-400px)] bg-white flex flex-col">
+        <div className="w-full h-full bg-white flex flex-col">
           <div className="ql-toolbar ql-snow min-h-[44px] flex items-center pl-[20px]">
             {isEditing && (
               <div className="bg-slate-100 w-[130px] h-[calc(20px)] rounded-md"></div>
@@ -158,6 +158,11 @@ const RichTextEditor = () => {
 
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
+    input.setAttribute("multiple", "multiple");
+    input.setAttribute(
+      "accept",
+      "image/png, image/jpeg, image/jpg"
+    );
 
     input.addEventListener("change", async (e) => {
       // @ts-ignore
@@ -211,13 +216,13 @@ const RichTextEditor = () => {
   };
 
   return (
-    <div className="w-full mt-[24px]">
+    <div className="w-full h-full">
       {useMemo(
         () => (
           <ReactQuill
             // @ts-ignore
             className={clsx(
-              "w-full bg-white flex flex-col h-[calc(100dvh-400px)] overflow-hidden"
+              "w-full h-full bg-white flex flex-col h-full overflow-hidden"
             )}
             // @ts-ignore
             onChange={handleChange}

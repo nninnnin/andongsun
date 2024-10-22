@@ -22,10 +22,10 @@ const AdminLayout = ({
   return (
     <OverlayProvider>
       {isAuthenticated ? (
-        <div className="bg-[#333333] flex flex-col h-[100dvh] w-screen overflow-y-scroll pb-[10em]">
+        <div className="bg-[#333333] flex flex-col h-[100dvh] w-screen overflow-y-scroll">
           <AdminHeader />
 
-          <div className="flex-1">{children}</div>
+          <div className="h-full flex">{children}</div>
         </div>
       ) : (
         <Password />

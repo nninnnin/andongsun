@@ -127,7 +127,7 @@ AdminPage.ArticleList = ({
   );
 
   return (
-    <ul className="mt-[33px]">
+    <ul className="mt-[33px] pb-[10em]">
       <AdminPage.ArticleListItem
         title={"소개"}
         credits={""}

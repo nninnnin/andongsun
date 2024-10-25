@@ -143,7 +143,7 @@ export const transformArticles = (
   );
 };
 
-export const converFileToBase64 = (file: File) => {
+export const convertFileToBase64 = (file: File) => {
   const reader = new FileReader();
 
   return new Promise<string>((resolve) => {
@@ -201,4 +201,37 @@ export const removePrefixZero = (
   const [year, month] = yearMonthString.split(".");
 
   return `${parseInt(year)}.${parseInt(month)}`;
+};
+
+interface ListNode {
+  head: ListNode;
+  domNode: {
+    alt: string;
+  };
+  next: ListNode;
+}
+
+export const iterateListNode = (
+  listNode: ListNode,
+  callback: (
+    domNode: {
+      alt: string;
+    },
+    index: number
+  ) => void,
+  index = 0
+) => {
+  if (!listNode) return;
+
+  callback(listNode.domNode, index);
+
+  if (listNode.next) {
+    iterateListNode(
+      listNode.next,
+      callback,
+      index + 1
+    );
+  } else {
+    console.log("iteration over");
+  }
 };

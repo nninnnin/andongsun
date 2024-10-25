@@ -59,9 +59,10 @@ import "react-quill/dist/quill.snow.css";
 
 import useArticle from "@/hooks/useArticle";
 import { mediaState } from "@/states";
-import { converFileToBase64 } from "@/utils/index";
+import { convertFileToBase64 } from "@/utils/index";
 import { usePathname } from "next/navigation";
 import sanitize from "sanitize-filename";
+import useImageHandler from "@/hooks/useImageHandler";
 
 export const richEditorLoadedState = atom({
   key: "richEditorLoadedState",
@@ -97,26 +98,9 @@ const RichTextEditor = () => {
     {
       ssr: false,
       loading: () => (
-        <div className="w-full h-full bg-white flex flex-col">
-          <div className="ql-toolbar ql-snow min-h-[44px] flex items-center pl-[20px]">
-            {isEditing && (
-              <div className="bg-slate-100 w-[130px] h-[calc(20px)] rounded-md"></div>
-            )}
-          </div>
-
-          <div className="ql-container ql-snow p-[20px] space-y-[20px] flex !flex-col !justify-start !items-start">
-            {isEditing && (
-              <>
-                <div className="bg-slate-100 w-[300px] h-[18px] rounded-md"></div>
-                <div className="bg-slate-100 w-[80%] h-[18px] rounded-md"></div>
-                <div className="bg-slate-100 w-[60%] h-[18px] rounded-md"></div>
-                <div className="bg-slate-100 w-[400px] h-[200px] rounded-md"></div>
-                <div className="bg-slate-100 w-[200px] h-[18px] rounded-md"></div>
-                <div className="bg-slate-100 w-[100px] h-[18px] rounded-md"></div>
-              </>
-            )}
-          </div>
-        </div>
+        <RichTextEditor.LoadingPlaceholder
+          hasContents={isEditing}
+        />
       ),
     }
   );
@@ -128,8 +112,6 @@ const RichTextEditor = () => {
 
   useEffect(() => {
     if (!quillRef) return;
-
-    quillStore.current = quillRef;
 
     if (!quillRef.value) {
       quillRef
@@ -153,67 +135,7 @@ const RichTextEditor = () => {
     }
   }, [quillRef, value]);
 
-  const imageHandler = () => {
-    const input = document.createElement("input");
-
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.setAttribute("multiple", "multiple");
-    input.setAttribute(
-      "accept",
-      "image/png, image/jpeg, image/jpg"
-    );
-
-    input.addEventListener("change", async (e) => {
-      // @ts-ignore
-      const file = e.target.files[0];
-
-      setMediaContents((prev) => [
-        ...prev,
-        {
-          name: sanitize(file.name),
-          file: file,
-        },
-      ]);
-
-      const imageString = await converFileToBase64(
-        file
-      );
-
-      const quill =
-        // @ts-ignore
-        quillStore.current.getEditor();
-
-      const range = quill.getSelection(true);
-
-      quill.insertEmbed(
-        range.index,
-        "image",
-        imageString
-      );
-
-      setTimeout(() => {
-        const [line] = quill.getLine(range.index);
-
-        // Iterate through all leaves in the line
-        let lastImageLeaf: any = line.children.tail;
-
-        // const [leaf] = quill.getLeaf(range.index);
-
-        if (lastImageLeaf && lastImageLeaf.domNode) {
-          lastImageLeaf.domNode.alt = sanitize(
-            file.name
-          );
-        }
-
-        console.log(quill.root.innerHTML);
-
-        handleChange(quill.root.innerHTML);
-      }, 0);
-    });
-
-    input.click();
-  };
+  const { imageHandler } = useImageHandler(quillStore);
 
   return (
     <div className="w-full h-full">
@@ -228,7 +150,10 @@ const RichTextEditor = () => {
             onChange={handleChange}
             theme="snow"
             value={value}
-            forwardedRef={(ref) => setQuillRef(ref)}
+            forwardedRef={(ref) => {
+              setQuillRef(ref);
+              quillStore.current = ref;
+            }}
             modules={{
               toolbar: {
                 container: [
@@ -247,6 +172,35 @@ const RichTextEditor = () => {
         ),
         []
       )}
+    </div>
+  );
+};
+
+RichTextEditor.LoadingPlaceholder = ({
+  hasContents,
+}: {
+  hasContents: boolean;
+}) => {
+  return (
+    <div className="w-full h-full bg-white flex flex-col">
+      <div className="ql-toolbar ql-snow min-h-[44px] flex items-center pl-[20px]">
+        {hasContents && (
+          <div className="bg-slate-100 w-[130px] h-[calc(20px)] rounded-md"></div>
+        )}
+      </div>
+
+      <div className="ql-container ql-snow p-[20px] space-y-[20px] flex !flex-col !justify-start !items-start">
+        {hasContents && (
+          <>
+            <div className="bg-slate-100 w-[300px] h-[18px] rounded-md"></div>
+            <div className="bg-slate-100 w-[80%] h-[18px] rounded-md"></div>
+            <div className="bg-slate-100 w-[60%] h-[18px] rounded-md"></div>
+            <div className="bg-slate-100 w-[400px] h-[200px] rounded-md"></div>
+            <div className="bg-slate-100 w-[200px] h-[18px] rounded-md"></div>
+            <div className="bg-slate-100 w-[100px] h-[18px] rounded-md"></div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

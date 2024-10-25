@@ -55,7 +55,7 @@ const useMemex = () => {
     articleId: string,
     newArticle: ArticleBody
   ) => {
-    const result = await memexFetcher.updateItem(
+    return await memexFetcher.updateItem(
       PROJECT_ID,
       ARTICLE_MODEL_KEY,
       JSON.stringify({
@@ -63,8 +63,6 @@ const useMemex = () => {
         ...newArticle,
       })
     );
-
-    return result;
   };
 
   const registerImage = async (image: File) => {

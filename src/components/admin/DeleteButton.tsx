@@ -8,6 +8,7 @@ import useMemex from "@/hooks/useMemex";
 import { articleState } from "@/states";
 import { createArticleBody } from "@/utils";
 import Alert from "@/components/admin/common/Alert";
+import { mutate } from "swr";
 
 const DeleteButton = () => {
   const router = useRouter();
@@ -41,9 +42,11 @@ const DeleteButton = () => {
         show={isOpen}
         desc="정말 삭제하시겠습니까?"
         handleClose={() => close()}
-        handleConfirm={async () =>
-          await removeArticle()
-        }
+        handleConfirm={async () => {
+          await removeArticle();
+
+          mutate("articles");
+        }}
       />
     ));
   };

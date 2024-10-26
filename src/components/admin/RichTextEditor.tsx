@@ -57,12 +57,15 @@ Quill.register("modules/ImageResize", ImageResize);
 Quill.register(ImageFormat, true);
 import "react-quill/dist/quill.snow.css";
 
+var icons = Quill.import("ui/icons");
+
+icons["video"] = '<i class="ql-video-icon"></i>';
+
 import useArticle from "@/hooks/useArticle";
 import { mediaState } from "@/states";
-import { convertFileToBase64 } from "@/utils/index";
 import { usePathname } from "next/navigation";
-import sanitize from "sanitize-filename";
 import useImageHandler from "@/hooks/useImageHandler";
+import useSlideHandler from "@/hooks/useSlideHandler";
 
 export const richEditorLoadedState = atom({
   key: "richEditorLoadedState",
@@ -136,6 +139,7 @@ const RichTextEditor = () => {
   }, [quillRef, value]);
 
   const { imageHandler } = useImageHandler(quillStore);
+  const { slideHandler } = useSlideHandler();
 
   return (
     <div className="w-full h-full">
@@ -158,10 +162,11 @@ const RichTextEditor = () => {
               toolbar: {
                 container: [
                   ["bold", "underline", "italic"],
-                  ["image"],
+                  ["image", "video"],
                 ],
                 handlers: {
                   image: imageHandler,
+                  video: slideHandler,
                 },
               },
               ImageResize: {

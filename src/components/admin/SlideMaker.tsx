@@ -1,11 +1,7 @@
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { convertFileToBase64 } from "@/utils";
+import React, { useMemo } from "react";
+
 import {
   atom,
   useRecoilState,
@@ -13,7 +9,50 @@ import {
   useSetRecoilState,
 } from "recoil";
 import { lastIndexOf, pullAt, remove } from "lodash";
+
 import { mediaState } from "@/states";
+import { slidesState } from "@/hooks/useSlideHandler";
+
+import ReactQuill, { Quill } from "react-quill";
+
+const BlockEmbed = Quill.import("blots/block/embed");
+
+class SlideBlot extends BlockEmbed {
+  static blotName = "slide";
+  static tagName = "div";
+  static className = "ql-slide";
+
+  static create(images: Array<string>) {
+    const node = super.create();
+
+    node.classList.add("slider");
+
+    if (images && images.length) {
+      images.forEach((src) => {
+        const img = document.createElement("img");
+
+        img.setAttribute("src", src);
+        img.classList.add("slide-image");
+
+        node.appendChild(img);
+      });
+    }
+
+    return node;
+  }
+
+  static value(node: HTMLElement) {
+    const images = node.querySelectorAll(
+      ".slide-image"
+    );
+
+    return Array.from(images).map((img) =>
+      img.getAttribute("src")
+    );
+  }
+}
+
+Quill.register(SlideBlot);
 
 export const imageStringsState = atom<
   Array<{
@@ -26,26 +65,12 @@ export const imageStringsState = atom<
 });
 
 const SlideMaker = ({
-  images,
+  quillStore,
+  closeOverlay,
 }: {
-  images: FileList;
+  quillStore: React.MutableRefObject<ReactQuill | null>;
+  closeOverlay: () => void;
 }) => {
-  const [imageStrings, setImageStrings] =
-    useRecoilState(imageStringsState);
-
-  useEffect(() => {
-    (async function () {
-      const imageStrings = await Promise.all(
-        [...(images ?? [])].map(async (file) => ({
-          name: file.name,
-          source: await convertFileToBase64(file),
-        }))
-      );
-
-      setImageStrings(imageStrings);
-    })();
-  }, [images]);
-
   return (
     <SlideMaker.Overlay>
       <SlideMaker.Container>
@@ -71,7 +96,10 @@ const SlideMaker = ({
           <SlideMaker.Images />
         </div>
 
-        <SlideMaker.Buttons />
+        <SlideMaker.Buttons
+          quillStore={quillStore}
+          closeOverlay={closeOverlay}
+        />
       </SlideMaker.Container>
     </SlideMaker.Overlay>
   );
@@ -90,6 +118,12 @@ SlideMaker.Container = ({
 };
 
 SlideMaker.Header = () => {
+  // const { slideHandler } = useSlideHandler();
+
+  // const handleAddButtonClick = () => {
+  //   slideHandler(false);
+  // };
+
   return (
     <h1
       className={clsx(
@@ -100,7 +134,10 @@ SlideMaker.Header = () => {
     >
       <span className="text-themeBlue">Slides</span>
 
-      <img src="/button--add-image.svg" />
+      <img
+        src="/button--add-image.svg"
+        // onClick={handleAddButtonClick}
+      />
     </h1>
   );
 };
@@ -125,8 +162,8 @@ SlideMaker.Overlay = ({
 };
 
 SlideMaker.Images = () => {
-  const [imageStrings, setImagesStrings] =
-    useRecoilState(imageStringsState);
+  const [slides, setSlides] =
+    useRecoilState(slidesState);
 
   const setMediaContents =
     useSetRecoilState(mediaState);
@@ -141,7 +178,7 @@ SlideMaker.Images = () => {
     }>;
 
     Array.from({ length: 10 }).forEach((_, index) => {
-      if (!imageStrings[index]) {
+      if (!slides[index]) {
         fixedLengthImages[index] = {
           id: uuid(),
           name: "",
@@ -150,20 +187,18 @@ SlideMaker.Images = () => {
       } else {
         fixedLengthImages[index] = {
           id: uuid(),
-          name: imageStrings[index].name,
-          src: imageStrings[index].source,
+          name: slides[index].name,
+          src: slides[index].source,
         };
       }
     });
 
     return fixedLengthImages;
-  }, [imageStrings]);
-
-  console.log(fixedLengthImages);
+  }, [slides]);
 
   const handleRemoveButtonClick =
     (filename: string) => () => {
-      setImagesStrings((prev) => {
+      setSlides((prev) => {
         const fileIndex = lastIndexOf(
           prev.map((el) => el.name),
           filename
@@ -197,8 +232,6 @@ SlideMaker.Images = () => {
       });
     };
 
-  console.log(mediaContents);
-
   return (
     <div
       className={clsx(
@@ -211,7 +244,7 @@ SlideMaker.Images = () => {
         return (
           <div
             className={clsx(
-              "w-[120px] h-[120px] relative",
+              "w-[120px] h-[120px] relative overflow-hidden",
               image.src
                 ? "slide-image-shadow"
                 : "bg-[#d9d9d9]"
@@ -220,7 +253,10 @@ SlideMaker.Images = () => {
           >
             {image.src && (
               <img
-                className={"w-full h-full"}
+                className={clsx(
+                  "w-full h-full",
+                  "object-contain"
+                )}
                 src={image.src}
               />
             )}
@@ -251,11 +287,51 @@ SlideMaker.Images = () => {
   );
 };
 
-SlideMaker.Buttons = () => {
+SlideMaker.Buttons = ({
+  quillStore,
+  closeOverlay,
+}: {
+  quillStore: React.MutableRefObject<ReactQuill | null>;
+  closeOverlay: () => void;
+}) => {
+  const quillRef = quillStore.current;
+  const slides = useRecoilValue(slidesState);
+
+  const handleSaveButtonClick = () => {
+    console.log(slides);
+
+    // 새로운 슬라이드를 만든다..
+
+    const range = quillRef?.getEditor().getSelection();
+
+    console.log(range);
+
+    if (range) {
+      const editor = quillRef?.getEditor();
+
+      const images = slides.map(
+        (slide) => slide.source
+      );
+
+      editor?.insertEmbed(
+        range.index,
+        "slide",
+        images
+      );
+    }
+
+    // closeOverlay();
+  };
+
+  const handleCancelButtonClick = () => {
+    closeOverlay();
+  };
+
   return (
     <div className="flex">
       <SlideMaker.Button
         className={clsx("bg-themeBlue text-white")}
+        onClick={handleSaveButtonClick}
       >
         확인
       </SlideMaker.Button>
@@ -265,6 +341,7 @@ SlideMaker.Buttons = () => {
           "bg-[#333333] text-white",
           "border-l-0"
         )}
+        onClick={handleCancelButtonClick}
       >
         취소
       </SlideMaker.Button>
@@ -275,9 +352,11 @@ SlideMaker.Buttons = () => {
 SlideMaker.Button = ({
   className = "",
   children,
+  onClick = () => {},
 }: {
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }) => {
   return (
     <button
@@ -287,8 +366,10 @@ SlideMaker.Button = ({
         "text-[16px] font-medium",
         "flex justify-center items-center",
         "border-[1px] border-solid border-t-0 border-white",
+        "cursor-pointer",
         className
       )}
+      onClick={onClick}
     >
       {children}
     </button>

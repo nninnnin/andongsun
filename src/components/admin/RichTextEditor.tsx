@@ -72,6 +72,11 @@ export const richEditorLoadedState = atom({
   default: false,
 });
 
+export const quillRefState = atom<ReactQuill | null>({
+  key: "quillRefState",
+  default: null,
+});
+
 const RichTextEditor = () => {
   const pathname = usePathname();
 
@@ -139,7 +144,7 @@ const RichTextEditor = () => {
   }, [quillRef, value]);
 
   const { imageHandler } = useImageHandler(quillStore);
-  const { slideHandler } = useSlideHandler();
+  const { slideHandler } = useSlideHandler(quillStore);
 
   return (
     <div className="w-full h-full">
@@ -148,7 +153,7 @@ const RichTextEditor = () => {
           <ReactQuill
             // @ts-ignore
             className={clsx(
-              "w-full h-full bg-white flex flex-col h-full overflow-hidden"
+              "w-full h-full bg-white flex flex-col overflow-hidden"
             )}
             // @ts-ignore
             onChange={handleChange}

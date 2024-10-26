@@ -6,23 +6,40 @@ import React, {
   useState,
 } from "react";
 import { convertFileToBase64 } from "@/utils";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
+import { lastIndexOf, pullAt, remove } from "lodash";
+import { mediaState } from "@/states";
+
+export const imageStringsState = atom<
+  Array<{
+    name: string;
+    source: string;
+  }>
+>({
+  key: "imageStringsState",
+  default: [],
+});
 
 const SlideMaker = ({
   images,
 }: {
   images: FileList;
 }) => {
-  const [imageStrings, setImageStrings] = useState<
-    string[]
-  >([]);
+  const [imageStrings, setImageStrings] =
+    useRecoilState(imageStringsState);
 
   useEffect(() => {
     (async function () {
       const imageStrings = await Promise.all(
-        [...(images ?? [])].map(
-          async (file) =>
-            await convertFileToBase64(file)
-        )
+        [...(images ?? [])].map(async (file) => ({
+          name: file.name,
+          source: await convertFileToBase64(file),
+        }))
       );
 
       setImageStrings(imageStrings);
@@ -51,9 +68,7 @@ const SlideMaker = ({
             누르세요.<b>(최대 10장)</b>
           </p>
 
-          <SlideMaker.Images
-            imageStrings={imageStrings}
-          />
+          <SlideMaker.Images />
         </div>
 
         <SlideMaker.Buttons />
@@ -109,14 +124,19 @@ SlideMaker.Overlay = ({
   );
 };
 
-SlideMaker.Images = ({
-  imageStrings,
-}: {
-  imageStrings: string[];
-}) => {
+SlideMaker.Images = () => {
+  const [imageStrings, setImagesStrings] =
+    useRecoilState(imageStringsState);
+
+  const setMediaContents =
+    useSetRecoilState(mediaState);
+
+  const mediaContents = useRecoilValue(mediaState);
+
   const fixedLengthImages = useMemo(() => {
     const fixedLengthImages = [] as Array<{
       id: string;
+      name: string;
       src: string;
     }>;
 
@@ -124,12 +144,14 @@ SlideMaker.Images = ({
       if (!imageStrings[index]) {
         fixedLengthImages[index] = {
           id: uuid(),
+          name: "",
           src: "",
         };
       } else {
         fixedLengthImages[index] = {
           id: uuid(),
-          src: imageStrings[index],
+          name: imageStrings[index].name,
+          src: imageStrings[index].source,
         };
       }
     });
@@ -138,6 +160,44 @@ SlideMaker.Images = ({
   }, [imageStrings]);
 
   console.log(fixedLengthImages);
+
+  const handleRemoveButtonClick =
+    (filename: string) => () => {
+      setImagesStrings((prev) => {
+        const fileIndex = lastIndexOf(
+          prev.map((el) => el.name),
+          filename
+        );
+
+        if (fileIndex === -1) return prev;
+
+        const updated = [...prev];
+
+        pullAt(updated, [fileIndex]);
+
+        return updated;
+      });
+
+      // mediaContents 상태에서도 지워준다
+      setMediaContents((prev) => {
+        const fileIndex = prev.findIndex(
+          (media) => media.name === filename
+        );
+
+        if (fileIndex === -1) return prev;
+
+        const updated = [...prev];
+
+        remove(
+          updated,
+          (media) => media.name === filename
+        );
+
+        return updated;
+      });
+    };
+
+  console.log(mediaContents);
 
   return (
     <div
@@ -165,20 +225,25 @@ SlideMaker.Images = ({
               />
             )}
 
-            <button
-              className={clsx(
-                "w-[22px] h-[22px]",
-                "flex justify-center items-center",
-                "bg-themeBlue",
-                "absolute top-0 right-0",
-                "border-[1px] border-solid border-white"
-              )}
-            >
-              <img
-                className="w-[11px] h-[11px]"
-                src="/remove.svg"
-              />
-            </button>
+            {image.src && (
+              <button
+                className={clsx(
+                  "w-[22px] h-[22px]",
+                  "flex justify-center items-center",
+                  "bg-themeBlue",
+                  "absolute top-0 right-0",
+                  "border-[1px] border-solid border-white"
+                )}
+                onClick={handleRemoveButtonClick(
+                  image.name
+                )}
+              >
+                <img
+                  className="w-[11px] h-[11px]"
+                  src="/remove.svg"
+                />
+              </button>
+            )}
           </div>
         );
       })}

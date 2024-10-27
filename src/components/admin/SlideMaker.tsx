@@ -73,9 +73,14 @@ class SlideBlot extends BlockEmbed {
     node.appendChild(glideTrack);
 
     setTimeout(() => {
-      new Glide(".glide", {
-        rewind: false,
-      }).mount();
+      const glides =
+        document.querySelectorAll(".glide");
+
+      glides.forEach((glide) => {
+        new Glide(glide as HTMLElement, {
+          rewind: false,
+        }).mount();
+      });
     }, 0);
 
     return node;
@@ -358,14 +363,12 @@ SlideMaker.Buttons = ({
         alt: slide.name,
       }));
 
-      editor?.insertEmbed(
-        range.index,
-        "slide",
-        images
-      );
+      editor?.insertEmbed(range.index, "slide", {
+        images,
+      });
     }
 
-    // closeOverlay();
+    closeOverlay();
   };
 
   const handleCancelButtonClick = () => {

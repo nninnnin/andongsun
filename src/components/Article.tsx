@@ -49,23 +49,37 @@ const Article = ({ key }: { key: string }) => {
     return previousArticle.current;
   }, [articles]);
 
-  const glideRef = useRef<null | Glide>(null);
+  const glidesRef = useRef<null | Glide[]>(null);
 
   useEffect(() => {
     if (!selectedArticle) return;
 
     setTimeout(() => {
-      const glide = new Glide(".glide", {
-        rewind: false,
+      const glideElements =
+        document.querySelectorAll(".glide");
+
+      if (!glideElements) return;
+
+      glideElements.forEach((glideElement) => {
+        const glide = new Glide(
+          glideElement as HTMLElement,
+          {
+            rewind: false,
+          }
+        ).mount();
+
+        if (!glidesRef.current) {
+          glidesRef.current = [glide];
+        } else {
+          glidesRef.current.push(glide);
+        }
       });
-
-      glideRef.current = glide;
-
-      glide.mount();
     }, 1000);
 
     return () => {
-      glideRef.current?.destroy();
+      glidesRef.current?.forEach((glide) => {
+        glide.destroy();
+      });
     };
   }, [selectedArticle]);
 

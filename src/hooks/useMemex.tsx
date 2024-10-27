@@ -1,4 +1,5 @@
 import { ArticleBody } from "@/types/article";
+// @ts-ignore
 import Mf from "@rebel9/memex-fetcher";
 
 const {

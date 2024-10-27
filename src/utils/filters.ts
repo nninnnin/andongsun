@@ -1,5 +1,6 @@
 import { SectionNames } from "@/constants";
 import { ArticleInterface } from "@/types/article";
+// @ts-ignore
 import Mf from "@rebel9/memex-fetcher";
 
 const { pipe } = Mf;

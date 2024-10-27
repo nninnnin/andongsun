@@ -1,3 +1,4 @@
+// @ts-ignore
 import Mf from "@rebel9/memex-fetcher";
 import { processFilename } from "@/utils/submit";
 const {

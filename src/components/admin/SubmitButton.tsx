@@ -12,6 +12,7 @@ import {
 } from "next/navigation";
 import clsx from "clsx";
 import { useSWRConfig } from "swr";
+// @ts-ignore
 import Mf from "@rebel9/memex-fetcher";
 
 const { pipe } = Mf;

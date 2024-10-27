@@ -36,10 +36,13 @@ class SlideBlot extends BlockEmbed {
 
     node.classList.add("glide");
 
-    node.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
+    node.addEventListener(
+      "dragover",
+      (e: DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    );
 
     const glideTrack = document.createElement("div");
     glideTrack.setAttribute("data-glide-el", "track");

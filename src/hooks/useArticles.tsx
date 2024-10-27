@@ -1,6 +1,7 @@
 import { ArticleInterface } from "@/types/article";
 import { transformArticles } from "@/utils";
 
+// @ts-ignore
 import Mf from "@rebel9/memex-fetcher";
 
 const memexFetcher = Mf.createMemexFetcher(

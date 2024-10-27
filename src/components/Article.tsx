@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import Glide from "@glidejs/glide";
 
 import useArticles from "@/hooks/useArticles";
 import useBreakpoint from "@/hooks/useBreakpoint";
@@ -10,6 +11,9 @@ import { useSearchParams } from "next/navigation";
 import { SectionColors } from "@/constants";
 import { useRecoilValue } from "recoil";
 import { selectedSectionNameState } from "@/components/Section";
+
+import "@glidejs/glide/dist/css/glide.core.min.css";
+import "@glidejs/glide/dist/css/glide.theme.min.css";
 
 const Article = ({ key }: { key: string }) => {
   const selectedSection = useRecoilValue(
@@ -44,6 +48,26 @@ const Article = ({ key }: { key: string }) => {
 
     return previousArticle.current;
   }, [articles]);
+
+  const glideRef = useRef<null | Glide>(null);
+
+  useEffect(() => {
+    if (!selectedArticle) return;
+
+    setTimeout(() => {
+      const glide = new Glide(".glide", {
+        rewind: false,
+      });
+
+      glideRef.current = glide;
+
+      glide.mount();
+    }, 1000);
+
+    return () => {
+      glideRef.current?.destroy();
+    };
+  }, [selectedArticle]);
 
   if (!articles || isLoading) return <></>;
 

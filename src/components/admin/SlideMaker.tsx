@@ -1,6 +1,10 @@
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import React, { useMemo } from "react";
+import Glide from "@glidejs/glide";
+
+import "@glidejs/glide/dist/css/glide.core.min.css";
+import "@glidejs/glide/dist/css/glide.theme.min.css";
 
 import {
   atom,
@@ -22,23 +26,65 @@ class SlideBlot extends BlockEmbed {
   static tagName = "div";
   static className = "ql-slide";
 
-  static create(images: Array<string>) {
+  static create(value: {
+    images: Array<{
+      src: string;
+      alt: string;
+    }>;
+  }) {
     const node = super.create();
 
-    node.classList.add("slider");
+    node.classList.add("glide");
 
-    if (images && images.length) {
-      images.forEach((src) => {
+    node.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    const glideTrack = document.createElement("div");
+    glideTrack.setAttribute("data-glide-el", "track");
+    glideTrack.classList.add("glide__track");
+
+    const glideSlides = document.createElement("ul");
+    glideSlides.classList.add("glide__slides");
+
+    if (value.images && value.images.length) {
+      const { images } = value;
+
+      images.forEach(({ src, alt }) => {
         const img = document.createElement("img");
 
         img.setAttribute("src", src);
+        img.setAttribute("alt", alt);
         img.classList.add("slide-image");
 
-        node.appendChild(img);
+        const glideSlide =
+          document.createElement("li");
+        glideSlide.classList.add("glide__slide");
+        glideSlide.appendChild(img);
+        glideSlides.appendChild(glideSlide);
       });
     }
 
+    glideTrack.appendChild(glideSlides);
+    node.appendChild(glideTrack);
+
+    setTimeout(() => {
+      new Glide(".glide", {
+        rewind: false,
+      }).mount();
+    }, 0);
+
     return node;
+  }
+
+  static formats(node: HTMLElement) {
+    const images = node.dataset.images
+      ? JSON.parse(node.dataset.images)
+      : [];
+    return {
+      images: images,
+    };
   }
 
   static value(node: HTMLElement) {
@@ -46,9 +92,10 @@ class SlideBlot extends BlockEmbed {
       ".slide-image"
     );
 
-    return Array.from(images).map((img) =>
-      img.getAttribute("src")
-    );
+    return Array.from(images).map((img) => ({
+      src: img.getAttribute("src") || "",
+      alt: img.getAttribute("alt") || "",
+    }));
   }
 }
 
@@ -298,20 +345,15 @@ SlideMaker.Buttons = ({
   const slides = useRecoilValue(slidesState);
 
   const handleSaveButtonClick = () => {
-    console.log(slides);
-
-    // 새로운 슬라이드를 만든다..
-
     const range = quillRef?.getEditor().getSelection();
-
-    console.log(range);
 
     if (range) {
       const editor = quillRef?.getEditor();
 
-      const images = slides.map(
-        (slide) => slide.source
-      );
+      const images = slides.map((slide) => ({
+        src: slide.source,
+        alt: slide.name,
+      }));
 
       editor?.insertEmbed(
         range.index,

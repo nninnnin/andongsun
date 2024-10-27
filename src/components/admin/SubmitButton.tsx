@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   useRecoilValue,
@@ -27,6 +29,7 @@ import {
   tagStringsToPaths,
 } from "@/utils/submit";
 import { matchImageTags } from "@/utils/matcher";
+import { slidesState } from "@/hooks/useSlideHandler";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();
@@ -36,6 +39,8 @@ const SubmitButton = () => {
 
   const article = useRecoilValue(articleState);
   const mediaContents = useRecoilValue(mediaState);
+  const slides = useRecoilValue(slidesState);
+
   const resetMediaContents =
     useResetRecoilState(mediaState);
   const resetArticle =
@@ -83,6 +88,14 @@ const SubmitButton = () => {
 
     // search image tags on contents using regex
     const imageTagStrings = matchImageTags(contents);
+    const slideImages = slides.map((slide) => ({
+      name: slide.name,
+      file: slide.file,
+    }));
+    const imageFiles = [
+      ...mediaContents,
+      ...slideImages,
+    ];
 
     let newContents = `${contents}`;
 
@@ -90,7 +103,7 @@ const SubmitButton = () => {
       newContents = pipe(
         await tagStringsToPaths(
           imageTagStrings,
-          mediaContents
+          imageFiles
         ),
         (imagePaths: Array<Record<string, string>>) =>
           replaceImageTags(imagePaths, newContents)

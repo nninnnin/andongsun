@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import React, {
@@ -53,6 +55,7 @@ class ImageFormat extends BaseImageFormat {
 
 // @ts-ignore
 import ImageResize from "quill-image-resize";
+
 Quill.register("modules/ImageResize", ImageResize);
 Quill.register(ImageFormat, true);
 import "react-quill/dist/quill.snow.css";
@@ -122,24 +125,49 @@ const RichTextEditor = () => {
     if (!quillRef) return;
 
     if (!quillRef.value) {
-      quillRef
-        .getEditor()
-        .clipboard.dangerouslyPasteHTML(value);
+      const editor = quillRef.getEditor();
+
+      editor.clipboard.addMatcher(
+        ".ql-slide",
+        (node, delta) => {
+          const images = node.querySelectorAll("img");
+
+          return {
+            ...delta,
+            ops: [
+              {
+                insert: {
+                  slide: {
+                    images: [...images].map(
+                      (img: HTMLImageElement) => ({
+                        src:
+                          img.getAttribute("src") ||
+                          "",
+                        alt:
+                          img.getAttribute("alt") ||
+                          "",
+                      })
+                    ),
+                  },
+                },
+              },
+            ],
+          };
+        }
+      );
+
+      // editor.clipboard.dangerouslyPasteHTML(value);
+
+      const converted =
+        editor.clipboard.convert(value);
+
+      editor.updateContents(converted);
 
       quillRef.getEditor().on("editor-change", () => {
         handleChange(
           quillRef.getEditor().root.innerHTML
         );
       });
-
-      quillRef
-        .getEditor()
-        .root.addEventListener("click", (e) => {
-          // @ts-ignore
-          if (e.target.tagName === "IMG") {
-            console.log("image clicked");
-          }
-        });
     }
   }, [quillRef, value]);
 

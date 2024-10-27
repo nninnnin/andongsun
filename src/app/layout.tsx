@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import RecoilWrapper from "@/components/RecoilWrapper";
+import Head from "next/head";
 
 const pretendard = localFont({
   src: [
@@ -55,6 +56,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link
+          rel="stylesheet"
+          href="node_modules/@glidejs/glide/dist/css/glide.core.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="node_modules/@glidejs/glide/dist/css/glide.theme.min.css"
+        />
+      </Head>
+
       <body className={pretendard.className}>
         <RecoilWrapper>{children}</RecoilWrapper>
       </body>

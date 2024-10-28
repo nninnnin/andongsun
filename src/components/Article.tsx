@@ -84,7 +84,7 @@ const Article = ({ key }: { key: string }) => {
             glidesRef.current.push(glide);
           }
         });
-      }, 1000);
+      }, 100);
     };
 
     initializeGlides();

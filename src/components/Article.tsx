@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
@@ -14,8 +15,12 @@ import { selectedSectionNameState } from "@/components/Section";
 
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import "@glidejs/glide/dist/css/glide.theme.min.css";
+import { debounce } from "lodash";
 
 const Article = ({ key }: { key: string }) => {
+  const [containerKey, setContainerKey] =
+    React.useState(key);
+
   const selectedSection = useRecoilValue(
     selectedSectionNameState
   );
@@ -54,34 +59,51 @@ const Article = ({ key }: { key: string }) => {
   useEffect(() => {
     if (!selectedArticle) return;
 
-    setTimeout(() => {
-      const glideElements =
-        document.querySelectorAll(".glide");
+    const initializeGlides = () => {
+      console.log("initialize glides");
 
-      if (!glideElements) return;
+      setTimeout(() => {
+        const glideElements =
+          document.querySelectorAll(".glide");
 
-      glideElements.forEach((glideElement) => {
-        const glide = new Glide(
-          glideElement as HTMLElement,
-          {
-            rewind: false,
+        if (!glideElements) return;
+
+        glideElements.forEach((glideElement) => {
+          const glide = new Glide(
+            glideElement as HTMLElement,
+            {
+              rewind: false,
+            }
+          );
+
+          glide.mount();
+
+          if (!glidesRef.current) {
+            glidesRef.current = [glide];
+          } else {
+            glidesRef.current.push(glide);
           }
-        ).mount();
-
-        if (!glidesRef.current) {
-          glidesRef.current = [glide];
-        } else {
-          glidesRef.current.push(glide);
-        }
-      });
-    }, 1000);
-
-    return () => {
-      glidesRef.current?.forEach((glide) => {
-        glide.destroy();
-      });
+        });
+      }, 1000);
     };
-  }, [selectedArticle]);
+
+    initializeGlides();
+
+    // return () => {
+    //   glidesRef.current?.forEach((glide) => {
+    //     glide.destroy();
+    //   });
+    // };
+  }, [selectedArticle, containerKey]);
+
+  useEffect(() => {
+    const handler = debounce(
+      () => setContainerKey(uuid()),
+      1000
+    );
+
+    window.addEventListener("resize", handler);
+  }, []);
 
   if (!articles || isLoading) return <></>;
 
@@ -150,6 +172,7 @@ const Article = ({ key }: { key: string }) => {
         ></p>
 
         <p
+          key={containerKey}
           className={clsx(
             "leading-[180%] text-left break-keep",
             "border-t-[1px] border-black pt-[36px] !mt-[36px]",

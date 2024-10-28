@@ -97,10 +97,9 @@ const Article = ({ key }: { key: string }) => {
   }, [selectedArticle, containerKey]);
 
   useEffect(() => {
-    const handler = debounce(
-      () => setContainerKey(uuid()),
-      1000
-    );
+    const handler = debounce(() => {
+      setContainerKey(uuid());
+    }, 100);
 
     window.addEventListener("resize", handler);
   }, []);

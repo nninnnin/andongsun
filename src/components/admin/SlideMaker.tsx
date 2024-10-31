@@ -1,7 +1,12 @@
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
-import React, { useMemo } from "react";
+import React, {
+  MouseEvent,
+  useEffect,
+  useMemo,
+} from "react";
 import Glide from "@glidejs/glide";
+import { Sortable } from "@shopify/draggable";
 
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import "@glidejs/glide/dist/css/glide.theme.min.css";
@@ -12,10 +17,19 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
-import { lastIndexOf, pullAt, remove } from "lodash";
+import {
+  lastIndexOf,
+  pullAt,
+  remove,
+  sortBy,
+} from "lodash";
 
 import { mediaState } from "@/states";
-import { slidesState } from "@/hooks/useSlideHandler";
+import {
+  Slide,
+  slideOrderState,
+  slidesState,
+} from "@/hooks/useSlideHandler";
 
 import ReactQuill, { Quill } from "react-quill";
 
@@ -220,6 +234,10 @@ SlideMaker.Images = () => {
   const [slides, setSlides] =
     useRecoilState(slidesState);
 
+  const [slideOrder, setSlideOrder] = useRecoilState(
+    slideOrderState
+  );
+
   const setMediaContents =
     useSetRecoilState(mediaState);
 
@@ -251,8 +269,62 @@ SlideMaker.Images = () => {
     return fixedLengthImages;
   }, [slides]);
 
+  useEffect(() => {
+    if (slideOrder.length === 0) {
+      setSlideOrder(slides.map((slide) => slide.name));
+    }
+  }, [slides]);
+
+  useEffect(() => {
+    const container = document.querySelector(
+      ".slide-image-container"
+    );
+
+    const sortable = new Sortable(
+      container as HTMLElement,
+      {
+        draggable: ".slide-image-wrapper",
+      }
+    );
+
+    sortable.on("drag:start", (e) => {
+      if (!e.originalEvent.target) return;
+
+      (
+        e.originalEvent.target as HTMLElement
+      ).classList.contains("remove-button") &&
+        e.cancel();
+    });
+
+    sortable.on("sortable:stop", () => {
+      const container = document.querySelector(
+        ".slide-image-container"
+      );
+
+      console.log("start");
+
+      setTimeout(() => {
+        const sorted = [
+          ...(container?.childNodes ?? []),
+        ] as Array<HTMLElement>;
+
+        const filtered = sorted
+          .map((el) =>
+            el
+              .querySelector("img")
+              ?.getAttribute("alt")
+          )
+          .filter((el) => el) as string[];
+
+        setSlideOrder(filtered);
+      }, 0);
+    });
+  }, []);
+
   const handleRemoveButtonClick =
-    (filename: string) => () => {
+    (filename: string) => (e: MouseEvent) => {
+      e.stopPropagation();
+
       setSlides((prev) => {
         const fileIndex = lastIndexOf(
           prev.map((el) => el.name),
@@ -290,6 +362,7 @@ SlideMaker.Images = () => {
   return (
     <div
       className={clsx(
+        "slide-image-container",
         "w-[calc(calc(120px*5)+calc(14px*4))]",
         "flex flex-wrap justify-center items-center gap-[14px]",
         "mx-auto mt-[40px] mb-[46px]"
@@ -298,13 +371,18 @@ SlideMaker.Images = () => {
       {fixedLengthImages.map((image) => {
         return (
           <div
+            id={
+              image.src ? "slide-image" : "slide-empty"
+            }
             className={clsx(
+              "slide-image-wrapper",
               "w-[120px] h-[120px] relative overflow-hidden",
               image.src
                 ? "slide-image-shadow"
                 : "bg-[#d9d9d9]"
             )}
             key={image.id}
+            data-key={image.id}
           >
             {image.src && (
               <img
@@ -313,16 +391,18 @@ SlideMaker.Images = () => {
                   "object-contain"
                 )}
                 src={image.src}
+                alt={image.name}
               />
             )}
 
             {image.src && (
               <button
                 className={clsx(
+                  "remove-button",
                   "w-[22px] h-[22px]",
                   "flex justify-center items-center",
                   "bg-themeBlue",
-                  "absolute top-0 right-0",
+                  "absolute top-0 right-0 z-[100]",
                   "border-[1px] border-solid border-white"
                 )}
                 onClick={handleRemoveButtonClick(
@@ -330,7 +410,7 @@ SlideMaker.Images = () => {
                 )}
               >
                 <img
-                  className="w-[11px] h-[11px]"
+                  className="remove-button w-[11px] h-[11px]"
                   src="/remove.svg"
                 />
               </button>
@@ -350,7 +430,11 @@ SlideMaker.Buttons = ({
   closeOverlay: () => void;
 }) => {
   const quillRef = quillStore.current;
-  const slides = useRecoilValue(slidesState);
+  const [slides, setSlides] =
+    useRecoilState(slidesState);
+  const [slideOrder, setSlideOrder] = useRecoilState(
+    slideOrderState
+  );
 
   const handleSaveButtonClick = () => {
     const range = quillRef?.getEditor().getSelection();
@@ -363,15 +447,29 @@ SlideMaker.Buttons = ({
         alt: slide.name,
       }));
 
+      const orderedImages = slideOrder.map(
+        (slideName) => {
+          return images.find(
+            (image) => image.alt === slideName
+          );
+        }
+      );
+
       editor?.insertEmbed(range.index, "slide", {
-        images,
+        images: orderedImages,
       });
     }
+
+    setSlides([]);
+    setSlideOrder([]);
 
     closeOverlay();
   };
 
   const handleCancelButtonClick = () => {
+    setSlides([]);
+    setSlideOrder([]);
+
     closeOverlay();
   };
 

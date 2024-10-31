@@ -84,22 +84,16 @@ const Article = ({ key }: { key: string }) => {
             glidesRef.current.push(glide);
           }
         });
-      }, 100);
+      }, 300);
     };
 
     initializeGlides();
-
-    // return () => {
-    //   glidesRef.current?.forEach((glide) => {
-    //     glide.destroy();
-    //   });
-    // };
   }, [selectedArticle, containerKey]);
 
   useEffect(() => {
     const handler = debounce(() => {
       setContainerKey(uuid());
-    }, 100);
+    }, 300);
 
     window.addEventListener("resize", handler);
   }, []);

@@ -1,14 +1,14 @@
-import { atom, useSetRecoilState } from "recoil";
 import { pullAt } from "lodash";
-
-import { mediaState } from "@/states";
-import { useOverlay } from "@toss/use-overlay";
-import SlideMaker from "@/components/admin/SlideMaker";
-import { convertFileToBase64 } from "@/utils";
 import ReactQuill from "react-quill";
 import { MutableRefObject } from "react";
+import { useOverlay } from "@toss/use-overlay";
+import { atom, useSetRecoilState } from "recoil";
 
-interface Slide {
+import { mediaState } from "@/states";
+import { convertFileToBase64 } from "@/utils";
+import SlideMaker from "@/components/admin/SlideMaker";
+
+export interface Slide {
   name: string;
   file: File;
   source: string;
@@ -16,6 +16,11 @@ interface Slide {
 
 export const slidesState = atom<Array<Slide>>({
   key: "slidesState",
+  default: [],
+});
+
+export const slideOrderState = atom<Array<string>>({
+  key: "slideOrderState",
   default: [],
 });
 

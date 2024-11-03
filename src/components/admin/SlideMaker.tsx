@@ -80,6 +80,13 @@ class SlideBlot extends BlockEmbed {
         document.querySelectorAll(".swiper");
 
       swipers.forEach((swiper) => {
+        const images = swiper.querySelectorAll("img");
+        if (images) {
+          images.forEach((image) => {
+            image.style.opacity = "1";
+          });
+        }
+
         // @ts-ignore
         new Swiper(swiper, {});
       });

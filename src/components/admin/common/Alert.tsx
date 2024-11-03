@@ -18,7 +18,7 @@ const Alert = ({
     <div
       className={clsx(
         "w-screen h-screen bg-[#333333] bg-opacity-50",
-        "fixed top-0 left-0",
+        "fixed top-0 left-0 z-[9999]",
         "p-10"
       )}
     >

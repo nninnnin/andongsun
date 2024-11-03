@@ -5,11 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import Glide from "@glidejs/glide";
 import { Sortable } from "@shopify/draggable";
-
-import "@glidejs/glide/dist/css/glide.core.min.css";
-import "@glidejs/glide/dist/css/glide.theme.min.css";
 
 import {
   atom,
@@ -17,16 +13,10 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
-import {
-  lastIndexOf,
-  pullAt,
-  remove,
-  sortBy,
-} from "lodash";
+import { lastIndexOf, pullAt } from "lodash";
 
-import { mediaState } from "@/states";
-import {
-  Slide,
+import { slideMediaState } from "@/states";
+import useSlideHandler, {
   slideOrderState,
   slidesState,
 } from "@/hooks/useSlideHandler";
@@ -38,7 +28,7 @@ const BlockEmbed = Quill.import("blots/block/embed");
 class SlideBlot extends BlockEmbed {
   static blotName = "slide";
   static tagName = "div";
-  static className = "ql-slide";
+  static className = "swiper";
 
   static create(value: {
     images: Array<{
@@ -48,7 +38,7 @@ class SlideBlot extends BlockEmbed {
   }) {
     const node = super.create();
 
-    node.classList.add("glide");
+    node.classList.add("swiper");
 
     node.addEventListener(
       "dragover",
@@ -58,12 +48,11 @@ class SlideBlot extends BlockEmbed {
       }
     );
 
-    const glideTrack = document.createElement("div");
-    glideTrack.setAttribute("data-glide-el", "track");
-    glideTrack.classList.add("glide__track");
+    const swiperWrapper =
+      document.createElement("div");
+    swiperWrapper.classList.add("swiper-wrapper");
 
-    const glideSlides = document.createElement("ul");
-    glideSlides.classList.add("glide__slides");
+    console.log("value", value);
 
     if (value.images && value.images.length) {
       const { images } = value;
@@ -75,25 +64,24 @@ class SlideBlot extends BlockEmbed {
         img.setAttribute("alt", alt);
         img.classList.add("slide-image");
 
-        const glideSlide =
+        const swiperSlide =
           document.createElement("li");
-        glideSlide.classList.add("glide__slide");
-        glideSlide.appendChild(img);
-        glideSlides.appendChild(glideSlide);
+        swiperSlide.classList.add("swiper-slide");
+        swiperSlide.appendChild(img);
+
+        swiperWrapper.appendChild(swiperSlide);
       });
     }
 
-    glideTrack.appendChild(glideSlides);
-    node.appendChild(glideTrack);
+    node.appendChild(swiperWrapper);
 
     setTimeout(() => {
-      const glides =
-        document.querySelectorAll(".glide");
+      const swipers =
+        document.querySelectorAll(".swiper");
 
-      glides.forEach((glide) => {
-        new Glide(glide as HTMLElement, {
-          rewind: false,
-        }).mount();
+      swipers.forEach((swiper) => {
+        // @ts-ignore
+        new Swiper(swiper, {});
       });
     }, 0);
 
@@ -110,14 +98,14 @@ class SlideBlot extends BlockEmbed {
   }
 
   static value(node: HTMLElement) {
-    const images = node.querySelectorAll(
-      ".slide-image"
-    );
+    const images = node.querySelectorAll("img");
 
-    return Array.from(images).map((img) => ({
-      src: img.getAttribute("src") || "",
-      alt: img.getAttribute("alt") || "",
-    }));
+    return {
+      images: Array.from(images).map((img) => ({
+        src: img.getAttribute("src") || "",
+        alt: img.getAttribute("alt") || "",
+      })),
+    };
   }
 }
 
@@ -143,7 +131,7 @@ const SlideMaker = ({
   return (
     <SlideMaker.Overlay>
       <SlideMaker.Container>
-        <SlideMaker.Header />
+        <SlideMaker.Header quillStore={quillStore} />
 
         <div
           className={clsx(
@@ -186,12 +174,16 @@ SlideMaker.Container = ({
   );
 };
 
-SlideMaker.Header = () => {
-  // const { slideHandler } = useSlideHandler();
+SlideMaker.Header = ({
+  quillStore,
+}: {
+  quillStore: React.MutableRefObject<ReactQuill | null>;
+}) => {
+  const { slideHandler } = useSlideHandler(quillStore);
 
-  // const handleAddButtonClick = () => {
-  //   slideHandler(false);
-  // };
+  const handleAddButtonClick = () => {
+    slideHandler(false);
+  };
 
   return (
     <h1
@@ -205,7 +197,7 @@ SlideMaker.Header = () => {
 
       <img
         src="/button--add-image.svg"
-        // onClick={handleAddButtonClick}
+        onClick={handleAddButtonClick}
       />
     </h1>
   );
@@ -220,7 +212,7 @@ SlideMaker.Overlay = ({
     <div
       className={clsx(
         "w-screen h-screen bg-[#333333] bg-opacity-50",
-        "fixed top-0 left-0",
+        "fixed top-0 left-0 z-[9999]",
         "flex justify-center items-center",
         "p-10"
       )}
@@ -238,10 +230,9 @@ SlideMaker.Images = () => {
     slideOrderState
   );
 
-  const setMediaContents =
-    useSetRecoilState(mediaState);
-
-  const mediaContents = useRecoilValue(mediaState);
+  const setSlideMediaContents = useSetRecoilState(
+    slideMediaState
+  );
 
   const fixedLengthImages = useMemo(() => {
     const fixedLengthImages = [] as Array<{
@@ -340,22 +331,19 @@ SlideMaker.Images = () => {
         return updated;
       });
 
-      // mediaContents 상태에서도 지워준다
-      setMediaContents((prev) => {
-        const fileIndex = prev.findIndex(
-          (media) => media.name === filename
+      setSlideMediaContents((prev) => {
+        const fileIndex = lastIndexOf(
+          prev.map((el) => el.name),
+          filename
         );
 
         if (fileIndex === -1) return prev;
 
-        const updated = [...prev];
+        const removed = [...prev];
 
-        remove(
-          updated,
-          (media) => media.name === filename
-        );
+        pullAt(removed, [fileIndex]);
 
-        return updated;
+        return removed;
       });
     };
 
@@ -435,6 +423,13 @@ SlideMaker.Buttons = ({
   const [slideOrder, setSlideOrder] = useRecoilState(
     slideOrderState
   );
+  const setSlideMediaContents = useSetRecoilState(
+    slideMediaState
+  );
+
+  const slideMediaContents = useRecoilValue(
+    slideMediaState
+  );
 
   const handleSaveButtonClick = () => {
     const range = quillRef?.getEditor().getSelection();
@@ -455,20 +450,54 @@ SlideMaker.Buttons = ({
         }
       );
 
+      console.log("1. 슬라이드 상태", slides);
+      console.log(
+        "2. 정렬된 슬라이드 상태",
+        slideOrder
+      );
+      console.log(
+        "3. 슬라이드 미디어 컨텐츠",
+        slideMediaContents
+      );
+
       editor?.insertEmbed(range.index, "slide", {
         images: orderedImages,
       });
     }
 
-    setSlides([]);
-    setSlideOrder([]);
-
     closeOverlay();
   };
 
   const handleCancelButtonClick = () => {
-    setSlides([]);
-    setSlideOrder([]);
+    // 슬라이드 생성을 취소했을 때, mediaContents에서도 지워준다.
+    console.log("지워지기 전", slideMediaContents);
+
+    setSlideMediaContents((mediaContents) => {
+      const removingIndexes = slides.reduce(
+        (removingIndexes, slide) => {
+          const index = lastIndexOf(
+            mediaContents.map((el) => el.name),
+            slide.name
+          );
+
+          if (index === -1) return removingIndexes;
+
+          return [...removingIndexes, index];
+        },
+        [] as number[]
+      );
+
+      if (!removingIndexes.length)
+        return mediaContents;
+
+      const newMediaContents = [...mediaContents];
+
+      pullAt(newMediaContents, removingIndexes);
+
+      console.log("지워진 후", newMediaContents);
+
+      return newMediaContents;
+    });
 
     closeOverlay();
   };

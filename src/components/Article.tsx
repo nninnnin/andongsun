@@ -1,8 +1,6 @@
-import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Glide from "@glidejs/glide";
 
 import useArticles from "@/hooks/useArticles";
 import useBreakpoint from "@/hooks/useBreakpoint";
@@ -13,9 +11,8 @@ import { SectionColors } from "@/constants";
 import { useRecoilValue } from "recoil";
 import { selectedSectionNameState } from "@/components/Section";
 
-import "@glidejs/glide/dist/css/glide.core.min.css";
-import "@glidejs/glide/dist/css/glide.theme.min.css";
 import { debounce } from "lodash";
+import Script from "next/script";
 
 const Article = ({ key }: { key: string }) => {
   const [containerKey, setContainerKey] =
@@ -54,45 +51,39 @@ const Article = ({ key }: { key: string }) => {
     return previousArticle.current;
   }, [articles]);
 
-  const glidesRef = useRef<null | Glide[]>(null);
+  const swiperRef = useRef([] as any[]);
 
   useEffect(() => {
     if (!selectedArticle) return;
 
-    const initializeGlides = () => {
-      console.log("initialize glides");
+    const initSwipers = () => {
+      console.log("initialize swipers");
 
       setTimeout(() => {
-        const glideElements =
-          document.querySelectorAll(".glide");
+        const swipers =
+          document.querySelectorAll(".swiper");
 
-        if (!glideElements) return;
+        if (!swipers) return;
 
-        glideElements.forEach((glideElement) => {
-          const glide = new Glide(
-            glideElement as HTMLElement,
-            {
-              rewind: false,
-            }
-          );
+        swipers.forEach((swiper) => {
+          // @ts-ignore
+          const sw = new Swiper(swiper, {});
 
-          glide.mount();
-
-          if (!glidesRef.current) {
-            glidesRef.current = [glide];
-          } else {
-            glidesRef.current.push(glide);
-          }
+          swiperRef.current.push(sw);
         });
       }, 300);
     };
 
-    initializeGlides();
+    initSwipers();
   }, [selectedArticle, containerKey]);
 
   useEffect(() => {
     const handler = debounce(() => {
-      setContainerKey(uuid());
+      swiperRef.current.forEach((sw) => {
+        console.log(sw, "will be updated!");
+
+        sw.update();
+      });
     }, 300);
 
     window.addEventListener("resize", handler);
@@ -134,6 +125,14 @@ const Article = ({ key }: { key: string }) => {
         e.stopPropagation();
       }}
     >
+      <Script
+        strategy="afterInteractive"
+        src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+        onLoad={() =>
+          console.log("Swiper script is imported")
+        }
+      ></Script>
+
       <header className="space-y-[16px] pb-[90px] text-center">
         {thumbnailPath && (
           <img

@@ -4,7 +4,7 @@ import { MutableRefObject } from "react";
 import { useOverlay } from "@toss/use-overlay";
 import { atom, useSetRecoilState } from "recoil";
 
-import { mediaState } from "@/states";
+import { mediaState, slideMediaState } from "@/states";
 import { convertFileToBase64 } from "@/utils";
 import SlideMaker from "@/components/admin/SlideMaker";
 
@@ -29,9 +29,13 @@ const useSlideHandler = (
 ) => {
   const overlay = useOverlay();
 
-  const setMediaContents =
-    useSetRecoilState(mediaState);
+  const setSlideMediaContents = useSetRecoilState(
+    slideMediaState
+  );
   const setSlides = useSetRecoilState(slidesState);
+  const setSlideOrder = useSetRecoilState(
+    slideOrderState
+  );
 
   const slideHandler = (openOverlay = true) => {
     const input = document.createElement("input");
@@ -72,7 +76,7 @@ const useSlideHandler = (
         })
       );
 
-      setMediaContents((prev) => [
+      setSlideMediaContents((prev) => [
         ...prev,
         ...newMediaContents,
       ]);
@@ -86,43 +90,8 @@ const useSlideHandler = (
                 quillStore={quillStore}
                 closeOverlay={() => {
                   close();
-
-                  setMediaContents((prev) => {
-                    const updated = [...prev];
-
-                    const indexes = slides.reduce(
-                      (indexesToRemove, slide) => {
-                        const index =
-                          updated.findIndex(
-                            (media) =>
-                              media.name === slide.name
-                          );
-
-                        if (index === -1)
-                          return indexesToRemove;
-
-                        return [
-                          ...indexesToRemove,
-                          index,
-                        ];
-                      },
-                      [] as number[]
-                    );
-
-                    console.log("지우기 전", updated);
-                    console.log(
-                      "지울 친구들",
-                      indexes
-                    );
-
-                    pullAt(updated, indexes);
-
-                    console.log("지운 후", updated);
-
-                    return updated;
-                  });
-
                   setSlides([]);
+                  setSlideOrder([]);
                 }}
               />
             )}

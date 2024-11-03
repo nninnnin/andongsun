@@ -31,7 +31,10 @@ import useSWR from "swr";
 const useArticles = () => {
   const swr = useSWR<ArticleInterface[]>(
     "articles",
-    fetchArticles
+    fetchArticles,
+    {
+      revalidateOnFocus: false,
+    }
   );
 
   return {

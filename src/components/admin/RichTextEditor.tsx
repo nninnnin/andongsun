@@ -69,6 +69,7 @@ import { mediaState } from "@/states";
 import { usePathname } from "next/navigation";
 import useImageHandler from "@/hooks/useImageHandler";
 import useSlideHandler from "@/hooks/useSlideHandler";
+import Script from "next/script";
 
 export const richEditorLoadedState = atom({
   key: "richEditorLoadedState",
@@ -176,6 +177,14 @@ const RichTextEditor = () => {
 
   return (
     <div className="w-full h-full">
+      <Script
+        strategy="afterInteractive"
+        src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+        onLoad={() =>
+          console.log("Swiper script is imported")
+        }
+      ></Script>
+
       {useMemo(
         () => (
           <ReactQuill

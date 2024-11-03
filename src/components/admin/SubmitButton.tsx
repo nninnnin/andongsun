@@ -19,7 +19,11 @@ const { pipe } = Mf;
 
 import { createArticleBody } from "@/utils";
 import useMemex from "@/hooks/useMemex";
-import { articleState, mediaState } from "@/states";
+import {
+  articleState,
+  mediaState,
+  slideMediaState,
+} from "@/states";
 import useTags from "@/hooks/useTags";
 import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
@@ -40,7 +44,9 @@ const SubmitButton = () => {
 
   const article = useRecoilValue(articleState);
   const mediaContents = useRecoilValue(mediaState);
-  const slides = useRecoilValue(slidesState);
+  const slideMediaContents = useRecoilValue(
+    slideMediaState
+  );
 
   const resetMediaContents =
     useResetRecoilState(mediaState);
@@ -89,29 +95,32 @@ const SubmitButton = () => {
 
     // search image tags on contents using regex
     const imageTagStrings = matchImageTags(contents);
-    const slideImages = slides.map((slide) => ({
-      name: slide.name,
-      file: slide.file,
-    }));
-    const imageFiles = [
-      ...mediaContents,
-      ...slideImages,
-    ];
 
     let newContents = `${contents}`;
 
+    console.log(
+      "이미지를 위한 파일정보들",
+      mediaContents
+    );
+    console.log(
+      "슬라이드를 위한 파일정보들",
+      slideMediaContents
+    );
+
     if (imageTagStrings) {
       newContents = pipe(
-        await tagStringsToPaths(
-          imageTagStrings,
-          imageFiles
-        ),
+        await tagStringsToPaths(imageTagStrings, [
+          ...mediaContents,
+          ...slideMediaContents,
+        ]),
         (imagePaths: Array<Record<string, string>>) =>
           replaceImageTags(imagePaths, newContents)
       );
     }
 
     articleBody.data.contents = newContents;
+
+    console.log("보낼 것", articleBody);
 
     if (isEditing) {
       await updateArticle(
@@ -190,6 +199,7 @@ const SubmitButton = () => {
                     resetArticle();
 
                     closeSpinner();
+
                     router.push("/admin");
                   } catch (error) {
                     closeSpinner();

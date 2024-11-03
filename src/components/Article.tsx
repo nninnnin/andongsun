@@ -41,47 +41,40 @@ const Article = ({ key }: { key: string }) => {
     if (!articles) return;
 
     const initSwipers = () => {
-      setTimeout(() => {
-        console.log("initialize swipers");
+      console.log("initialize swipers");
 
-        const swipers =
-          document.querySelectorAll(".swiper");
+      const swipers =
+        document.querySelectorAll(".swiper");
 
-        console.log(swipers);
+      console.log(swipers);
 
-        if (!swipers) return;
+      if (!swipers) return;
 
-        swipers.forEach((swiper) => {
-          // @ts-ignore
-          console.log("Has Swiper?", Swiper);
+      swipers.forEach((swiper) => {
+        // @ts-ignore
+        console.log("Has Swiper?", Swiper);
 
-          // @ts-ignore
-          const sw = new Swiper(swiper, {});
+        const images = swiper.querySelectorAll("img");
+        if (images) {
+          images.forEach((image) => {
+            image.style.opacity = "1";
+          });
+        }
 
-          sw.update();
+        // @ts-ignore
+        const sw = new Swiper(swiper, {});
 
-          swiperRef.current.push(sw);
-        });
-      }, 500);
+        sw.update();
+
+        swiperRef.current.push(sw);
+      });
     };
 
-    initSwipers();
+    setTimeout(initSwipers, 700);
 
     return () => {
       swiperRef.current = [];
     };
-  }, [articles]);
-
-  useEffect(() => {
-    console.log("isMobile changed");
-  }, [isMobile]);
-
-  useEffect(() => {
-    console.log("selectedSection changed");
-  }, [selectedSection]);
-
-  useEffect(() => {
-    console.log("articles changed");
   }, [articles]);
 
   if (!articles) return <></>;

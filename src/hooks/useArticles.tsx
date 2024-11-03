@@ -34,6 +34,8 @@ const useArticles = () => {
     fetchArticles,
     {
       revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
     }
   );
 

@@ -11,7 +11,6 @@ import { SectionColors } from "@/constants";
 import { useRecoilValue } from "recoil";
 import { selectedSectionNameState } from "@/components/Section";
 
-import { debounce } from "lodash";
 import Script from "next/script";
 
 const Article = ({ key }: { key: string }) => {
@@ -26,43 +25,36 @@ const Article = ({ key }: { key: string }) => {
   const selectedArticle =
     searchParams.get("articleId");
 
-  const { data: articles, isLoading } = useArticles();
-
-  const previousArticle =
-    useRef<ArticleInterface | null>(null);
-
-  const memoizedArticle = React.useMemo(() => {
-    if (!articles || isLoading) return null;
-
-    const article = articles.find(
-      (article: ArticleInterface) =>
-        article.id === selectedArticle
-    );
-
-    if (article) {
-      previousArticle.current = article;
-
-      return article;
-    }
-
-    return previousArticle.current;
-  }, [articles]);
+  const { data: articles } = useArticles();
 
   const swiperRef = useRef([] as any[]);
 
   useEffect(() => {
-    if (!selectedArticle) return;
+    const article = articles?.find(
+      (article: ArticleInterface) =>
+        article.id === selectedArticle
+    );
+
+    console.log("article changed", article);
+
+    if (!article) return;
+    if (!articles) return;
 
     const initSwipers = () => {
-      console.log("initialize swipers");
-
       setTimeout(() => {
+        console.log("initialize swipers");
+
         const swipers =
           document.querySelectorAll(".swiper");
+
+        console.log(swipers);
 
         if (!swipers) return;
 
         swipers.forEach((swiper) => {
+          // @ts-ignore
+          console.log("Has Swiper?", Swiper);
+
           // @ts-ignore
           const sw = new Swiper(swiper, {});
 
@@ -74,21 +66,32 @@ const Article = ({ key }: { key: string }) => {
     };
 
     initSwipers();
-  }, [selectedArticle]);
+
+    return () => {
+      swiperRef.current = [];
+    };
+  }, [articles]);
 
   useEffect(() => {
-    const handler = debounce(() => {
-      swiperRef.current.forEach((sw) => {
-        console.log(sw, "will be updated!");
+    console.log("isMobile changed");
+  }, [isMobile]);
 
-        sw.update();
-      });
-    }, 300);
+  useEffect(() => {
+    console.log("selectedSection changed");
+  }, [selectedSection]);
 
-    window.addEventListener("resize", handler);
-  }, []);
+  useEffect(() => {
+    console.log("articles changed");
+  }, [articles]);
 
-  if (!articles || isLoading) return <></>;
+  if (!articles) return <></>;
+
+  const article = articles?.find(
+    (article: ArticleInterface) =>
+      article.id === selectedArticle
+  );
+
+  if (!article) return <></>;
 
   const {
     title,
@@ -96,17 +99,13 @@ const Article = ({ key }: { key: string }) => {
     credits,
     producedAt,
     thumbnailPath,
-  } = memoizedArticle ?? {
-    title: "",
-    contents: "",
-    credits: "",
-    producedAt: "",
-    thumbnailPath: "",
-  };
+  } = article;
+
+  console.log("리렌더링");
 
   return (
     <motion.div
-      key={key} // This should be exist to be able to exit animate
+      key={key}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
@@ -127,9 +126,9 @@ const Article = ({ key }: { key: string }) => {
       <Script
         strategy="afterInteractive"
         src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
-        onLoad={() =>
-          console.log("Swiper script is imported")
-        }
+        onLoad={() => {
+          console.log("Swiper script is imported");
+        }}
       ></Script>
 
       <header className="space-y-[16px] pb-[90px] text-center">

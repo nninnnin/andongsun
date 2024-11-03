@@ -7,6 +7,7 @@ import clsx from "clsx";
 import {
   MouseEvent,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -128,6 +129,11 @@ Section.Contents = ({
 
   const animateFadeIn = clsx("opacity-0", "fade-in");
 
+  const article = useMemo(
+    () => <Article key="article-details" />,
+    []
+  );
+
   return (
     <div
       className={clsx(
@@ -154,9 +160,7 @@ Section.Contents = ({
       <AnimatePresence>
         <ArticleList sectionName={sectionName} />
 
-        {articleSelected && (
-          <Article key="article-details" />
-        )}
+        {articleSelected && article}
       </AnimatePresence>
     </div>
   );

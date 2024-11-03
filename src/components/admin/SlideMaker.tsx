@@ -279,7 +279,7 @@ SlideMaker.Images = () => {
     const sortable = new Sortable(
       container as HTMLElement,
       {
-        draggable: ".slide-image-wrapper",
+        draggable: ".dragable",
       }
     );
 
@@ -370,8 +370,9 @@ SlideMaker.Images = () => {
             className={clsx(
               "slide-image-wrapper",
               "w-[120px] h-[120px] relative overflow-hidden",
+              "select-none",
               image.src
-                ? "slide-image-shadow"
+                ? "slide-image-shadow dragable"
                 : "bg-[#d9d9d9]"
             )}
             key={image.id}

@@ -15,9 +15,6 @@ import { debounce } from "lodash";
 import Script from "next/script";
 
 const Article = ({ key }: { key: string }) => {
-  const [containerKey, setContainerKey] =
-    React.useState(key);
-
   const selectedSection = useRecoilValue(
     selectedSectionNameState
   );
@@ -69,13 +66,15 @@ const Article = ({ key }: { key: string }) => {
           // @ts-ignore
           const sw = new Swiper(swiper, {});
 
+          sw.update();
+
           swiperRef.current.push(sw);
         });
-      }, 300);
+      }, 500);
     };
 
     initSwipers();
-  }, [selectedArticle, containerKey]);
+  }, [selectedArticle]);
 
   useEffect(() => {
     const handler = debounce(() => {
@@ -164,7 +163,6 @@ const Article = ({ key }: { key: string }) => {
         ></p>
 
         <p
-          key={containerKey}
           className={clsx(
             "leading-[180%] text-left break-keep",
             "border-t-[1px] border-black pt-[36px] !mt-[36px]",

@@ -14,10 +14,9 @@ const AdminLayout = ({
 }: {
   children: React.ReactNode;
 }) => {
-  // const isAuthenticated = useRecoilValue(
-  //   isAuthenticatedState
-  // );
-  const isAuthenticated = true;
+  const isAuthenticated = useRecoilValue(
+    isAuthenticatedState
+  );
 
   return (
     <OverlayProvider>

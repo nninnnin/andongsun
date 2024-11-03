@@ -7,6 +7,7 @@ import { atom, useSetRecoilState } from "recoil";
 import { mediaState, slideMediaState } from "@/states";
 import { convertFileToBase64 } from "@/utils";
 import SlideMaker from "@/components/admin/SlideMaker";
+import { processFilename } from "@/utils/submit";
 
 export interface Slide {
   name: string;
@@ -60,7 +61,7 @@ const useSlideHandler = (
       // 1. slides 세팅
       const slides = await Promise.all(
         [...(files ?? [])].map(async (file) => ({
-          name: file.name,
+          name: processFilename(file.name),
           file: file,
           source: await convertFileToBase64(file),
         }))
@@ -71,7 +72,7 @@ const useSlideHandler = (
       // 2. mediaContents 세팅
       const newMediaContents = [...(files ?? [])].map(
         (file) => ({
-          name: file.name,
+          name: processFilename(file.name),
           file: file,
         })
       );
@@ -89,9 +90,10 @@ const useSlideHandler = (
               <SlideMaker
                 quillStore={quillStore}
                 closeOverlay={() => {
-                  close();
                   setSlides([]);
                   setSlideOrder([]);
+
+                  close();
                 }}
               />
             )}

@@ -10,6 +10,7 @@ import {
 import ReactQuill from "react-quill";
 import { MutableRefObject } from "react";
 import { reverse } from "lodash";
+import { processFilename } from "@/utils/submit";
 
 const useImageHandler = (
   quillStore: MutableRefObject<ReactQuill | null>
@@ -48,7 +49,7 @@ const useImageHandler = (
 
       const newMediaContents = [...(files ?? [])].map(
         (file) => ({
-          name: sanitize(file.name),
+          name: processFilename(file.name),
           file: file,
         })
       );
@@ -99,7 +100,7 @@ const useImageHandler = (
           line.children.head,
           (domNode, index) => {
             const fileName = files[index].name;
-            domNode.alt = sanitize(fileName);
+            domNode.alt = processFilename(fileName);
           }
         );
 

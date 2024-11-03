@@ -261,9 +261,7 @@ SlideMaker.Images = () => {
   }, [slides]);
 
   useEffect(() => {
-    if (slideOrder.length === 0) {
-      setSlideOrder(slides.map((slide) => slide.name));
-    }
+    setSlideOrder(slides.map((slide) => slide.name));
   }, [slides]);
 
   useEffect(() => {

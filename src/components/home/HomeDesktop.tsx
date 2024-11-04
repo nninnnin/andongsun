@@ -195,10 +195,9 @@ const BackButton = () => {
       onClick={() => resetSelectedArticle()}
     >
       <img
-        className="rotate-[270deg] mr-[0.5em] h-[1em]"
+        className="rotate-[270deg] mr-[0.5em] h-[1.5em]"
         src="/arrow--top.svg"
       />{" "}
-      <span className="text-large">List</span>
     </div>
   );
 };

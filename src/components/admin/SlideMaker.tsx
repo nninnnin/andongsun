@@ -28,7 +28,7 @@ const BlockEmbed = Quill.import("blots/block/embed");
 class SlideBlot extends BlockEmbed {
   static blotName = "slide";
   static tagName = "div";
-  static className = "swiper";
+  static className = "swiper-container";
 
   static create(value: {
     images: Array<{
@@ -38,7 +38,8 @@ class SlideBlot extends BlockEmbed {
   }) {
     const node = super.create();
 
-    node.classList.add("swiper");
+    const swiper = document.createElement("div");
+    swiper.classList.add("swiper");
 
     node.addEventListener(
       "dragover",
@@ -73,7 +74,8 @@ class SlideBlot extends BlockEmbed {
       });
     }
 
-    node.appendChild(swiperWrapper);
+    swiper.appendChild(swiperWrapper);
+    node.appendChild(swiper);
 
     const nextButton =
       document.createElement("button");

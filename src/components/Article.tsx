@@ -54,13 +54,6 @@ const Article = ({ key }: { key: string }) => {
         // @ts-ignore
         console.log("Has Swiper?", Swiper);
 
-        const images = swiper.querySelectorAll("img");
-        if (images) {
-          images.forEach((image) => {
-            image.style.opacity = "1";
-          });
-        }
-
         // @ts-ignore
         const sw = new Swiper(swiper, {
           navigation: {
@@ -70,6 +63,18 @@ const Article = ({ key }: { key: string }) => {
         });
 
         sw.update();
+
+        const images = swiper.querySelectorAll("img");
+
+        if (images) {
+          images.forEach((image) => {
+            image.style.setProperty(
+              "opacity",
+              "1",
+              "important"
+            );
+          });
+        }
 
         swiperRef.current.push(sw);
       });

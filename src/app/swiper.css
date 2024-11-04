@@ -1,5 +1,10 @@
-.swiper {
+.swiper-container {
   width: 100%;
+  position: relative;
+}
+
+.swiper {
+  width: calc(100% - 60px) !important;
 
   background-color: white;
 }
@@ -28,25 +33,32 @@
 
   pointer-events: none;
 
-  opacity: 0;
+  opacity: 0 !important;
   transition: 1s;
 }
 
 .swiper-button-prev,
 .swiper-button-next {
+  width: 30px;
   height: 22.5px;
 
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+
+  position: absolute;
+  z-index: 9999;
 }
 
 .swiper-button-prev {
   background-image: url("/swiper-prev-button.svg");
+  left: 0px !important;
+  background-position: left;
 }
 
 .swiper-button-next {
   background-image: url("/swiper-next-button.svg");
+  right: 0px !important;
+  background-position: right;
 }
 
 .swiper-button-prev:after {

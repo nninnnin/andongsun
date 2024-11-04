@@ -4,6 +4,10 @@
   background-color: white;
 }
 
+.swiper-wrapper {
+  align-items: center;
+}
+
 .swiper-slide {
   text-align: center;
   font-size: 18px;
@@ -26,4 +30,29 @@
 
   opacity: 0;
   transition: 1s;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  height: 22.5px;
+
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.swiper-button-prev {
+  background-image: url("/swiper-prev-button.svg");
+}
+
+.swiper-button-next {
+  background-image: url("/swiper-next-button.svg");
+}
+
+.swiper-button-prev:after {
+  content: "";
+}
+
+.swiper-button-next:after {
+  content: "";
 }

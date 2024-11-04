@@ -62,7 +62,12 @@ const Article = ({ key }: { key: string }) => {
         }
 
         // @ts-ignore
-        const sw = new Swiper(swiper, {});
+        const sw = new Swiper(swiper, {
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
 
         sw.update();
 

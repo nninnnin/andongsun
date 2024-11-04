@@ -77,6 +77,7 @@ const Password = () => {
           value={password}
           onChange={handleChange}
           ref={inputRef}
+          autoFocus
         />
 
         <button

@@ -75,6 +75,17 @@ class SlideBlot extends BlockEmbed {
 
     node.appendChild(swiperWrapper);
 
+    const nextButton =
+      document.createElement("button");
+    nextButton.classList.add("swiper-button-next");
+
+    const prevButton =
+      document.createElement("button");
+    prevButton.classList.add("swiper-button-prev");
+
+    node.appendChild(nextButton);
+    node.appendChild(prevButton);
+
     setTimeout(() => {
       const swipers =
         document.querySelectorAll(".swiper");
@@ -88,7 +99,12 @@ class SlideBlot extends BlockEmbed {
         }
 
         // @ts-ignore
-        new Swiper(swiper, {});
+        new Swiper(swiper, {
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
       });
     }, 0);
 

@@ -34,7 +34,11 @@
   pointer-events: none;
 
   opacity: 0 !important;
-  transition: 1s;
+  transition: 1s opacity;
+}
+
+.swiper-slide .show-image {
+  opacity: 1 !important;
 }
 
 .swiper-button-prev,

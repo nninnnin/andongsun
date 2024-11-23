@@ -68,11 +68,12 @@ const Article = ({ key }: { key: string }) => {
 
         if (images) {
           images.forEach((image) => {
-            image.style.setProperty(
-              "opacity",
-              "1",
-              "important"
-            );
+            if (image.complete) {
+              image.classList.add("show-image");
+            } else {
+              image.onload = () =>
+                image.classList.add("show-image");
+            }
           });
         }
 

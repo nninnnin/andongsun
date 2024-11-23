@@ -63,7 +63,6 @@ class SlideBlot extends BlockEmbed {
 
         img.setAttribute("src", src);
         img.setAttribute("alt", alt);
-        img.classList.add("slide-image");
 
         const swiperSlide =
           document.createElement("li");
@@ -94,9 +93,15 @@ class SlideBlot extends BlockEmbed {
 
       swipers.forEach((swiper) => {
         const images = swiper.querySelectorAll("img");
+
         if (images) {
           images.forEach((image) => {
-            image.style.opacity = "1";
+            if (image.complete) {
+              image.classList.add("show-image");
+            } else {
+              image.onload = () =>
+                image.classList.add("show-image");
+            }
           });
         }
 

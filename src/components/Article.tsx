@@ -1,5 +1,9 @@
 import clsx from "clsx";
-import React, { useEffect, useRef } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { motion } from "framer-motion";
 
 import useArticles from "@/hooks/useArticles";
@@ -137,16 +141,9 @@ const Article = ({ key }: { key: string }) => {
 
       <header className="space-y-[16px] pb-[90px] text-center">
         {thumbnailPath && (
-          <img
-            className="object-cover mx-auto mb-[36px] max-h-[75dvh]"
+          <Article.Thumbnail
             src={thumbnailPath}
             alt={`${title}-thumbnail`}
-            onLoad={() => {
-              const section =
-                document.querySelector(".section");
-
-              section?.scrollTo(0, 0);
-            }}
           />
         )}
 
@@ -165,18 +162,91 @@ const Article = ({ key }: { key: string }) => {
           }}
         ></p>
 
-        <p
-          className={clsx(
-            "leading-[180%] text-left break-keep",
-            "border-t-[1px] border-black pt-[36px] !mt-[36px]",
-            "text-medium"
-          )}
-          dangerouslySetInnerHTML={{
-            __html: contents,
-          }}
-        ></p>
+        <Article.Contents contents={contents} />
       </header>
     </motion.div>
+  );
+};
+
+Article.Contents = ({
+  contents,
+}: {
+  contents: string;
+}) => {
+  const [containerRef, setContainerRef] =
+    useState<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    const images =
+      containerRef?.querySelectorAll("img");
+
+    images?.forEach((image) => {
+      console.log(image);
+
+      if (image.complete) {
+      } else {
+        image.onload = () =>
+          image.classList.add("show-image");
+      }
+    });
+  }, [containerRef, contents]);
+
+  return (
+    <p
+      className={clsx(
+        "leading-[180%] text-left break-keep",
+        "border-t-[1px] border-black pt-[36px] !mt-[36px]",
+        "text-medium",
+        "article-contents"
+      )}
+      dangerouslySetInnerHTML={{
+        __html: contents,
+      }}
+      ref={(ref) => setContainerRef(ref)}
+    ></p>
+  );
+};
+
+Article.Thumbnail = ({
+  src,
+  alt,
+}: {
+  src: string;
+  alt: string;
+}) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <div className="w-full max-h-[75dvh] relative">
+      <img
+        className={clsx(
+          "w-full h-full max-h-[75dvh]",
+          "object-cover mx-auto mb-[36px]",
+          "transition-opacity duration-[730ms]",
+          isLoading ? "opacity-0" : "opacity-100"
+        )}
+        src={src}
+        alt={alt}
+        onLoad={() => {
+          const section =
+            document.querySelector(".section");
+
+          section?.scrollTo(0, 0);
+
+          setIsLoading(false);
+        }}
+      />
+
+      {isLoading && (
+        <div
+          className={clsx(
+            "w-full h-full",
+            "absolute top-0 left-0",
+            "bg-[#f1f1f1]"
+          )}
+        ></div>
+      )}
+    </div>
   );
 };
 

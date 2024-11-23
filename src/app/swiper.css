@@ -41,6 +41,10 @@
   opacity: 1 !important;
 }
 
+.show-image {
+  opacity: 1 !important;
+}
+
 .swiper-button-prev,
 .swiper-button-next {
   width: 30px;

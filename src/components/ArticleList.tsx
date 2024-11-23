@@ -1,7 +1,11 @@
 import clsx from "clsx";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { motion, useAnimation } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useAnimation,
+} from "framer-motion";
 
 import { ArticleInterface } from "@/types/article";
 import { SectionNames } from "@/constants";
@@ -63,6 +67,8 @@ const ArticleList = ({
     <motion.ul
       animate={controls}
       className={clsx(
+        "opacity-0",
+        "fade-in--700",
         "w-full flex flex-wrap justify-between pb-[24px] px-[44px]",
         "absolute top-0 left-0",
         "pt-[133.5px]",
@@ -73,76 +79,12 @@ const ArticleList = ({
       ref={containerRef}
     >
       {sortedArticles.map(
-        (article: ArticleInterface) => {
-          return (
-            <li
-              key={article.id}
-              className={clsx(
-                isMobile
-                  ? "w-full"
-                  : "w-[calc(calc(100%-min(96px,3vw))/3)]",
-                "text-large",
-                "cursor-pointer",
-                "flex flex-col",
-                "space-y-[6px]",
-                "mb-[120px]",
-                isMobile && "mb-[60px]"
-              )}
-              onClick={(e) => {
-                e.stopPropagation();
-
-                const params = new URLSearchParams();
-
-                params.set("articleId", article.id);
-
-                window.history.pushState(
-                  {},
-                  "",
-                  `${
-                    window.location.pathname
-                  }?${params.toString()}`
-                );
-              }}
-            >
-              {article.thumbnailPath ? (
-                <img
-                  className="object-cover"
-                  src={article.thumbnailPath}
-                  alt={`${article.title}-thumbnail`}
-                />
-              ) : (
-                <div
-                  className={clsx(
-                    "w-full",
-                    "border-t-[1px] border-black",
-                    "text-large leading-[150%] pt-[10px]",
-                    "line-clamp-[8]",
-                    "break-keep"
-                  )}
-                >
-                  {article.caption}
-                </div>
-              )}
-
-              <div
-                className={clsx(
-                  "w-full h-[20px]",
-                  "text-small font-bold",
-                  "flex justify-center items-center",
-                  "!mt-[12px]"
-                )}
-              >
-                {article.title}
-              </div>
-
-              {isMobile && (
-                <div className="text-small font-medium leading-[166%] mt-[6px] text-center">
-                  {article.producedAt.split(".")[0]}
-                </div>
-              )}
-            </li>
-          );
-        }
+        (article: ArticleInterface) => (
+          <ArticleList.Item
+            key={article.id}
+            article={article}
+          />
+        )
       )}
 
       {filteredArticles.length % 3 === 2 && (
@@ -160,6 +102,149 @@ const ArticleList = ({
         ></li>
       )}
     </motion.ul>
+  );
+};
+
+ArticleList.Item = ({
+  article,
+}: {
+  article: ArticleInterface;
+}) => {
+  const [isThumbnailLoaded, setIsThumbnailLoaded] =
+    useState(false);
+
+  const { isMobile } = useBreakpoint();
+
+  const hasArticleThumbnail = !!article.thumbnailPath;
+
+  return (
+    <li
+      className={clsx(
+        isMobile
+          ? "w-full"
+          : "w-[calc(calc(100%-min(96px,3vw))/3)]",
+        "h-fit min-h-[300px]",
+        "text-large",
+        "cursor-pointer",
+        "flex flex-col",
+        "space-y-[6px]",
+        "mb-[120px]",
+        isMobile && "mb-[60px]"
+      )}
+      onClick={(e) => {
+        e.stopPropagation();
+
+        const params = new URLSearchParams();
+
+        params.set("articleId", article.id);
+
+        window.history.pushState(
+          {},
+          "",
+          `${
+            window.location.pathname
+          }?${params.toString()}`
+        );
+      }}
+    >
+      {hasArticleThumbnail ? (
+        <Thumbnail
+          article={article}
+          isThumbnailLoaded={isThumbnailLoaded}
+          onThumbnailLoaded={() =>
+            setIsThumbnailLoaded(true)
+          }
+        />
+      ) : (
+        <Caption article={article} />
+      )}
+
+      <Title article={article} />
+
+      {isMobile && (
+        <div className="text-small font-medium leading-[166%] mt-[6px] text-center">
+          {article.producedAt.split(".")[0]}
+        </div>
+      )}
+    </li>
+  );
+};
+
+const Title = ({
+  article,
+}: {
+  article: ArticleInterface;
+}) => {
+  return (
+    <div
+      className={clsx(
+        "w-full h-[20px]",
+        "text-small font-bold",
+        "flex justify-center items-center",
+        "!mt-[12px]"
+      )}
+    >
+      {article.title}
+    </div>
+  );
+};
+
+const Caption = ({
+  article,
+}: {
+  article: ArticleInterface;
+}) => {
+  return (
+    <div
+      className={clsx(
+        "w-full",
+        "border-t-[1px] border-black",
+        "text-large leading-[150%] pt-[10px]",
+        "line-clamp-[8]",
+        "break-keep"
+      )}
+    >
+      {article.caption}
+    </div>
+  );
+};
+
+const Thumbnail = ({
+  article,
+  isThumbnailLoaded,
+  onThumbnailLoaded,
+}: {
+  article: ArticleInterface;
+  isThumbnailLoaded: boolean;
+  onThumbnailLoaded: () => void;
+}) => {
+  return (
+    <div className={clsx("w-full h-full", "relative")}>
+      <img
+        className={clsx(
+          "w-full h-auto",
+          "object-cover"
+        )}
+        src={article.thumbnailPath}
+        alt={`${article.title}-thumbnail`}
+        onLoad={onThumbnailLoaded}
+      />
+
+      <AnimatePresence>
+        {!isThumbnailLoaded && (
+          <motion.div
+            className={clsx(
+              "bg-[#f1f1f1]",
+              "w-full h-full",
+              "absolute top-0 left-0"
+            )}
+            exit={{
+              opacity: 0,
+            }}
+          ></motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

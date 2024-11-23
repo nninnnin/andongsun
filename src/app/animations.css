@@ -14,6 +14,11 @@
   animation-delay: 400ms;
 }
 
+.fade-in--700 {
+  animation: fadeIn 730ms linear forwards;
+  animation-delay: 730ms;
+}
+
 .fade-in--menu-items {
   animation: fadeIn 400ms ease-in forwards;
   animation-delay: 300ms;

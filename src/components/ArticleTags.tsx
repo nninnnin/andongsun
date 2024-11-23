@@ -66,6 +66,8 @@ const ArticleTags = ({
   return (
     <ul
       className={clsx(
+        "opacity-0",
+        "fade-in--700",
         "sticky top-[44px] z-[9999]",
         "flex space-x-[24px] pt-[0.2em] px-[24px]",
         "text-large",

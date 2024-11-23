@@ -67,8 +67,6 @@ const ArticleList = ({
     <motion.ul
       animate={controls}
       className={clsx(
-        "opacity-0",
-        "fade-in--700",
         "w-full flex flex-wrap justify-between pb-[24px] px-[44px]",
         "absolute top-0 left-0",
         "pt-[133.5px]",

@@ -8,7 +8,7 @@ const DEFAULT_COLORS = {
   [SectionNames.Writing]: "pastelBlue1",
   [SectionNames.Project]: "pastelBlue2",
   [SectionNames.Book]: "pastelBlue3",
-  [SectionNames.Diary]: "pastelBlue4",
+  [SectionNames.Talks]: "pastelBlue4",
 };
 
 const useSectionColor = () => {

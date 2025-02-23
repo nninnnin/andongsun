@@ -3,7 +3,7 @@ export enum SectionNames {
   Writing = "Writing",
   Project = "Project",
   Book = "Book",
-  Diary = "Diary",
+  Talks = "Talks",
 }
 
 export const SectionTitles = {
@@ -11,7 +11,7 @@ export const SectionTitles = {
   [SectionNames.Writing]: "Writing",
   [SectionNames.Project]: "Project",
   [SectionNames.Book]: "Book",
-  [SectionNames.Diary]: "Diary",
+  [SectionNames.Talks]: "Talks",
 };
 
 export const SectionColors = {
@@ -19,5 +19,5 @@ export const SectionColors = {
   [SectionNames.Writing]: "pastelBlue1",
   [SectionNames.Project]: "pastelBlue2",
   [SectionNames.Book]: "pastelBlue3",
-  [SectionNames.Diary]: "pastelBlue4",
+  [SectionNames.Talks]: "pastelBlue4",
 };

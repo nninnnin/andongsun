@@ -220,8 +220,9 @@ Article.Thumbnail = ({
     <div className="w-full max-h-[75dvh] relative">
       <img
         className={clsx(
-          "w-full h-full max-h-[75dvh]",
-          "object-cover mx-auto mb-[36px]",
+          "w-full h-fit max-h-[55dvh]",
+          "object-contain",
+          "mx-auto mb-[36px]",
           "transition-opacity duration-[730ms]",
           isLoading ? "opacity-0" : "opacity-100"
         )}

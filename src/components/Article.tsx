@@ -39,30 +39,31 @@ const Article = ({ key }: { key: string }) => {
         article.id === selectedArticle
     );
 
-    console.log("article changed", article);
-
     if (!article) return;
     if (!articles) return;
 
     const initSwipers = () => {
-      console.log("initialize swipers");
-
       const swipers =
         document.querySelectorAll(".swiper");
 
-      console.log(swipers);
-
       if (!swipers) return;
 
-      swipers.forEach((swiper) => {
-        // @ts-ignore
-        console.log("Has Swiper?", Swiper);
+      swipers.forEach((swiper, swiperIndex) => {
+        const currentNextButton =
+          document.querySelectorAll(
+            ".swiper-button-next"
+          )[swiperIndex];
+
+        const currentPrevButton =
+          document.querySelectorAll(
+            ".swiper-button-prev"
+          )[swiperIndex];
 
         // @ts-ignore
         const sw = new Swiper(swiper, {
           navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            nextEl: currentNextButton,
+            prevEl: currentPrevButton,
           },
         });
 
@@ -108,8 +109,6 @@ const Article = ({ key }: { key: string }) => {
     producedAt,
     thumbnailPath,
   } = article;
-
-  console.log("리렌더링");
 
   return (
     <motion.div
@@ -181,8 +180,6 @@ Article.Contents = ({
       containerRef?.querySelectorAll("img");
 
     images?.forEach((image) => {
-      console.log(image);
-
       if (image.complete) {
       } else {
         image.onload = () =>

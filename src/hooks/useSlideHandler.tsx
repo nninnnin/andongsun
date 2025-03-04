@@ -1,10 +1,9 @@
-import { pullAt } from "lodash";
 import ReactQuill from "react-quill";
 import { MutableRefObject } from "react";
 import { useOverlay } from "@toss/use-overlay";
 import { atom, useSetRecoilState } from "recoil";
 
-import { mediaState, slideMediaState } from "@/states";
+import { slideMediaState } from "@/states";
 import { convertFileToBase64 } from "@/utils";
 import SlideMaker from "@/components/admin/SlideMaker";
 import { processFilename } from "@/utils/submit";

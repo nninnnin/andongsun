@@ -1,36 +1,25 @@
 "use client";
 
 import React from "react";
-import { useRecoilValue } from "recoil";
 import { OverlayProvider } from "@toss/use-overlay";
 
 import AdminHeader from "@/components/admin/Header";
-import Password, {
-  isAuthenticatedState,
-} from "@/components/Password";
+import withAuth from "@/utils/withAuth";
 
-const AdminLayout = ({
-  children,
-}: {
+interface LayoutProps {
   children: React.ReactNode;
-}) => {
-  const isAuthenticated = useRecoilValue(
-    isAuthenticatedState
-  );
+}
 
+const AdminLayout = ({ children }: LayoutProps) => {
   return (
     <OverlayProvider>
-      {isAuthenticated ? (
-        <div className="bg-[#333333] flex flex-col h-[100dvh] w-screen overflow-y-scroll">
-          <AdminHeader />
+      <div className="bg-[#333333] flex flex-col h-[100dvh] w-screen overflow-y-scroll">
+        <AdminHeader />
 
-          <div className="h-full flex">{children}</div>
-        </div>
-      ) : (
-        <Password />
-      )}
+        <div className="h-full flex">{children}</div>
+      </div>
     </OverlayProvider>
   );
 };
 
-export default AdminLayout;
+export default withAuth<LayoutProps>(AdminLayout);

@@ -14,22 +14,31 @@ const withAuth =
 
     useEffect(() => {
       (async function () {
-        const token = localStorage.getItem(TOKEN_NAME);
+        try {
+          const token =
+            localStorage.getItem(TOKEN_NAME);
 
-        const res = await fetch("/login/api", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token }),
-        });
+          const res = await fetch("/login/api", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token }),
+          });
 
-        const { isValid } = await res.json();
+          const result = await res.json();
 
-        if (!isValid) {
+          if (!result.isValid) {
+            console.log(result);
+
+            router.replace("/login");
+          } else {
+            setAuthenticated(true);
+          }
+        } catch (error) {
+          console.log(error);
+
           router.replace("/login");
-        } else {
-          setAuthenticated(true);
         }
       })();
     }, []);

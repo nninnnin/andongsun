@@ -1,5 +1,4 @@
 import { useSetRecoilState } from "recoil";
-import sanitize from "sanitize-filename";
 
 import useArticle from "@/hooks/useArticle";
 import { mediaState } from "@/states";

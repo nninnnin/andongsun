@@ -98,15 +98,6 @@ const SubmitButton = () => {
 
     let newContents = `${contents}`;
 
-    console.log(
-      "이미지를 위한 파일정보들",
-      mediaContents
-    );
-    console.log(
-      "슬라이드를 위한 파일정보들",
-      slideMediaContents
-    );
-
     if (imageTagStrings) {
       newContents = pipe(
         await tagStringsToPaths(imageTagStrings, [
@@ -119,8 +110,6 @@ const SubmitButton = () => {
     }
 
     articleBody.data.contents = newContents;
-
-    console.log("보낼 것", articleBody);
 
     if (isEditing) {
       await updateArticle(

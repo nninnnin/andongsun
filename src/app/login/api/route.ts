@@ -21,8 +21,6 @@ type JWTError = {
 export async function POST(request: Request) {
   const { token } = await request.json();
 
-  console.log(token);
-
   try {
     const isValid = jwtService.verifyToken(token);
 

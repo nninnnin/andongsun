@@ -12,24 +12,30 @@ const PROJECT_ID = "cbbcc6cd";
 const ARTICLE_MODEL_KEY = "articles";
 
 const fetchArticles = async () => {
-  const res = await memexFetcher.getList(
-    PROJECT_ID,
-    ARTICLE_MODEL_KEY,
-    {
-      page: 0,
-      size: 1000,
-    }
-  );
+  try {
+    const res = await memexFetcher.getList(
+      PROJECT_ID,
+      ARTICLE_MODEL_KEY,
+      {
+        page: 0,
+        size: 1000,
+      }
+    );
 
-  const result = await res.json();
+    const result = await res.json();
 
-  return transformArticles(result);
+    return transformArticles(result);
+  } catch (error) {
+    console.log("Error on fetch articles:", error);
+
+    return null;
+  }
 };
 
 import useSWR from "swr";
 
 const useArticles = () => {
-  const swr = useSWR<ArticleInterface[]>(
+  const swr = useSWR<ArticleInterface[] | null>(
     "articles",
     fetchArticles,
     {

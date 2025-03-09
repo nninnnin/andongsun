@@ -1,12 +1,11 @@
 import clsx from "clsx";
-import React, {
-  ChangeEvent,
-  useEffect,
-  useRef,
-} from "react";
+import React, { ChangeEvent, useRef } from "react";
 import { atom, useRecoilState } from "recoil";
 import { useOverlay } from "@toss/use-overlay";
+
 import Alert from "@/components/admin/common/Alert";
+import { useRouter } from "next/navigation";
+import { TOKEN_NAME } from "@/app/login/constants/index";
 
 export const passwordState = atom({
   key: "passwordState",
@@ -19,11 +18,10 @@ export const isAuthenticatedState = atom({
 });
 
 const Password = () => {
+  const router = useRouter();
+
   const [password, setPassword] =
     useRecoilState(passwordState);
-
-  const [isAuthenticated, setIsAuthenticated] =
-    useRecoilState(isAuthenticatedState);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement>
@@ -37,31 +35,35 @@ const Password = () => {
     null
   );
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (!inputRef || !inputRef.current) return;
 
     inputRef.current.blur();
 
     if (password === process.env.PASSWORD) {
-      setIsAuthenticated(true);
+      const res = await fetch("/login/api");
 
-      return;
+      const { token } = await res.json();
+
+      localStorage.setItem(TOKEN_NAME, token);
+
+      router.replace("/admin");
+    } else {
+      overlay.open(({ close, isOpen }) => (
+        <Alert
+          show={isOpen}
+          desc="비밀번호가 틀렸습니다."
+          handleConfirm={() => close()}
+          handleClose={() => close()}
+        />
+      ));
     }
-
-    overlay.open(({ close, isOpen }) => (
-      <Alert
-        show={isOpen}
-        desc="비밀번호가 틀렸습니다."
-        handleConfirm={() => close()}
-        handleClose={() => close()}
-      />
-    ));
   };
 
   return (
     <div
       className={clsx(
-        "bg-[#222222] fixed top-0 left-0",
+        "bg-[#333333] fixed top-0 left-0",
         "w-screen h-screen",
         "flex items-center justify-center"
       )}

@@ -30,7 +30,6 @@ const withAuth =
           router.replace("/login");
         } else {
           setAuthenticated(true);
-          router.replace("/admin");
         }
       })();
     }, []);

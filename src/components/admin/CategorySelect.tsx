@@ -21,7 +21,7 @@ const CategorySelect = () => {
 
   return (
     <Dropdown
-      className="!w-[150px]"
+      className="!w-[150px] !mt-[0px]"
       options={Object.values(SectionNames).map(
         (sectionName) => {
           return {

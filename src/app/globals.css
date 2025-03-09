@@ -158,3 +158,10 @@ object {
 
   transition: opacity 730ms;
 }
+
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

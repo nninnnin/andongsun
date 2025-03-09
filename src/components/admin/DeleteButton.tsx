@@ -54,7 +54,8 @@ const DeleteButton = () => {
   return (
     <div
       className={clsx(
-        "cursor-pointer btn selector bg-[#333333]"
+        "cursor-pointer btn selector bg-[#333333]",
+        "!border-b-[0px]"
       )}
       onClick={handleClick}
     >

@@ -6,12 +6,12 @@ import {
   useResetRecoilState,
 } from "recoil";
 import { useSWRConfig } from "swr";
-
-import { articleState, mediaState } from "@/states";
 import { useParams } from "next/navigation";
+
 import useArticles from "@/hooks/useArticles";
 import Editor from "@/components/admin/Editor";
 import { ArticleInterface } from "@/types/article";
+import { articleState, mediaState } from "@/states";
 
 const EditPage = () => {
   const [article, setArticle] =

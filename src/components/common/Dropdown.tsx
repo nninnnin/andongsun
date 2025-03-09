@@ -55,7 +55,10 @@ const Dropdown = ({
         )}
         ref={listRef}
       >
-        <Dropdown.Item onClick={handleListClick}>
+        <Dropdown.Item
+          onClick={handleListClick}
+          isOpen={isOpen}
+        >
           {selected}
 
           <object
@@ -69,6 +72,7 @@ const Dropdown = ({
           return (
             <Dropdown.Item
               key={`${option}-${index}`}
+              isOpen={isOpen}
               onClick={(e) => {
                 if (!isOpen) return;
 
@@ -93,6 +97,7 @@ const Dropdown = ({
 Dropdown.Item = (
   props: React.PropsWithChildren<{
     onClick?: (e: React.MouseEvent) => void;
+    isOpen?: boolean;
   }>
 ) => {
   return (
@@ -101,6 +106,7 @@ Dropdown.Item = (
         "w-full h-[44px] flex items-center justify-center whitespace-nowrap bg-white relative z-[9999]",
         "border-[1px] border-themeBlue",
         "mt-[-1px] first:mt-0",
+        props.isOpen && "[&:nth-child(2)]:!mt-[-2px]",
         "border-b-0 first:border-b-[1px] last:border-b-[1px]",
         "px-[13px] py-[10px]",
         "flex justify-between items-center",

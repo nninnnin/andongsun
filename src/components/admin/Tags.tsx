@@ -70,7 +70,8 @@ const Tags = () => {
           "w-full h-full",
           "flex items-center",
           "bg-white text-themeBlue border-[1px] border-themeBlue",
-          "pr-[15px]"
+          "pr-[15px]",
+          "overflow-hidden"
         )}
       >
         <input

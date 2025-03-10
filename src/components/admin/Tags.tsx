@@ -95,7 +95,7 @@ const Tags = () => {
 
       {showTags &&
         !!value.length &&
-        filteredTags?.length && (
+        !!filteredTags?.length && (
           <ul
             className={clsx(
               "w-[calc(100%)]",

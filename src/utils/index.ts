@@ -1,15 +1,12 @@
 import { format } from "date-fns";
-// @ts-ignore
-import Mf from "@rebel9/memex-fetcher";
-
-const {
+import {
   pipe,
   pluckList,
   mapListItems,
-  pluckData,
   mapObjectProps,
   deconstructLanguageMap,
-} = Mf;
+  flattenListItem,
+} from "@rebel9/memex-fetcher";
 
 import {
   ArticleBody,
@@ -91,13 +88,7 @@ export const transformArticles = (
   return pipe(
     bareArticle,
     pluckList,
-    mapListItems((item: any) => {
-      return {
-        ...pluckData(item),
-        id: item.uid,
-        updatedAt: item.updateAt ?? item.createdAt,
-      };
-    }),
+    mapListItems(flattenListItem),
     mapListItems((item: any) => {
       const newItem = pipe(
         item,
@@ -107,18 +98,26 @@ export const transformArticles = (
             ["title"],
             (title: { KO: string }) => title.KO
           ),
-        (item: any) =>
-          mapObjectProps(
-            item,
-            ["articleType"],
-            (articleType: Array<{ KO: string }>) =>
-              deconstructLanguageMap(
-                articleType[0],
-                "KO"
-              )
-          ),
-        (item: any) =>
-          mapObjectProps(
+        (item: any) => {
+          const result = conditionalApply(
+            (item) =>
+              mapObjectProps(
+                item,
+                ["articleType"],
+                (articleType: any) =>
+                  articleType[0].languageMap.KO
+              ),
+            item.articleType[0] !== undefined
+          )(item);
+
+          return result;
+        },
+        (item: any) => {
+          if (item.tags?.length === 0) {
+            return item;
+          }
+
+          return mapObjectProps(
             item,
             ["tags"],
             mapListItems((tag: any) => {
@@ -136,7 +135,8 @@ export const transformArticles = (
 
               return newTag;
             })
-          )
+          );
+        }
       );
 
       return newItem;
@@ -236,3 +236,8 @@ export const iterateListNode = (
     console.log("iteration over");
   }
 };
+
+const conditionalApply =
+  (fn: (data: any) => unknown, condition: boolean) =>
+  (data: unknown) =>
+    condition ? fn(data) : data;

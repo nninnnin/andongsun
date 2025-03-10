@@ -38,7 +38,7 @@ const EditPage = () => {
       const articleFromServer =
         articlesFromServer.find(
           (article: ArticleInterface) =>
-            article.id === articleId
+            (article.id ?? article.uid) === articleId
         );
 
       if (!articleFromServer) return;
@@ -86,7 +86,8 @@ const EditPage = () => {
   if (!articles) return <></>;
 
   const articleFromServer = articles.find(
-    (article) => article.id === articleId
+    (article) =>
+      (article.id ?? article.uid) === articleId
   );
 
   if (!articleFromServer) return <></>;

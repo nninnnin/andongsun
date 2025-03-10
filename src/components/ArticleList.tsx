@@ -79,7 +79,7 @@ const ArticleList = ({
       {sortedArticles.map(
         (article: ArticleInterface) => (
           <ArticleList.Item
-            key={article.id}
+            key={article.id ?? article.uid}
             article={article}
           />
         )
@@ -134,7 +134,10 @@ ArticleList.Item = ({
 
         const params = new URLSearchParams();
 
-        params.set("articleId", article.id);
+        params.set(
+          "articleId",
+          article.id ?? article.uid ?? ""
+        );
 
         window.history.pushState(
           {},

@@ -36,7 +36,7 @@ const Article = ({ key }: { key: string }) => {
   useEffect(() => {
     const article = articles?.find(
       (article: ArticleInterface) =>
-        article.id === selectedArticle
+        (article.id ?? article.uid) === selectedArticle
     );
 
     if (!article) return;
@@ -97,7 +97,7 @@ const Article = ({ key }: { key: string }) => {
 
   const article = articles?.find(
     (article: ArticleInterface) =>
-      article.id === selectedArticle
+      (article.id ?? article.uid) === selectedArticle
   );
 
   if (!article) return <></>;

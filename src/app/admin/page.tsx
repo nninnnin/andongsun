@@ -142,6 +142,7 @@ AdminPage.ArticleList = ({
       {articlesSorted.map((article, index) => {
         const {
           id,
+          uid,
           title,
           credits,
           articleType,
@@ -151,14 +152,14 @@ AdminPage.ArticleList = ({
 
         return (
           <AdminPage.ArticleListItem
-            key={id}
+            key={id ?? uid}
             title={title}
             credits={credits}
             articleType={articleType}
             producedAt={producedAt}
             tag={tags[0]?.tagName}
             handleClick={() =>
-              router.push(`/admin/edit/${id}`)
+              router.push(`/admin/edit/${id ?? uid}`)
             }
           />
         );

@@ -43,7 +43,8 @@ export interface BareArticle {
 }
 
 export interface ArticleInterface {
-  id: string;
+  uid?: string;
+  id?: string;
   title: string;
   caption: string;
   contents: string;

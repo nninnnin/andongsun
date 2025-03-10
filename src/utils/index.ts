@@ -38,6 +38,7 @@ export const createArticleBody = async (
   } = articleState;
 
   const categories = await getArticleCategories();
+
   const articleType = getCategoryId(
     articleState.articleType!,
     categories

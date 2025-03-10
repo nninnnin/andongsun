@@ -34,7 +34,6 @@ import {
   tagStringsToPaths,
 } from "@/utils/submit";
 import { matchImageTags } from "@/utils/matcher";
-import { slidesState } from "@/hooks/useSlideHandler";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();

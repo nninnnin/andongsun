@@ -1,15 +1,11 @@
 "use client";
 
 import React from "react";
-import Spinner from "@/components/admin/common/Spinner";
+
+import LinkHandler from "@/components/admin/LinkHandler";
 
 const page = () => {
-  return (
-    <Spinner
-      contents="업로드 중입니다… ⌛…"
-      onMount={() => {}}
-    />
-  );
+  return <LinkHandler />;
 };
 
 export default page;

@@ -17,7 +17,7 @@ import { selectedSectionNameState } from "@/components/Section";
 
 import Script from "next/script";
 
-const Article = ({ key }: { key: string }) => {
+const Article = () => {
   const selectedSection = useRecoilValue(
     selectedSectionNameState
   );
@@ -26,7 +26,7 @@ const Article = ({ key }: { key: string }) => {
 
   const searchParams = useSearchParams();
 
-  const selectedArticle =
+  const selectedArticleId =
     searchParams.get("articleId");
 
   const { data: articles } = useArticles();
@@ -36,7 +36,8 @@ const Article = ({ key }: { key: string }) => {
   useEffect(() => {
     const article = articles?.find(
       (article: ArticleInterface) =>
-        (article.id ?? article.uid) === selectedArticle
+        (article.id ?? article.uid) ===
+        selectedArticleId
     );
 
     if (!article) return;
@@ -97,7 +98,7 @@ const Article = ({ key }: { key: string }) => {
 
   const article = articles?.find(
     (article: ArticleInterface) =>
-      (article.id ?? article.uid) === selectedArticle
+      (article.id ?? article.uid) === selectedArticleId
   );
 
   if (!article) return <></>;
@@ -110,9 +111,11 @@ const Article = ({ key }: { key: string }) => {
     thumbnailPath,
   } = article;
 
+  console.log(article.uid);
+
   return (
     <motion.div
-      key={key}
+      key={`article-details-${article.uid}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}

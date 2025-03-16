@@ -113,6 +113,7 @@ Section.Contents = ({
   sectionName: SectionNames;
 }) => {
   const searchParams = useSearchParams();
+  const articleId = searchParams.get("articleId");
 
   const selectedSection = useRecoilValue(
     selectedSectionNameState
@@ -122,17 +123,12 @@ Section.Contents = ({
     useState<string | null>(null);
 
   useEffect(() => {
-    setArticleSelected(searchParams.get("articleId"));
-  }, [searchParams.get("articleId")]);
+    setArticleSelected(articleId);
+  }, [articleId]);
 
   const { isMobile } = useBreakpoint();
 
   const animateFadeIn = clsx("opacity-0", "fade-in");
-
-  const article = useMemo(
-    () => <Article key="article-details" />,
-    []
-  );
 
   return (
     <div
@@ -160,7 +156,7 @@ Section.Contents = ({
       <AnimatePresence>
         <ArticleList sectionName={sectionName} />
 
-        {articleSelected && article}
+        {articleSelected && <Article />}
       </AnimatePresence>
     </div>
   );

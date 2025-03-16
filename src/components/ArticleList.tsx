@@ -77,12 +77,16 @@ const ArticleList = ({
       ref={containerRef}
     >
       {sortedArticles.map(
-        (article: ArticleInterface) => (
-          <ArticleList.Item
-            key={article.id ?? article.uid}
-            article={article}
-          />
-        )
+        (article: ArticleInterface) => {
+          const articleId = article.id ?? article.uid;
+
+          return (
+            <ArticleList.Item
+              key={`article-list-item-${articleId}`}
+              article={article}
+            />
+          );
+        }
       )}
 
       {filteredArticles.length % 3 === 2 && (

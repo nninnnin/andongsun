@@ -70,6 +70,7 @@ import { usePathname } from "next/navigation";
 import useImageHandler from "@/hooks/useImageHandler";
 import useSlideHandler from "@/hooks/useSlideHandler";
 import Script from "next/script";
+import useLinkHandler from "@/hooks/useLinkHandler";
 
 export const richEditorLoadedState = atom({
   key: "richEditorLoadedState",
@@ -88,9 +89,6 @@ const RichTextEditor = () => {
 
   const { handleChange, value } =
     useArticle<string>("contents");
-
-  const setMediaContents =
-    useSetRecoilState(mediaState);
 
   const ReactQuill = dynamic(
     async () => {
@@ -174,6 +172,7 @@ const RichTextEditor = () => {
 
   const { imageHandler } = useImageHandler(quillStore);
   const { slideHandler } = useSlideHandler(quillStore);
+  const { linkHandler } = useLinkHandler(quillStore);
 
   return (
     <div className="w-full h-full">
@@ -204,11 +203,12 @@ const RichTextEditor = () => {
               toolbar: {
                 container: [
                   ["bold", "underline", "italic"],
-                  ["image", "video"],
+                  ["image", "video", "link"],
                 ],
                 handlers: {
                   image: imageHandler,
                   video: slideHandler,
+                  link: linkHandler,
                 },
               },
               ImageResize: {

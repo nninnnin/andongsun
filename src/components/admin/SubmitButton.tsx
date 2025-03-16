@@ -12,10 +12,6 @@ import {
 } from "next/navigation";
 import clsx from "clsx";
 import { useSWRConfig } from "swr";
-// @ts-ignore
-import Mf from "@rebel9/memex-fetcher";
-
-const { pipe } = Mf;
 
 import { createArticleBody } from "@/utils";
 import useMemex from "@/hooks/useMemex";
@@ -29,17 +25,13 @@ import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
 import Spinner from "@/components/admin/common/Spinner";
 import { ArticleStateInterface } from "@/types/article";
-import {
-  replaceImageTags,
-  tagStringsToPaths,
-} from "@/utils/submit";
-import { matchImageTags } from "@/utils/matcher";
+import { mapImageTags } from "@/utils/submit/mapImageTags";
+import { mapContentsTags } from "@/utils/submit/mapContentsTags";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();
 
-  const { postArticle, updateArticle, postTag } =
-    useMemex();
+  const { postArticle, updateArticle } = useMemex();
 
   const article = useRecoilValue(articleState);
   const mediaContents = useRecoilValue(mediaState);
@@ -58,57 +50,34 @@ const SubmitButton = () => {
 
   const isEditing = pathname.includes("edit");
 
-  const { data: tags } = useTags();
+  const { data: tags, getTagId } = useTags();
 
   const submitArticle = async (
     article: ArticleStateInterface
   ) => {
-    // 아티클 바디 생성
+    // 1. 아티클 바디 생성
     const articleBody = await createArticleBody(
       article
     );
 
-    // 새로운 태그 세팅
-    const newTags: Array<string> = [];
+    // 2. 바디에 새로운 태그 세팅
+    const tagId = await getTagId(article.tag);
 
-    const hasTag = tags!
-      .map((tag) => tag.name)
-      .includes(article.tag);
+    articleBody.data.tags = [tagId];
 
-    if (hasTag) {
-      const tagId = tags!.find(
-        (tag) => tag.name === article.tag
-      )!.id;
-
-      newTags.push(tagId);
-    } else {
-      const tagId = await postTag(article.tag);
-
-      newTags.push(tagId);
-    }
-
-    articleBody.data.tags = newTags;
-
-    // 새로운 컨텐츠 (이미지 매핑) 세팅
+    // 3. 바디에 새로운 컨텐츠 세팅
     const contents = articleBody.data.contents;
+    const mediaFiles = [
+      ...mediaContents,
+      ...slideMediaContents,
+    ];
 
-    // search image tags on contents using regex
-    const imageTagStrings = matchImageTags(contents);
+    const mappedContents = mapContentsTags(
+      contents,
+      mediaFiles
+    );
 
-    let newContents = `${contents}`;
-
-    if (imageTagStrings) {
-      newContents = pipe(
-        await tagStringsToPaths(imageTagStrings, [
-          ...mediaContents,
-          ...slideMediaContents,
-        ]),
-        (imagePaths: Array<Record<string, string>>) =>
-          replaceImageTags(imagePaths, newContents)
-      );
-    }
-
-    articleBody.data.contents = newContents;
+    articleBody.data.contents = mappedContents;
 
     if (isEditing) {
       await updateArticle(

@@ -40,7 +40,9 @@ export const readImage = async (imageName: string) => {
   return result.list[0];
 };
 
-export const registerImage = async (image: File) => {
+export const registerImage = async (
+  image: File
+): Promise<string> => {
   const result = await memexFetcher.postMedia(
     PROJECT_ID,
     image

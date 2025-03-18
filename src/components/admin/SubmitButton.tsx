@@ -72,7 +72,7 @@ const SubmitButton = () => {
       ...slideMediaContents,
     ];
 
-    const mappedContents = mapContentsTags(
+    const mappedContents = await mapContentsTags(
       contents,
       mediaFiles
     );

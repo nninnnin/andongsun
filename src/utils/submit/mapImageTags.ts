@@ -35,10 +35,20 @@ const mapImageTagToPath = curry(
     contents: string,
     imageString: RegExpMatchArray
   ) => {
-    return pipe(
-      imageString,
-      await tagStringsToPaths(mediaFiles),
-      replaceImageTags(contents)
+    const imagePaths = await tagStringsToPaths(
+      mediaFiles,
+      imageString
     );
+
+    const filtered = imagePaths.filter(
+      (imagePath) => imagePath
+    );
+
+    const newContent = replaceImageTags(
+      contents,
+      filtered as Record<string, string>[]
+    );
+
+    return newContent;
   }
 );

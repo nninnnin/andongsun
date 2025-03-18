@@ -32,17 +32,21 @@ export const tagStringsToPaths = curry(
           return false;
         }
 
-        const hasImageAlready = await readImage(
+        const registeredImage = await readImage(
           imageName
+        );
+
+        const hasImageAlready = Boolean(
+          registeredImage?.data
         );
 
         if (hasImageAlready) {
           return {
             name: imageName,
-            path: hasImageAlready.data.path,
-            width: dom?.getAttribute("width"),
-            style: dom?.getAttribute("style"),
-            align: dom?.getAttribute("align"),
+            path: registeredImage.data.path as string,
+            width: dom?.getAttribute("width") ?? "",
+            style: dom?.getAttribute("style") ?? "",
+            align: dom?.getAttribute("align") ?? "",
           };
         }
 
@@ -69,9 +73,9 @@ export const tagStringsToPaths = curry(
         return {
           name: imageName,
           path: registeredPath,
-          width: dom?.getAttribute("width"),
-          style: dom?.getAttribute("style"),
-          align: dom?.getAttribute("align"),
+          width: dom?.getAttribute("width") ?? "",
+          style: dom?.getAttribute("style") ?? "",
+          align: dom?.getAttribute("align") ?? "",
         };
       })
     );

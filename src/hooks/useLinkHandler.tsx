@@ -11,6 +11,18 @@ const useLinkHandler = (
   const overlay = useOverlay();
 
   const linkHandler = () => {
+    const quill = quillStore.current;
+    quill?.focus();
+    const editor = quill?.getEditor();
+    const range = editor?.getSelection();
+
+    const hasSelection = range && range.length > 0;
+
+    if (!hasSelection) {
+      alert("링크를 위한 텍스트를 선택해주세요.");
+      return;
+    }
+
     overlay.open(({ isOpen, close }) => {
       return (
         <>
@@ -18,32 +30,12 @@ const useLinkHandler = (
             createPortal(
               <LinkHandler
                 onButtonClick={(input) => {
-                  console.log(quillStore.current);
+                  editor?.formatText(
+                    range!.index,
+                    range!.length,
+                    { link: input }
+                  );
 
-                  const quill = quillStore.current;
-                  quill?.focus();
-
-                  const editor = quill?.getEditor();
-
-                  const range = editor?.getSelection();
-
-                  console.log(range);
-
-                  if (range) {
-                    editor?.insertText(
-                      range.index,
-                      input,
-                      { link: input }
-                    );
-
-                    // move cursor to the end of the input
-                    editor?.setSelection(
-                      range.index + input.length,
-                      0
-                    );
-                  }
-
-                  console.log(input);
                   close();
                 }}
               />,

@@ -159,13 +159,13 @@ object {
   transition: opacity 730ms;
 }
 
+.article-contents a {
+  text-decoration: underline;
+}
+
 .select-none {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-}
-
-a {
-  text-decoration: underline;
 }

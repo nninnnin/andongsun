@@ -1,11 +1,17 @@
 import clsx from "clsx";
 import React, { useState } from "react";
 
-const LinkInput = () => {
+const LinkInput = ({
+  onButtonClick,
+}: {
+  onButtonClick: (input: string) => void;
+}) => {
   const [input, setInput] = useState("");
 
+  const hasInput = !!input;
+
   return (
-    <div className="flex">
+    <div className="flex border-[1px] border-white">
       <input
         type="text"
         className={clsx(
@@ -18,7 +24,15 @@ const LinkInput = () => {
         value={input}
         placeholder="URL을 입력하세요."
       />
-      <button>
+
+      <button
+        className={clsx(
+          hasInput
+            ? "cursor-pointer"
+            : "cursor-auto pointer-events-none"
+        )}
+        onClick={() => onButtonClick(input)}
+      >
         <svg
           width={30}
           height={30}
@@ -27,7 +41,7 @@ const LinkInput = () => {
           <rect
             width="100"
             height="100"
-            fill="skyblue"
+            fill={hasInput ? "#0067FF" : "#d1d5dc"}
           ></rect>
 
           <polyline

@@ -16,7 +16,37 @@ const useLinkHandler = (
         <>
           {isOpen &&
             createPortal(
-              <LinkHandler />,
+              <LinkHandler
+                onButtonClick={(input) => {
+                  console.log(quillStore.current);
+
+                  const quill = quillStore.current;
+                  quill?.focus();
+
+                  const editor = quill?.getEditor();
+
+                  const range = editor?.getSelection();
+
+                  console.log(range);
+
+                  if (range) {
+                    editor?.insertText(
+                      range.index,
+                      input,
+                      { link: input }
+                    );
+
+                    // move cursor to the end of the input
+                    editor?.setSelection(
+                      range.index + input.length,
+                      0
+                    );
+                  }
+
+                  console.log(input);
+                  close();
+                }}
+              />,
               document.body
             )}
         </>

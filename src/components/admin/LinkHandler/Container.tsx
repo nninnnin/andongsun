@@ -7,13 +7,7 @@ const Container = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div
-      className={clsx(
-        "bg-themeBlue",
-        "flex flex-col",
-        "p-[80px]"
-      )}
-    >
+    <div className={clsx("bg-white", "flex flex-col")}>
       {children}
     </div>
   );

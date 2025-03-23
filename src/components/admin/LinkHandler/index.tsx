@@ -4,20 +4,18 @@ import React from "react";
 import LinkInput from "@/components/admin/LinkHandler/LinkInput";
 import Container from "@/components/admin/LinkHandler/Container";
 import Preview from "@/components/admin/LinkHandler/Preview";
-import ConfirmButton from "@/components/admin/LinkHandler/ConfirmButton";
 
-const LinkHandler = () => {
+const LinkHandler = ({
+  onButtonClick,
+}: {
+  onButtonClick: (input: string) => void;
+}) => {
   return (
     <LinkHandler.Overlay>
       <Container>
-        <LinkInput />
+        <LinkInput onButtonClick={onButtonClick} />
 
         <Preview />
-
-        <ConfirmButton
-          handleClick={() => {}}
-          inputValidated={false}
-        />
       </Container>
     </LinkHandler.Overlay>
   );

@@ -165,3 +165,7 @@ object {
   -moz-user-select: none;
   -ms-user-select: none;
 }
+
+a {
+  text-decoration: underline;
+}

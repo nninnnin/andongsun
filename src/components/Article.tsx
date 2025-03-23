@@ -5,14 +5,14 @@ import React, {
   useState,
 } from "react";
 import { motion } from "framer-motion";
+import { useRecoilValue } from "recoil";
+import { useSearchParams } from "next/navigation";
 
 import useArticles from "@/hooks/useArticles";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { ArticleInterface } from "@/types/article";
 import { removePrefixZero } from "@/utils";
-import { useSearchParams } from "next/navigation";
 import { SectionColors } from "@/constants";
-import { useRecoilValue } from "recoil";
 import { selectedSectionNameState } from "@/components/Section";
 
 import Script from "next/script";
@@ -110,8 +110,6 @@ const Article = () => {
     producedAt,
     thumbnailPath,
   } = article;
-
-  console.log(article.uid);
 
   return (
     <motion.div

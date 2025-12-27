@@ -183,10 +183,10 @@ const Title = ({
   return (
     <div
       className={clsx(
-        "w-full h-[20px]",
+        "w-full",
         "text-small font-bold",
         "flex justify-center items-center",
-        "!mt-[12px]"
+        "!mt-[5px]"
       )}
     >
       {article.title}

@@ -24,7 +24,7 @@ const AdminPage = () => {
   const { data: articles } = useArticles();
 
   const categoryFilter = useRecoilValue(
-    categoryFilterState
+    categoryFilterState,
   );
 
   const tagFilter = useRecoilValue(tagFilterState);
@@ -117,13 +117,13 @@ AdminPage.ArticleList = ({
     .filter(
       (article) =>
         // @ts-ignore
-        article.articleType !== "AboutEditor"
+        article.articleType !== "AboutEditor",
     );
 
   const articlesSorted = orderBy(
     articlesFiltered,
     ["producedAt", "updatedAt"],
-    ["desc", "desc"]
+    ["desc", "desc"],
   );
 
   return (
@@ -189,8 +189,8 @@ AdminPage.ArticleListItem = ({
         "text-white text-large flex space-x-10 border-b-[1px]",
         "pt-[24px] first:pt-0 pb-[20px]",
         "cursor-pointer",
-        "w-full overflow-hidden",
-        "hover:border-themeBlue hover:!text-themeBlue transition-all duration-[400]"
+        "w-full",
+        "hover:border-themeBlue hover:!text-themeBlue transition-all duration-[400]",
       )}
       onClick={handleClick}
     >
@@ -198,7 +198,7 @@ AdminPage.ArticleListItem = ({
         {articleType}
       </p>
 
-      <p className="w-[140px] truncate">{tag}</p>
+      <p className="w-[140px]">{tag}</p>
 
       <h2 className="flex-1 min-w-[240px]">{title}</h2>
 

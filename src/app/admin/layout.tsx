@@ -16,7 +16,7 @@ const AdminLayout = ({ children }: LayoutProps) => {
       <div className="bg-[#333333] flex flex-col h-[100dvh] w-screen overflow-y-scroll">
         <AdminHeader />
 
-        <div className="h-full flex">{children}</div>
+        <>{children}</>
       </div>
     </OverlayProvider>
   );

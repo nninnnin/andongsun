@@ -54,13 +54,13 @@ const ArticleList = ({
   const filteredArticles = filterArticleList(
     articles,
     sectionName,
-    selectedTag
+    selectedTag,
   );
 
   const sortedArticles = orderBy(
     filteredArticles,
     ["producedAt", "updatedAt"],
-    ["desc", "desc"]
+    ["desc", "desc"],
   );
 
   return (
@@ -72,7 +72,7 @@ const ArticleList = ({
         "pt-[133.5px]",
         isMobile && "pt-[100px]",
         "h-full overflow-y-scroll",
-        className
+        className,
       )}
       ref={containerRef}
     >
@@ -86,7 +86,7 @@ const ArticleList = ({
               article={article}
             />
           );
-        }
+        },
       )}
 
       {filteredArticles.length % 3 === 2 && (
@@ -99,7 +99,7 @@ const ArticleList = ({
             "cursor-default",
             "flex flex-col",
             "space-y-[6px]",
-            "mb-[24px]"
+            "mb-[24px]",
           )}
         ></li>
       )}
@@ -131,7 +131,7 @@ ArticleList.Item = ({
         "flex flex-col",
         "space-y-[6px]",
         "mb-[120px]",
-        isMobile && "mb-[60px]"
+        isMobile && "mb-[60px]",
       )}
       onClick={(e) => {
         e.stopPropagation();
@@ -140,7 +140,7 @@ ArticleList.Item = ({
 
         params.set(
           "articleId",
-          article.id ?? article.uid ?? ""
+          article.id ?? article.uid ?? "",
         );
 
         window.history.pushState(
@@ -148,7 +148,7 @@ ArticleList.Item = ({
           "",
           `${
             window.location.pathname
-          }?${params.toString()}`
+          }?${params.toString()}`,
         );
       }}
     >
@@ -186,7 +186,7 @@ const Title = ({
         "w-full",
         "text-small font-bold",
         "flex justify-center items-center",
-        "!mt-[5px]"
+        "!mt-[5px]",
       )}
     >
       {article.title}
@@ -199,17 +199,23 @@ const Caption = ({
 }: {
   article: ArticleInterface;
 }) => {
+  const text = article.caption ?? "";
+  const truncated =
+    text.length > 115
+      ? text.slice(0, 115).trim() + "..."
+      : text;
+
   return (
     <div
       className={clsx(
         "w-full",
         "border-t-[1px] border-black",
         "text-large leading-[150%] pt-[10px]",
-        "line-clamp-[8]",
-        "break-keep"
+        "h-fit",
+        "break-keep",
       )}
     >
-      {article.caption}
+      {truncated}
     </div>
   );
 };
@@ -228,7 +234,7 @@ const Thumbnail = ({
       <img
         className={clsx(
           "w-full h-auto",
-          "object-cover"
+          "object-cover",
         )}
         src={article.thumbnailPath}
         alt={`${article.title}-thumbnail`}
@@ -241,7 +247,7 @@ const Thumbnail = ({
             className={clsx(
               "bg-[#f1f1f1]",
               "w-full h-full",
-              "absolute top-0 left-0"
+              "absolute top-0 left-0",
             )}
             exit={{
               opacity: 0,

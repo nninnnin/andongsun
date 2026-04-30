@@ -2,10 +2,7 @@
 
 import clsx from "clsx";
 import { useEffect } from "react";
-import {
-  useRecoilValue,
-  useResetRecoilState,
-} from "recoil";
+import { useRecoilValue } from "recoil";
 
 import useBreakpoint from "@/hooks/useBreakpoint";
 import HomeDesktop from "@/components/home/HomeDesktop";
@@ -15,14 +12,14 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const selectedSection = useRecoilValue(
-    selectedSectionNameState
+    selectedSectionNameState,
   );
 
   const resetSelectedArticle = () => {
     window.history.pushState(
       null,
       "",
-      window.location.pathname
+      window.location.pathname,
     );
   };
 

@@ -10,48 +10,8 @@ import React, {
   useState,
 } from "react";
 import ReactQuill, { Quill } from "react-quill";
-import { atom, useSetRecoilState } from "recoil";
-
-const BaseImageFormat = Quill.import("formats/image");
-const ImageFormatAttributesList = [
-  "alt",
-  "height",
-  "width",
-  "style",
-];
-
-class ImageFormat extends BaseImageFormat {
-  domNode: any;
-
-  // @ts-ignore
-  static formats(domNode) {
-    // tslint:disable-next-line: only-arrow-functions
-    return ImageFormatAttributesList.reduce(function (
-      formats,
-      attribute
-    ) {
-      if (domNode.hasAttribute(attribute)) {
-        // @ts-ignore
-        formats[attribute] =
-          domNode.getAttribute(attribute);
-      }
-      return formats;
-    },
-    {});
-  }
-  // @ts-ignore
-  format(name, value) {
-    if (ImageFormatAttributesList.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
+import { atom } from "recoil";
+import { ImageFormat } from "@/lib/quill/ImageFormat";
 
 // @ts-ignore
 import ImageResize from "quill-image-resize";
@@ -66,7 +26,6 @@ icons["video"] = '<i class="ql-video-icon"></i>';
 
 import useArticle from "@/hooks/useArticle";
 import { mediaState } from "@/states";
-import { usePathname } from "next/navigation";
 import useImageHandler from "@/hooks/useImageHandler";
 import useSlideHandler from "@/hooks/useSlideHandler";
 import Script from "next/script";
@@ -82,38 +41,30 @@ export const quillRefState = atom<ReactQuill | null>({
   default: null,
 });
 
+const DynamicReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({
+      forwardedRef,
+      ...props
+    }: {
+      forwardedRef: LegacyRef<ReactQuill>;
+    }) => {
+      return <RQ ref={forwardedRef} {...props} />;
+    };
+  },
+  {
+    ssr: false,
+    loading: () => (
+      <RichTextEditor.LoadingPlaceholder hasContents />
+    ),
+  },
+);
+
 const RichTextEditor = () => {
-  const pathname = usePathname();
-
-  const isEditing = pathname.includes("edit");
-
   const { handleChange, value } =
     useArticle<string>("contents");
-
-  const ReactQuill = dynamic(
-    async () => {
-      const { default: RQ } = await import(
-        "react-quill"
-      );
-
-      return ({
-        forwardedRef,
-        ...props
-      }: {
-        forwardedRef: LegacyRef<ReactQuill>;
-      }) => {
-        return <RQ ref={forwardedRef} {...props} />;
-      };
-    },
-    {
-      ssr: false,
-      loading: () => (
-        <RichTextEditor.LoadingPlaceholder
-          hasContents={isEditing}
-        />
-      ),
-    }
-  );
 
   const [quillRef, setQuillRef] =
     useState<ReactQuill | null>(null);
@@ -145,14 +96,14 @@ const RichTextEditor = () => {
                         alt:
                           img.getAttribute("alt") ||
                           "",
-                      })
+                      }),
                     ),
                   },
                 },
               },
             ],
           };
-        }
+        },
       );
 
       // editor.clipboard.dangerouslyPasteHTML(value);
@@ -164,7 +115,7 @@ const RichTextEditor = () => {
 
       quillRef.getEditor().on("editor-change", () => {
         handleChange(
-          quillRef.getEditor().root.innerHTML
+          quillRef.getEditor().root.innerHTML,
         );
       });
     }
@@ -186,10 +137,10 @@ const RichTextEditor = () => {
 
       {useMemo(
         () => (
-          <ReactQuill
+          <DynamicReactQuill
             // @ts-ignore
             className={clsx(
-              "w-full h-full bg-white flex flex-col overflow-hidden"
+              "w-full h-full bg-white flex flex-col overflow-hidden",
             )}
             // @ts-ignore
             onChange={handleChange}
@@ -217,7 +168,7 @@ const RichTextEditor = () => {
             }}
           />
         ),
-        []
+        [],
       )}
     </div>
   );

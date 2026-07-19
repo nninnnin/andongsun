@@ -6,6 +6,7 @@ import { useOverlay } from "@toss/use-overlay";
 
 import Spinner from "@/components/admin/common/Spinner";
 import useEditAbout from "./useEditAbout";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 const EditAbout = () => {
   const { value, setValue, articleId, handleSubmit } =
@@ -14,10 +15,8 @@ const EditAbout = () => {
 
   return (
     <EditAbout.Container>
-      <EditAbout.Editor
-        value={value}
-        onChange={setValue}
-      />
+      <RichTextEditor />
+
       <EditAbout.SubmitButton
         onClick={() => {
           if (!articleId) return;
@@ -44,7 +43,7 @@ EditAbout.Container = ({
   <div
     className={clsx(
       "editor",
-      "w-[60vw] min-w-[750px] h-full mx-auto",
+      "w-[60vw] min-w-[750px] h-[300px] mx-auto",
       "flex flex-col justify-start items-end",
       "fixed left-1/2 -translate-x-1/2 top-[90px]",
     )}

@@ -98,8 +98,8 @@ const useImageHandler = (
         iterateListNode(
           line.children.head,
           (domNode, index) => {
-            const fileName = files[index].name;
-            domNode.alt = processFilename(fileName);
+            domNode.alt =
+              newMediaContents[index].name;
           }
         );
 

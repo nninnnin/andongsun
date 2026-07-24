@@ -57,18 +57,7 @@ const useSlideHandler = (
         return;
       }
 
-      // 1. slides 세팅
-      const slides = await Promise.all(
-        [...(files ?? [])].map(async (file) => ({
-          name: processFilename(file.name),
-          file: file,
-          source: await convertFileToBase64(file),
-        }))
-      );
-
-      setSlides((prev) => [...prev, ...slides]);
-
-      // 2. mediaContents 세팅
+      // 0. 파일명을 한 번만 계산해서 slides / mediaContents 양쪽에서 동일하게 사용
       const newMediaContents = [...(files ?? [])].map(
         (file) => ({
           name: processFilename(file.name),
@@ -76,6 +65,18 @@ const useSlideHandler = (
         })
       );
 
+      // 1. slides 세팅
+      const slides = await Promise.all(
+        newMediaContents.map(async ({ name, file }) => ({
+          name,
+          file,
+          source: await convertFileToBase64(file),
+        }))
+      );
+
+      setSlides((prev) => [...prev, ...slides]);
+
+      // 2. mediaContents 세팅
       setSlideMediaContents((prev) => [
         ...prev,
         ...newMediaContents,

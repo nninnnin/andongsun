@@ -33,20 +33,20 @@ const mapImageTagToPath = curry(
       file: File;
     }[],
     contents: string,
-    imageString: RegExpMatchArray
+    imageTagStrings: RegExpMatchArray
   ) => {
-    const imagePaths = await tagStringsToPaths(
+    // 원본 태그 배열과 정확히 같은 길이/순서로 정렬된 상태를 유지해야
+    // replaceImageTags가 각 태그를 올바른 자리에 치환할 수 있다.
+    // (여기서 실패한 항목을 걸러내 압축하면 안 됨 - 자세한 이유는
+    // replaceImageTags 주석 참고)
+    const resolvedImageTags = await tagStringsToPaths(
       mediaFiles,
-      imageString
-    );
-
-    const filtered = imagePaths.filter(
-      (imagePath) => imagePath
+      imageTagStrings
     );
 
     const newContent = replaceImageTags(
       contents,
-      filtered as Record<string, string>[]
+      resolvedImageTags
     );
 
     return newContent;

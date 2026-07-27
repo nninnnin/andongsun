@@ -1,3 +1,4 @@
+import { MediaFile } from "@/types";
 import { ArticleStateInterface } from "@/types/article";
 import { atom } from "recoil";
 
@@ -21,12 +22,7 @@ export const articleState =
     default: articleDefault,
   });
 
-export const mediaState = atom<
-  Array<{
-    name: string;
-    file: File;
-  }>
->({
+export const mediaState = atom<Array<MediaFile>>({
   key: "mediaState",
   default: [],
 });

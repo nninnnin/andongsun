@@ -25,8 +25,8 @@ import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
 import Spinner from "@/components/admin/common/Spinner";
 import { ArticleStateInterface } from "@/types/article";
-import { mapImageTags } from "@/utils/submit/mapImageTags";
 import { mapContentsTags } from "@/utils/submit/mapContentsTags";
+import { MediaFile } from "@/types";
 
 const SubmitButton = () => {
   const { mutate } = useSWRConfig();
@@ -36,7 +36,7 @@ const SubmitButton = () => {
   const article = useRecoilValue(articleState);
   const mediaContents = useRecoilValue(mediaState);
   const slideMediaContents = useRecoilValue(
-    slideMediaState
+    slideMediaState,
   );
 
   const resetMediaContents =
@@ -53,12 +53,11 @@ const SubmitButton = () => {
   const { data: tags, getTagId } = useTags();
 
   const submitArticle = async (
-    article: ArticleStateInterface
+    article: ArticleStateInterface,
   ) => {
     // 1. 아티클 바디 생성
-    const articleBody = await createArticleBody(
-      article
-    );
+    const articleBody =
+      await createArticleBody(article);
 
     // 2. 바디에 새로운 태그 세팅
     const tagId = await getTagId(article.tag);
@@ -67,14 +66,14 @@ const SubmitButton = () => {
 
     // 3. 바디에 새로운 컨텐츠 세팅
     const contents = articleBody.data.contents;
-    const mediaFiles = [
+    const mediaFiles: Array<MediaFile> = [
       ...mediaContents,
       ...slideMediaContents,
     ];
 
     const mappedContents = await mapContentsTags(
       contents,
-      mediaFiles
+      mediaFiles,
     );
 
     articleBody.data.contents = mappedContents;
@@ -82,7 +81,7 @@ const SubmitButton = () => {
     if (isEditing) {
       await updateArticle(
         articleId as string,
-        articleBody
+        articleBody,
       );
     } else {
       await postArticle(articleBody);
@@ -163,7 +162,7 @@ const SubmitButton = () => {
 
                     console.log(
                       "업로드 중 에러 발생:",
-                      error
+                      error,
                     );
 
                     overlay.open(
@@ -174,7 +173,7 @@ const SubmitButton = () => {
                           handleClose={() => close()}
                           handleConfirm={() => close()}
                         />
-                      )
+                      ),
                     );
                   }
                 }}
@@ -190,7 +189,7 @@ const SubmitButton = () => {
     <div
       className={clsx(
         "btn selector cursor-pointer mt-[-1px]",
-        !tags && "pointer-events-none bg-slate-200"
+        !tags && "pointer-events-none bg-slate-200",
       )}
       onClick={handleSubmit}
     >

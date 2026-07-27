@@ -25,7 +25,7 @@ import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
 import Spinner from "@/components/admin/common/Spinner";
 import { ArticleStateInterface } from "@/types/article";
-import { mapContentsTags } from "@/utils/submit/mapContentsTags";
+import { mapImageTags } from "@/utils/submit/mapImageTags";
 import { MediaFile } from "@/types";
 
 const SubmitButton = () => {
@@ -71,12 +71,10 @@ const SubmitButton = () => {
       ...slideMediaContents,
     ];
 
-    const mappedContents = await mapContentsTags(
-      contents,
+    articleBody.data.contents = await mapImageTags(
       mediaFiles,
+      contents,
     );
-
-    articleBody.data.contents = mappedContents;
 
     if (isEditing) {
       await updateArticle(

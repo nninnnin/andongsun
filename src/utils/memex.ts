@@ -1,6 +1,5 @@
 // @ts-ignore
 import Mf from "@rebel9/memex-fetcher";
-import { processFilename } from "@/utils/submit";
 const {
   pipe,
   mapListItems,
@@ -15,31 +14,21 @@ const memexFetcher = Mf.createMemexFetcher(
 const PROJECT_ID = "cbbcc6cd";
 const ARTICLE_MODEL_KEY = "articles";
 
-export const readImage = async (imageName: string) => {
-  const list = await readImagesByName(imageName);
-
-  return list[0];
-};
-
-// 같은 이름으로 등록된 이미지가 여러 개일 수 있어서(파일명 중복),
-// 첫 번째만 보지 않고 전체 후보를 돌려준다 - 호출부에서 해시로 진짜 같은 파일인지 가려낸다.
-export const readImagesByName = async (
-  imageName: string
-) => {
-  const sanitizedName = processFilename(imageName);
-
+// key는 이미지 파일명이 아니라 파일 내용의 해시값이다.
+// 해시는 완전히 같은 파일에 대해서만 같은 값이 나오므로, 정확히 하나(있거나 없거나)만 매칭된다.
+export const readImage = async (key: string) => {
   const res = await memexFetcher.getList(
     PROJECT_ID,
     "images",
     {
-      size: 9999,
+      size: 1,
       page: 0,
       searchConds: [
         {
           componentType: "TITLE",
           devKey: "name",
           language: "KO",
-          condition: `{\"type\": \"EXACT", "language": "KO", \"keyword\": \"${sanitizedName}\"}`,
+          condition: `{\"type\": \"EXACT", "language": "KO", \"keyword\": \"${key}\"}`,
         },
       ],
     }
@@ -47,13 +36,14 @@ export const readImagesByName = async (
 
   const result = await res.json();
 
-  return result.list as Array<{
-    data: {
-      name: { KO: string };
-      path: string;
-      hash?: string;
-    };
-  }>;
+  return result.list[0] as
+    | {
+        data: {
+          name: { KO: string };
+          path: string;
+        };
+      }
+    | undefined;
 };
 
 export const registerImage = async (
@@ -68,9 +58,8 @@ export const registerImage = async (
 };
 
 export const postImage = async (
-  imageName: string,
-  imagePath: string,
-  hash?: string
+  key: string,
+  imagePath: string
 ) => {
   const result = await memexFetcher.postItem(
     PROJECT_ID,
@@ -79,10 +68,9 @@ export const postImage = async (
       publish: true,
       data: {
         name: {
-          KO: processFilename(imageName),
+          KO: key,
         },
         path: imagePath,
-        ...(hash ? { hash } : {}),
       },
     })
   );

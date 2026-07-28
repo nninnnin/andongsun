@@ -9,7 +9,10 @@ import {
 import ReactQuill from "react-quill";
 import { MutableRefObject } from "react";
 import { reverse } from "lodash";
-import { processFilename } from "@/utils/submit";
+import {
+  hashFile,
+  processFilename,
+} from "@/utils/submit";
 
 const useImageHandler = (
   quillStore: MutableRefObject<ReactQuill | null>
@@ -46,11 +49,12 @@ const useImageHandler = (
         return;
       }
 
-      const newMediaContents = [...(files ?? [])].map(
-        (file) => ({
-          name: processFilename(file.name),
+      const newMediaContents = await Promise.all(
+        [...(files ?? [])].map(async (file) => ({
+          hash: await hashFile(file),
+          originalName: processFilename(file.name),
           file: file,
-        })
+        }))
       );
 
       // 1. 상태로 설정 (Submission에 업로드 시 활용)
@@ -98,8 +102,11 @@ const useImageHandler = (
         iterateListNode(
           line.children.head,
           (domNode, index) => {
+            // 저장 전까지, alt는 표시용 이름이 아니라
+            // 서버 조회/등록 키로 쓰이는 해시를 임시로 담아둔다.
+            // 저장이 끝나면 resolveImages가 원본 파일명으로 되돌린다.
             domNode.alt =
-              newMediaContents[index].name;
+              newMediaContents[index].hash;
           }
         );
 

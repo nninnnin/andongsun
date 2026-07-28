@@ -14,9 +14,9 @@ const memexFetcher = Mf.createMemexFetcher(
 const PROJECT_ID = "cbbcc6cd";
 const ARTICLE_MODEL_KEY = "articles";
 
-// key는 이미지 파일명이 아니라 파일 내용의 해시값이다.
+// name(원본 파일명)과는 별개로, dedup 조회/등록 키로 쓰는 전용 hash 필드로 검색한다.
 // 해시는 완전히 같은 파일에 대해서만 같은 값이 나오므로, 정확히 하나(있거나 없거나)만 매칭된다.
-export const readImage = async (key: string) => {
+export const readImage = async (hash: string) => {
   const res = await memexFetcher.getList(
     PROJECT_ID,
     "images",
@@ -25,10 +25,10 @@ export const readImage = async (key: string) => {
       page: 0,
       searchConds: [
         {
-          componentType: "TITLE",
-          devKey: "name",
+          componentType: "LONG_LINE_TEXT_MONO",
+          devKey: "hash",
           language: "KO",
-          condition: `{\"type\": \"EXACT", "language": "KO", \"keyword\": \"${key}\"}`,
+          condition: `{\"type\": \"EXACT", "language": "KO", \"keyword\": \"${hash}\"}`,
         },
       ],
     }
@@ -41,6 +41,7 @@ export const readImage = async (key: string) => {
         data: {
           name: { KO: string };
           path: string;
+          hash: string;
         };
       }
     | undefined;
@@ -58,8 +59,9 @@ export const registerImage = async (
 };
 
 export const postImage = async (
-  key: string,
-  imagePath: string
+  hash: string,
+  imagePath: string,
+  originalName: string
 ) => {
   const result = await memexFetcher.postItem(
     PROJECT_ID,
@@ -68,9 +70,10 @@ export const postImage = async (
       publish: true,
       data: {
         name: {
-          KO: key,
+          KO: originalName,
         },
         path: imagePath,
+        hash,
       },
     })
   );

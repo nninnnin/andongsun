@@ -61,7 +61,11 @@ export const uploadPendingMedia = async (
         media.file,
       );
 
-      await postImage(media.hash, registeredPath);
+      await postImage(
+        media.hash,
+        registeredPath,
+        media.originalName,
+      );
 
       return [
         media.hash,
@@ -106,7 +110,11 @@ export const registerAndPostImage = async (
     article.thumbnail!,
   );
 
-  await postImage(hash, registeredPath);
+  await postImage(
+    hash,
+    registeredPath,
+    processFilename(article.thumbnail!.name),
+  );
 
   return registeredPath;
 };

@@ -1,13 +1,12 @@
-// memex "images" 모델 전체를 JSON/CSV로 백업하는 읽기 전용 스크립트.
-// 마이그레이션(scripts/migrate-image-keys-to-hash.js)처럼 데이터를 바꾸는 작업 전에
-// 원본 상태를 남겨두기 위한 용도. 아무것도 쓰지 않는다.
+// memex 프로젝트(cbbcc6cd)의 임의 모델 전체를 JSON/CSV로 백업하는 읽기 전용 스크립트.
+// 마이그레이션 작업 전에 원본 상태를 남겨두기 위한 용도. 아무것도 쓰지 않는다.
 //
 // getList(목록 조회)는 필드가 축약되어 올 수도 있다는 의심이 있어서(아직 미확인),
 // 백업의 신뢰도를 위해 uid만 목록에서 뽑고 항목마다 getItem(단건 조회)으로
 // 완전한 데이터를 다시 가져온다.
 //
-// 사용법: node scripts/backup-images-model.js
-// 결과: backups/images-YYYY-MM-DDTHH-mm-ss.json, backups/images-YYYY-MM-DDTHH-mm-ss.csv
+// 사용법: node scripts/backup-memex-model.js <images|articles|tags|...>
+// 결과: backups/<model>/<model>-YYYY-MM-DDTHH-mm-ss.json, backups/<model>/<model>-YYYY-MM-DDTHH-mm-ss.csv
 
 require("dotenv").config();
 const fs = require("fs");
@@ -16,9 +15,16 @@ const path = require("path");
 const Mf = require("@rebel9/memex-fetcher");
 
 const PROJECT_ID = "cbbcc6cd";
-const MODEL_KEY = "images";
 const PAGE_SIZE = 50;
-const OUTPUT_DIR = path.join(__dirname, "..", "backups");
+const BACKUPS_DIR = path.join(__dirname, "..", "backups");
+
+const MODEL_KEY = process.argv[2];
+
+if (!MODEL_KEY) {
+  throw new Error(
+    "모델 키를 인자로 넘겨주세요. 예: node scripts/backup-memex-model.js images",
+  );
+}
 
 const memexFetcher = Mf.createMemexFetcher(
   process.env.MEMEX_TOKEN ?? "",
@@ -82,9 +88,9 @@ const toCsvRow = (item) => {
   const fields = [
     item.uid,
     item.publish,
-    item.data?.name?.KO,
-    item.data?.path,
-    item.data?.hash,
+    item.order,
+    item.createdAt,
+    item.updateAt,
     JSON.stringify(item.data ?? {}),
   ];
 
@@ -95,9 +101,9 @@ const buildCsv = (items) => {
   const header = [
     "uid",
     "publish",
-    "name",
-    "path",
-    "hash",
+    "order",
+    "createdAt",
+    "updateAt",
     "dataJson",
   ].join(",");
 
@@ -134,15 +140,17 @@ const main = async () => {
     }
   }
 
-  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  const outputDir = path.join(BACKUPS_DIR, MODEL_KEY);
+
+  fs.mkdirSync(outputDir, { recursive: true });
 
   const suffix = timestamp();
   const jsonPath = path.join(
-    OUTPUT_DIR,
+    outputDir,
     `${MODEL_KEY}-${suffix}.json`,
   );
   const csvPath = path.join(
-    OUTPUT_DIR,
+    outputDir,
     `${MODEL_KEY}-${suffix}.csv`,
   );
 

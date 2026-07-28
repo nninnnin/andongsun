@@ -27,12 +27,7 @@ export const mediaState = atom<Array<MediaFile>>({
   default: [],
 });
 
-export const slideMediaState = atom<
-  Array<{
-    name: string;
-    file: File;
-  }>
->({
+export const slideMediaState = atom<Array<MediaFile>>({
   key: "slideMediaState",
   default: [],
 });

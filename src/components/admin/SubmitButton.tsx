@@ -25,7 +25,7 @@ import { useOverlay } from "@toss/use-overlay";
 import Alert from "@/components/admin/common/Alert";
 import Spinner from "@/components/admin/common/Spinner";
 import { ArticleStateInterface } from "@/types/article";
-import { mapImageTags } from "@/utils/submit/mapImageTags";
+import { resolveImages } from "@/utils/submit/resolveImages";
 import { MediaFile } from "@/types";
 
 const SubmitButton = () => {
@@ -71,7 +71,7 @@ const SubmitButton = () => {
       ...slideMediaContents,
     ];
 
-    articleBody.data.contents = await mapImageTags(
+    articleBody.data.contents = await resolveImages(
       mediaFiles,
       contents,
     );

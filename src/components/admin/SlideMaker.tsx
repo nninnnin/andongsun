@@ -267,7 +267,7 @@ SlideMaker.Images = () => {
   const fixedLengthImages = useMemo(() => {
     const fixedLengthImages = [] as Array<{
       id: string;
-      name: string;
+      hash: string;
       src: string;
     }>;
 
@@ -275,13 +275,13 @@ SlideMaker.Images = () => {
       if (!slides[index]) {
         fixedLengthImages[index] = {
           id: uuid(),
-          name: "",
+          hash: "",
           src: "",
         };
       } else {
         fixedLengthImages[index] = {
           id: uuid(),
-          name: slides[index].name,
+          hash: slides[index].hash,
           src: slides[index].source,
         };
       }
@@ -291,7 +291,7 @@ SlideMaker.Images = () => {
   }, [slides]);
 
   useEffect(() => {
-    setSlideOrder(slides.map((slide) => slide.name));
+    setSlideOrder(slides.map((slide) => slide.hash));
   }, [slides]);
 
   useEffect(() => {
@@ -341,13 +341,13 @@ SlideMaker.Images = () => {
   }, []);
 
   const handleRemoveButtonClick =
-    (filename: string) => (e: MouseEvent) => {
+    (hash: string) => (e: MouseEvent) => {
       e.stopPropagation();
 
       setSlides((prev) => {
         const fileIndex = lastIndexOf(
-          prev.map((el) => el.name),
-          filename
+          prev.map((el) => el.hash),
+          hash
         );
 
         if (fileIndex === -1) return prev;
@@ -361,8 +361,8 @@ SlideMaker.Images = () => {
 
       setSlideMediaContents((prev) => {
         const fileIndex = lastIndexOf(
-          prev.map((el) => el.name),
-          filename
+          prev.map((el) => el.hash),
+          hash
         );
 
         if (fileIndex === -1) return prev;
@@ -408,7 +408,7 @@ SlideMaker.Images = () => {
                   "object-contain"
                 )}
                 src={image.src}
-                alt={image.name}
+                alt={image.hash}
               />
             )}
 
@@ -423,7 +423,7 @@ SlideMaker.Images = () => {
                   "border-[1px] border-solid border-white"
                 )}
                 onClick={handleRemoveButtonClick(
-                  image.name
+                  image.hash
                 )}
               >
                 <img
@@ -468,13 +468,15 @@ SlideMaker.Buttons = ({
 
       const images = slides.map((slide) => ({
         src: slide.source,
-        alt: slide.name,
+        // 저장 전까지는 alt에 해시를 담아둔다. resolveImages가 저장
+        // 시점에 이 해시로 서버에 올리고, 최종적으로 원본 파일명으로 되돌린다.
+        alt: slide.hash,
       }));
 
       const orderedImages = slideOrder.map(
-        (slideName) => {
+        (slideHash) => {
           return images.find(
-            (image) => image.alt === slideName
+            (image) => image.alt === slideHash
           );
         }
       );
@@ -505,8 +507,8 @@ SlideMaker.Buttons = ({
       const removingIndexes = slides.reduce(
         (removingIndexes, slide) => {
           const index = lastIndexOf(
-            mediaContents.map((el) => el.name),
-            slide.name
+            mediaContents.map((el) => el.hash),
+            slide.hash
           );
 
           if (index === -1) return removingIndexes;

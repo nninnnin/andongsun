@@ -6,10 +6,11 @@ import { atom, useSetRecoilState } from "recoil";
 import { slideMediaState } from "@/states";
 import { convertFileToBase64 } from "@/utils";
 import SlideMaker from "@/components/admin/SlideMaker";
-import { processFilename } from "@/utils/submit";
+import { hashFile, processFilename } from "@/utils/submit";
 
 export interface Slide {
-  name: string;
+  hash: string;
+  originalName: string;
   file: File;
   source: string;
 }
@@ -57,21 +58,25 @@ const useSlideHandler = (
         return;
       }
 
-      // 0. 파일명을 한 번만 계산해서 slides / mediaContents 양쪽에서 동일하게 사용
-      const newMediaContents = [...(files ?? [])].map(
-        (file) => ({
-          name: processFilename(file.name),
+      // 0. 해시/원본 파일명을 한 번만 계산해서 slides / mediaContents 양쪽에서 동일하게 사용
+      const newMediaContents = await Promise.all(
+        [...(files ?? [])].map(async (file) => ({
+          hash: await hashFile(file),
+          originalName: processFilename(file.name),
           file: file,
-        })
+        }))
       );
 
       // 1. slides 세팅
       const slides = await Promise.all(
-        newMediaContents.map(async ({ name, file }) => ({
-          name,
-          file,
-          source: await convertFileToBase64(file),
-        }))
+        newMediaContents.map(
+          async ({ hash, originalName, file }) => ({
+            hash,
+            originalName,
+            file,
+            source: await convertFileToBase64(file),
+          })
+        )
       );
 
       setSlides((prev) => [...prev, ...slides]);

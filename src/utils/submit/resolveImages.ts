@@ -57,9 +57,11 @@ const getReferencedPendingHashes = (
     const dom = convertStringToDOM(imageTag);
     const src = dom?.getAttribute("src") ?? "";
     const hash = dom?.getAttribute("data-hash");
+    const isDataUrl = src.startsWith("data:");
+    const isPendingUpload = isDataUrl && Boolean(hash);
 
-    if (src.startsWith("data:") && hash) {
-      hashes.add(hash);
+    if (isPendingUpload) {
+      hashes.add(hash!);
     }
   });
 

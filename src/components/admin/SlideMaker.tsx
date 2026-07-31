@@ -34,6 +34,7 @@ class SlideBlot extends BlockEmbed {
     images: Array<{
       src: string;
       alt: string;
+      hash: string;
     }>;
   }) {
     const node = super.create();
@@ -58,11 +59,15 @@ class SlideBlot extends BlockEmbed {
     if (value.images && value.images.length) {
       const { images } = value;
 
-      images.forEach(({ src, alt }) => {
+      images.forEach(({ src, alt, hash }) => {
         const img = document.createElement("img");
 
         img.setAttribute("src", src);
         img.setAttribute("alt", alt);
+
+        if (hash) {
+          img.setAttribute("data-hash", hash);
+        }
 
         const swiperSlide =
           document.createElement("li");
@@ -134,6 +139,7 @@ class SlideBlot extends BlockEmbed {
       images: Array.from(images).map((img) => ({
         src: img.getAttribute("src") || "",
         alt: img.getAttribute("alt") || "",
+        hash: img.getAttribute("data-hash") || "",
       })),
     };
   }
@@ -331,7 +337,7 @@ SlideMaker.Images = () => {
           .map((el) =>
             el
               .querySelector("img")
-              ?.getAttribute("alt")
+              ?.getAttribute("data-hash")
           )
           .filter((el) => el) as string[];
 
@@ -408,7 +414,8 @@ SlideMaker.Images = () => {
                   "object-contain"
                 )}
                 src={image.src}
-                alt={image.hash}
+                alt=""
+                data-hash={image.hash}
               />
             )}
 
@@ -468,15 +475,16 @@ SlideMaker.Buttons = ({
 
       const images = slides.map((slide) => ({
         src: slide.source,
-        // 저장 전까지는 alt에 해시를 담아둔다. resolveImages가 저장
-        // 시점에 이 해시로 서버에 올리고, 최종적으로 원본 파일명으로 되돌린다.
-        alt: slide.hash,
+        alt: slide.originalName,
+        // resolveImages가 저장 시점에 이 해시로 서버에 올리고
+        // 최종 태그에서는 이 속성 자체를 제거한다.
+        hash: slide.hash,
       }));
 
       const orderedImages = slideOrder.map(
         (slideHash) => {
           return images.find(
-            (image) => image.alt === slideHash
+            (image) => image.hash === slideHash
           );
         }
       );

@@ -207,18 +207,14 @@ export const removePrefixZero = (
 
 interface ListNode {
   head: ListNode;
-  domNode: {
-    alt: string;
-  };
+  domNode: HTMLImageElement;
   next: ListNode;
 }
 
 export const iterateListNode = (
   listNode: ListNode,
   callback: (
-    domNode: {
-      alt: string;
-    },
+    domNode: HTMLImageElement,
     index: number
   ) => void,
   index = 0

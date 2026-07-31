@@ -102,11 +102,14 @@ const useImageHandler = (
         iterateListNode(
           line.children.head,
           (domNode, index) => {
-            // 저장 전까지, alt는 표시용 이름이 아니라
-            // 서버 조회/등록 키로 쓰이는 해시를 임시로 담아둔다.
-            // 저장이 끝나면 resolveImages가 원본 파일명으로 되돌린다.
+            // data-hash는 저장 시 resolveImages가 서버 조회/등록 키로
+            // 쓰고 최종 태그에서는 제거한다. alt는 계속 표시용 이름.
             domNode.alt =
-              newMediaContents[index].hash;
+              newMediaContents[index].originalName;
+            domNode.setAttribute(
+              "data-hash",
+              newMediaContents[index].hash
+            );
           }
         );
 

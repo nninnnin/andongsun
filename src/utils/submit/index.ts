@@ -23,7 +23,7 @@ const toUploadedMedia = (
 
 // mediaFiles를 해시로 조회해, 이미 서버에 등록된 것(registered)과
 // 실제로 업로드가 필요한 것(pending)으로 나눈다.
-export const filterUnregisteredMedia = async (
+export const getPendingMedia = async (
   mediaFiles: Array<MediaFile>,
 ) => {
   const registered = new Map<string, UploadedMedia>();
@@ -145,19 +145,19 @@ const buildResolvedImageTag = (
 export const replaceImageTags = curry(
   (
     newContents: string,
-    uploadedByHash: Map<string, UploadedMedia>,
+    uploadedMediaByHash: Map<string, UploadedMedia>,
   ) => {
     const resolveImageTag = (
       originalImageTag: string,
     ) => {
       const dom = convertStringToDOM(originalImageTag);
       const src = dom?.getAttribute("src") ?? "";
-      const isPendingUpload =
-        src.startsWith("data:");
+      const isPendingUpload = src.startsWith("data:");
 
-      const hash = dom?.alt || "";
+      const hash =
+        dom?.getAttribute("data-hash") || "";
       const uploaded = isPendingUpload
-        ? uploadedByHash.get(hash)
+        ? uploadedMediaByHash.get(hash)
         : undefined;
 
       if (uploaded) {

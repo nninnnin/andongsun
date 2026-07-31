@@ -10,7 +10,7 @@ import React, {
   useState,
 } from "react";
 import ReactQuill, { Quill } from "react-quill";
-import { atom, useSetRecoilState } from "recoil";
+import { atom } from "recoil";
 
 const BaseImageFormat = Quill.import("formats/image");
 const ImageFormatAttributesList = [
@@ -18,6 +18,7 @@ const ImageFormatAttributesList = [
   "height",
   "width",
   "style",
+  "data-hash",
 ];
 
 class ImageFormat extends BaseImageFormat {
@@ -28,7 +29,7 @@ class ImageFormat extends BaseImageFormat {
     // tslint:disable-next-line: only-arrow-functions
     return ImageFormatAttributesList.reduce(function (
       formats,
-      attribute
+      attribute,
     ) {
       if (domNode.hasAttribute(attribute)) {
         // @ts-ignore
@@ -36,8 +37,7 @@ class ImageFormat extends BaseImageFormat {
           domNode.getAttribute(attribute);
       }
       return formats;
-    },
-    {});
+    }, {});
   }
   // @ts-ignore
   format(name, value) {
@@ -92,9 +92,8 @@ const RichTextEditor = () => {
 
   const ReactQuill = dynamic(
     async () => {
-      const { default: RQ } = await import(
-        "react-quill"
-      );
+      const { default: RQ } =
+        await import("react-quill");
 
       return ({
         forwardedRef,
@@ -112,7 +111,7 @@ const RichTextEditor = () => {
           hasContents={isEditing}
         />
       ),
-    }
+    },
   );
 
   const [quillRef, setQuillRef] =
@@ -145,14 +144,18 @@ const RichTextEditor = () => {
                         alt:
                           img.getAttribute("alt") ||
                           "",
-                      })
+                        hash:
+                          img.getAttribute(
+                            "data-hash",
+                          ) || "",
+                      }),
                     ),
                   },
                 },
               },
             ],
           };
-        }
+        },
       );
 
       // editor.clipboard.dangerouslyPasteHTML(value);
@@ -164,7 +167,7 @@ const RichTextEditor = () => {
 
       quillRef.getEditor().on("editor-change", () => {
         handleChange(
-          quillRef.getEditor().root.innerHTML
+          quillRef.getEditor().root.innerHTML,
         );
       });
     }
@@ -189,7 +192,7 @@ const RichTextEditor = () => {
           <ReactQuill
             // @ts-ignore
             className={clsx(
-              "w-full h-full bg-white flex flex-col overflow-hidden"
+              "w-full h-full bg-white flex flex-col overflow-hidden",
             )}
             // @ts-ignore
             onChange={handleChange}
@@ -217,7 +220,7 @@ const RichTextEditor = () => {
             }}
           />
         ),
-        []
+        [],
       )}
     </div>
   );
